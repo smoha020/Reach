@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Passport App</title>
+        <link rel="stylesheet" href="/style.css">
+        </head>
+        <body>
+            <ul>
+                <li><a href="/">Home</a></li>
+            </ul>
+            <br>
+            <br>
+            <div class="container">
+            <%- include ('partials/messages') %>
+                <form action="/users/login" method="POST">
+                    <div class="grid-container">
+                        <label class="iteml1" for="email">Email</label>
+                        <input class="iteml2" type="email" name="email" value="<%= (function(){ return email})() %>"> 
+                        <label class="iteml3" for="password1">Password</label>
+                        <input class="iteml4" type="password" name="password" value="<%= (function(){ return password})() %>"> 
+                        <input class="iteml5" type="submit" value="Sign In">
+                    </div>
+                </form>
+            </div>
+        </body>
+    </html>
+
+
+
+
+    

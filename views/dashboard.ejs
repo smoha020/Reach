@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>NewsQuest</title>
+        <link rel="stylesheet" type="text/css" href="/style.css">
+    </head>
+    <body>
+        <ul>
+            <li class="company"><a>NewsQuest</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/users/logout">Log Out</a></li>
+        </ul>
+        <div class="container">
+            <%- include ('partials/messages') %>
+            <br>
+            <br>
+            <form action="/news" method="POST">
+                <input type="text" name="search" placeholder="Search">
+                <input type="submit" class="searchbutton">
+            </form>
+            <div class="Newsposts">
+                <% articles.forEach(function(article){ %>
+                    <div class="post"> 
+                        <img class="pic" src="<%= article.urlToImage %>" alt="">
+                        <h2 class="mar"><%= article.title %></h2>
+                        <p class="mar"><%= article.author %></p>
+                        <a class="mar read" href="<%= article.url %>" target="_blank">Read More</a> 
+                    </div>
+                <% }) %>
+               
+            </div>
+        </div>
+    </body>
+</html>
+
+

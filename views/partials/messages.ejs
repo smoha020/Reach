@@ -1,0 +1,27 @@
+
+<!-- the if statement below is needed because the message variable was not defined when we rendered the 'register' view-->
+<% if (message) { %> <!-- if (message) does not work.-->
+        <!-- the following if statements are needed so that the alert colors don't show up when we don't want them to-->
+        <% if(message == 'Login Successful') { %> 
+                <div class="alertGreen"> <!-- for some reason the pink color shows up on the login and the dashboard pages even when the above condition is not met-->
+                        <%= message %>
+                </div>
+       <% } %>
+       <% if(message == 'Login Unsuccessful') { %>
+                <div class="alertRed"> <!-- for some reason the pink color shows up on the login and the dashboard pages even when the above condition is not met-->
+                        <%= message %>
+                </div>
+       <% } %>
+       <% if(message == 'Input fields must be filled') { %>
+                <div class="alertRed"> <!-- for some reason the pink color shows up on the login and the dashboard pages even when the above condition is not met-->
+                        <%= message %>
+                </div>
+        <% } %>
+        
+        <% if(message == 'User Exists') { %>
+                <div class="alertRed"> <!-- for some reason the pink color shows up on the login and the dashboard pages even when the above condition is not met-->
+                        <%= message %>
+                </div>
+        <% } %>
+
+<% } %>

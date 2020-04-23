@@ -1,0 +1,204 @@
+
+*{
+    box-sizing: border-box;
+}
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: rgb(238, 237, 237);
+    padding: 0;
+    margin: 0;
+}
+.container {
+    margin: auto;
+    width: 80%;
+    height: 100vh;
+}
+ul {
+    list-style-type: none; 
+    background: rgb(0, 0, 255);
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+    float: right;
+    background: rgb(0, 0, 255);
+}
+
+li a {
+    display: block;
+    text-decoration: none;
+    padding: 15px 15px;
+    color: white;
+}
+
+li a:hover {
+    background: #210BE2; 
+    border-radius: 4px;
+}
+
+.company {
+    float: left;
+}
+.company a:hover {
+    background: rgb(0, 0, 255);
+}
+
+.alertRed {
+    background: #ffe6e6;
+    color: #800000;
+    padding: 20px;
+    margin: auto;
+    margin-bottom: 10px;
+    border-radius: 4px;
+} 
+
+.alertGreen {
+    background: #d9ffcc;
+    color: #1a6600;
+    padding: 20px;
+    margin: auto;
+    margin-bottom: 10px;
+    border-radius: 4px;
+} 
+
+.grid-container {
+    margin: auto;
+    width: 70%;
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    grid-gap: 10px;
+    background-color: #C8C8C8;
+    padding: 10px;
+}
+
+.grid-container > input {
+    background-color: #fff;
+    padding: 10px 0;
+    font-size: 15px;
+    border: none;
+    border-radius: 2px;
+}
+
+.item2, .item4, .item6, .item8, .iteml2, .iteml4 {
+    grid-column: 2 / span 4;
+}
+
+.grid-container .item9, .grid-container .iteml5 {
+    grid-column: 1 / span 5;
+    background: rgb(0, 0, 255);
+    color: #fff;
+}
+.logo {
+    text-align: center;
+    color: #fff;
+}
+
+body input[type=text] {
+    /*we use float on both the input and the button to get them to stick to each other*/
+    float: left;
+    margin-left: 1rem;
+    height: 30px;  
+    width: 80%;
+    padding: 5px 3px;
+    box-shadow: none;
+    border: none;
+    border-radius: 4px 0px 0px 4px;
+}
+.searchbutton {
+    float: left;
+    background: rgb(0, 0, 255);    
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    height: 30px;  
+    width: 15%;
+    padding: 5px 0px;
+    border: none;
+    border-radius: 0px 4px 4px 0px;
+    border-left: none;
+}
+.Newsposts {
+    clear: both;
+    margin-top: 60px;
+}
+.post {
+    overflow: hidden;
+    display: inline-block;
+    margin: 10px;
+    clear: both;
+    width: 45%;
+    box-shadow: 0 10px 20px gray;
+}
+.pic {
+    width: 100%;
+}
+.mar {
+    margin: 10px;
+}
+.read{
+    text-decoration: none;
+    background: blue;
+    border-radius: 4px;
+    color: white;
+    padding: 5px;
+    display: inline-block;
+}
+
+/* media queries */ 
+
+/*for register and login*/
+@media screen and (max-width: 550px) {
+    .grid-container {
+        display: grid;
+        grid-template-columns: auto;
+    }
+    .grid-container label, .grid-container input {
+        grid-column: none;
+    }
+    .grid-container input {
+        width: 100%;
+    }
+    .grid-container label {
+        text-align: center;
+    }
+}
+
+/*for dashboard*/
+@media screen and (max-width: 600px) {
+    .post{ 
+        display: block;
+        width: 90%;   
+        margin: auto;
+        margin-bottom: 15px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    body input[type=text] {
+        float: none;
+        display: block;
+        margin: auto;
+        margin-top: 5px;
+        width: 80%;
+        border-radius: 4px 4px 4px 4px;
+    }
+    .searchbutton {
+        float: none;
+        display: block;
+        margin: auto;
+        margin-top: 5px;
+        width: 80%;
+        border-radius: 4px 4px 4px 4px;
+    }
+    .Newsposts {
+        margin-top: 20px;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    li, .company {
+        float: none;
+        text-align: center;
+    }
+}
