@@ -6,13 +6,17 @@ const fetch = require('node-fetch');
 //can you export from main app.js file? 
 const authenticate = require('../config/authenticate'); 
 
-router.get('/', (req, res) => res.render('home'));
+router.get('/test', (req, res) => {
+    res.send(/*req.isAuthenticated(),*/ req.user)
+});
+
 router.get('/dashboard', authenticate.authenticated,
     (req, res) => {
+        //res.send('hey there success')
         console.log(authenticate.authenticated);
         res.render('dashboard', {articles: [], message: req.flash('log')})
     });
-
+ 
 /*have to use post if I want req.body to return 
 other than an empty object. If you want to use get then use req.url...*/
 router.post('/news', (req, res) => {

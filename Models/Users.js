@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
+
     name: {
         type: String,
         reqired: true
@@ -13,6 +14,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         reqired: true
     }  
+    
 })
 
 const Users = mongoose.model('Users', UserSchema);

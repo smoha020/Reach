@@ -4,10 +4,10 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
-const setUp = require('./config/passport'); //for local strategy to be used
+require('./config/passport')(passport); //for local strategy to be used
 const keys = require('./config/keys');
 const app = express();
-
+const cors = require('cors');
 //template engine 
 app.set('view engine', 'ejs');
 
@@ -37,6 +37,9 @@ app.use(express.json());
 //routes
 app.use('/', require('./routes/index'));
 app.use('/users/', require('./routes/users'));
+app.use('/social/', require('./routes/social'));
+//****ERASE THIS */
+app.use((req, res) => {console.log(req.isAuthenticated())})
 
 
 //flash

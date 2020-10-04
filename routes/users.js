@@ -5,6 +5,8 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 const authenticate = require('../config/authenticate'); 
 
+
+//LOG IN AND REGISTRATION
 router.get('/register', authenticate.notAuthenticated, (req, res) => {
     /*I added the name, email, etc here because if 
     I didn't, I would have to put an if statement inside the IIFE
@@ -12,7 +14,7 @@ router.get('/register', authenticate.notAuthenticated, (req, res) => {
     an error*/
     res.render('register', {name: '', email: '', password: '', message: req.flash('reg')})});
 
-
+ 
 router.get('/login', authenticate.notAuthenticated, (req, res) => {
     res.render('log_in', {email: '', password: '', message: req.flash('log')})});
 
@@ -50,16 +52,20 @@ router.post('/register', (req, res) => {
             })         
             .catch(err => err)
         }
-    })
+})
 
 router.post('/login',
-    passport.authenticate('local', 
+    passport.authenticate('local'/*, 
     {successRedirect: '/flash-pass', 
-    failureRedirect: '/flash-fail' })    
+    failureRedirect: '/flash-fail' }*/),
+    (req, res) => {
+        res.send(req.user)
+    }    
 );
 
 router.get('/logout', (req, res) => {
     req.logout();
-    res.render('home');
+    res.send(req.user)
 })
+
 module.exports = router;
