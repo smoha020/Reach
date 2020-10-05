@@ -4,9 +4,7 @@ const Posts = require('../Models/Posts')
 const Notifications = require('../Models/Notifications')
 const allUsers = require('../Models/allUsers')
 const Comments = require('../Models/Comments')
-const likes = require('../Models/likes');
 const Likes = require('../Models/likes');
-const { findOne } = require('../Models/Posts');
 
 
 
@@ -292,7 +290,7 @@ router.get('/users', (req, res) => {
 })
 
 //CREATE
-router.post('/users', (req, res) => {
+router.post('/users/add', (req, res) => {
 
     //create a new user
     const newUser = new allUsers({
@@ -300,7 +298,8 @@ router.post('/users', (req, res) => {
         username: req.body.username,
         bio: req.body.bio,
         location: req.body.location,
-        website: req.body.website
+        website: req.body.website,
+        joinDate: new Date()
     })
     
     newUser.save()

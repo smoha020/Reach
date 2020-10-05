@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Users = require('../Models/Users');
+const allUsers = require('../Models/allUsers')
+const Likes = require('../Models/Likes')
+const Notifications = require('../Models/Notifications')
+const Comments = require('../Models/Comments')
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const authenticate = require('../config/authenticate'); 
@@ -59,10 +63,29 @@ router.post('/login',
     {successRedirect: '/flash-pass', 
     failureRedirect: '/flash-fail' }*/),
     (req, res) => {
-        res.send(req.user)
+        let currentUser = {}
+        let query = { username: req.user.name }
+        allUsers.findOne(query)
+        .then(data => {
+            
+            currentUser.data._id = data._id;
+            currentUser.data.pic = data.pic;
+            currentUser.data.bio = data.bio;
+            currentUser.data.location = data.location;
+            currentUser.data.website = data.website;
+            currentUser.data.joiDate = data.joinDate;
+
+
+            /*return Likes.find({ user: req.user.name })
+        })
+        .then(data => {
+
+            console.log("likes data: " + data)*/
+        })
+        .catch(err => console.log(err))
     }    
 );
-
+ 
 router.get('/logout', (req, res) => {
     req.logout();
     res.send(req.user)

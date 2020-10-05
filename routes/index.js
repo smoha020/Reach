@@ -7,6 +7,7 @@ const fetch = require('node-fetch');
 const authenticate = require('../config/authenticate'); 
 
 router.get('/test', (req, res) => {
+    console.log("test hit: " + req.user)
     res.send(/*req.isAuthenticated(),*/ req.user)
 });
 
