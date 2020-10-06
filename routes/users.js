@@ -8,6 +8,7 @@ const Comments = require('../Models/Comments')
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const authenticate = require('../config/authenticate'); 
+ 
 
 
 //LOG IN AND REGISTRATION
@@ -68,19 +69,21 @@ router.post('/login',
         allUsers.findOne(query)
         .then(data => {
             
-            currentUser.data._id = data._id;
-            currentUser.data.pic = data.pic;
-            currentUser.data.bio = data.bio;
-            currentUser.data.location = data.location;
-            currentUser.data.website = data.website;
-            currentUser.data.joiDate = data.joinDate;
+            currentUser.data = [data]
 
 
-            /*return Likes.find({ user: req.user.name })
+            return Likes.find({ user: req.user.name })
         })
         .then(data => {
 
-            console.log("likes data: " + data)*/
+            currentUser.likes = [...data]
+            return Notifications.find({ reciever: req.user.name })
+        })
+        .then(data => {
+            
+            currentUser.notifications = [...data]
+            console.log(currentUser)
+            res.json(currentUser)
         })
         .catch(err => console.log(err))
     }    

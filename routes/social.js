@@ -4,9 +4,9 @@ const Posts = require('../Models/Posts')
 const Notifications = require('../Models/Notifications')
 const allUsers = require('../Models/allUsers')
 const Comments = require('../Models/Comments')
-const Likes = require('../Models/likes');
+const Likes = require('../Models/Likes');
 
-
+ 
 
 //CREDENTIALS POSTS AND NOTIFICATIONS
 
@@ -280,13 +280,29 @@ router.delete('/unlike/:postId', (req, res) => {
 })
 
 
-//------------CURRENTUSER----------------//
+//------------USER----------------//
 
 //READ
-router.get('/users', (req, res) => {
-    allUsers.find()
-    .then(data => res.json(data))
-    .catch(err => console.log(err))
+router.get('/otheruser/:user', (req, res) => {
+    let otherUser = {}
+    let query = { username: req.params.user }
+
+    console.log(req.params.user)
+    allUsers.findOne(query)
+    .then(data => {
+        
+        otherUser.data = [data]
+
+        return Posts.find({ user: req.params.user })
+    })
+    .then(data => {
+ 
+        console.log('posts data: ' + data)
+        otherUser.Posts = [...data]
+        console.log('otheruser: ' + otherUser)
+        res.json(otherUser)
+    })
+    .catch(err => console.log(err))   
 })
 
 //CREATE
