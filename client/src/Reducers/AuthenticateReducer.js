@@ -1,27 +1,29 @@
 const initState = {
     loading: false,
-    isAuthenticated: '',
+    currentUser: '',
+    notifications: '',
+    likes: '',
     error: ''
 }
 
 const AuthenticateReducer = (state = initState, action) => {
     switch(action.type) {
-        case 'GET_AUTHENTICATED_REQUEST': 
+        case 'GET_CURRENTUSER_REQUEST': 
             return {
                 ...state,
                 loading: true
             }
-        case 'GET_AUTHENTICATED_SUCCESS': 
+        case 'GET_CURRENTUSER_SUCCESS': 
             return {
                 loading: false,
                 //When we submit a post, dashboard is refreshed
-                isAuthenticated: action.payload,
+                currentUser: action.payload,
                 error: ''
             }
-        case 'GET_AUTHENTICATED_FAILURE': 
+        case 'GET_CURRENTUSER_FAILURE': 
             return {
                 loading: false,
-                isAuthenticated: '',
+                currentUser: '',
                 error: action.payload
             }
         default: return state

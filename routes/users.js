@@ -69,7 +69,7 @@ router.post('/login',
         allUsers.findOne(query)
         .then(data => {
             
-            currentUser.data = [data]
+            currentUser.credentials = data
 
 
             return Likes.find({ user: req.user.name })
@@ -82,7 +82,7 @@ router.post('/login',
         .then(data => {
             
             currentUser.notifications = [...data]
-            console.log(currentUser)
+            
             res.json(currentUser)
         })
         .catch(err => console.log(err))

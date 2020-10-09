@@ -1,5 +1,26 @@
 import axios from 'axios'
 
+const getcurrentUserRequest = () => {
+    return {
+        type: 'GET_CURRENTUSER_REQUEST'
+    }
+}
+
+const getcurrentUserSuccess = currentUser => {
+    return {
+        type: 'GET_CURRENTUSER_SUCCESS',
+        payload: currentUser
+    }
+}
+
+const getcurrentUserFailure = error => {
+    return {
+        type: 'GET_CURRENTUSER_FAILURE',
+        payload: error
+    }
+}
+
+//----
 const getAuthenticatedRequest = () => {
     return {
         type: 'GET_AUTHENTICATED_REQUEST'
@@ -21,50 +42,54 @@ const getAuthenticatedFailure = error => {
 }
 
 
+//----methods?
 export const getAuthenticated = () => {
     return (dispatch) => {
-        dispatch(getAuthenticatedRequest())
+        dispatch(getcurrentUserRequest())
         axios.get('/test')
         .then(res => {
             console.log(res)
-            const isAuthenticated = res;
-            dispatch(getAuthenticatedSuccess(isAuthenticated))
+            const currentUser = res;
+            dispatch(getcurrentUserSuccess(currentUser))
         })
         .catch(err => {
             const error = err;
-            dispatch(getAuthenticatedFailure(error))
+            dispatch(getcurrentUserFailure(error))
         })
     }
 }
-
+ 
 export const signIn = (user) => {
     return (dispatch) => {
-        dispatch(getAuthenticatedRequest())
+        dispatch(getcurrentUserRequest())
         axios.post('/users/login', user)
         .then(res => {
             console.log(res)
-            const isAuthenticated = res;
-            dispatch(getAuthenticatedSuccess(isAuthenticated))
+            const currentUser = res;
+            dispatch(getcurrentUserSuccess(currentUser))
         })
-        .catch(() => {
-            
-            axios.get('/test')
+        .catch((err) => {
+            console.log('error')
+            const error = err;
+            dispatch(getcurrentUserFailure(error))
+            /*axios.get('/test')
             .then(res => {
                 console.log(res)
                 const isAuthenticated = res;
-                dispatch(getAuthenticatedSuccess(isAuthenticated))
+                dispatch(getcurrentUserSuccess(isAuthenticated))
             })
             .catch(err => {
                 const error = err;
-                dispatch(getAuthenticatedFailure(error))
-            })
+                dispatch(getcurrentUserFailure(error))
+            })*/
             
         })
     }
 }
 
 export const signOut = () => {
-    return (dispatch) => {
+    console.log('signOut')
+    /*return (dispatch) => {
         dispatch(getAuthenticatedRequest())
         axios.get('users/logout')
         .then(res => {
@@ -76,5 +101,5 @@ export const signOut = () => {
             const error = err;
             dispatch(getAuthenticatedFailure(error))
         })
-    }
+    }*/
 }

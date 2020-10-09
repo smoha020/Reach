@@ -279,6 +279,22 @@ router.delete('/unlike/:postId', (req, res) => {
     .catch(err => res.json(err))
 })
 
+//NOTIFICATION READ
+router.put('/notificationRead/:_id', (req, res) => {
+    let query = { _id: req.params._id }
+    Notifications.updateOne(query, {$set: {
+        read: true
+    }})
+    .then(data => {
+        if(data) {
+            console.log("notification is: " + data)  
+            res.send('Notification has been read')
+        }
+        else {
+            res.send('Notification does not exist')
+        }
+    }).catch(err => console.log(err))
+})
 
 //------------USER----------------//
 

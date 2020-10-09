@@ -5,7 +5,6 @@ import Home from './Components/Home'
 import LogIn from './Components/LogIn'
 import Register from './Components/Register'
 import Dashboard from './Components/Dashboard' 
-import Post from './Components/Post'
 import axios from 'axios'
 import { connect } from 'react-redux';
 import { getAuthenticated } from './Actions/Authenticated'
@@ -38,7 +37,6 @@ class App extends Component {
         <Route path='/logIn' component={LogIn}/>
         <Route path='/Register' component={Register}/> 
         <Route path='/Dashboard' component={Dashboard}/>
-        <Route path='/Post/:_id' component={Post}/> 
       </Router>
     );
   }

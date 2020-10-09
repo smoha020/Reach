@@ -47,7 +47,7 @@ class Post extends Component {
         
     }
 
-    deleteComment = (comment) => {
+    /*deleteComment = (comment) => {
         console.log(comment)
         console.log(this.props.match.params._id)
         console.log(comment._id)
@@ -55,7 +55,7 @@ class Post extends Component {
         axios.put(`/social/posts/deletecomment/${this.props.post._id}`, comment)
         .then(res =>  this.props.history.push('/Dashboard'))
         .catch(err => err)
-    }
+    }*/
 
     
     render() {
@@ -64,7 +64,7 @@ class Post extends Component {
 
         let deletedisplay 
 
-        let commentdisplay = this.props.post.comments.map(comment => {
+        /*let commentdisplay = this.props.post.comments.map(comment => {
 
             if(comment.sender == this.props.isAuthenticated.data.email) {
                 deletedisplay = <button onClick={this.deleteComment.bind(this, comment)} style={{color: 'white'}, {background: 'red'}}>
@@ -74,17 +74,16 @@ class Post extends Component {
 
 
             return <p key={comment._id} >{deletedisplay}{comment.comment}</p>
-        })
+        })*/
 
         return (
             <React.Fragment>
-                Welcome to Post page
-                <div className='post'>
+                <div /*className='post'*/>
                         <p>{this.props.post.user}</p>
-                        <p>{this.props.post.post}</p>
-                        <div>{commentdisplay}</div>
+                        <p>{this.props.post._id}</p>
+                        <p>{/*this.props.post.body*/}</p>
                 </div>
-                <div>
+                {/*<div>
                     <form onSubmit={this.submitComment}>
                         <label>
                             Make A Comment 
@@ -93,9 +92,8 @@ class Post extends Component {
                             value={this.state.comment}
                             onChange={this.onChange}/>   
                         </label>
-                        <input type='submit' value='submit'/>
                     </form>
-                </div>
+                </div>*/}
                 {/*<CommentInput submitComment={this.submitComment} 
                 onChange={this.onChange}
                 post={post}
@@ -105,7 +103,8 @@ class Post extends Component {
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
+export default Post
+/*const mapStateToProps = (state, ownProps) => {
     let id = ownProps.match.params._id;
 
     return {
@@ -116,4 +115,4 @@ const mapStateToProps = (state, ownProps) => {
 
 
 
-export default connect(mapStateToProps)(Post)
+export default connect(mapStateToProps)(Post)*/

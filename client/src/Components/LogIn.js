@@ -25,7 +25,9 @@ class LogIn extends Component {
         }
 
         console.log('b4 signIn')
-        this.props.signIn(user)
+        if(user.email && user.password) {
+            this.props.signIn(user)
+        }
          
     }
     render () {
@@ -33,12 +35,12 @@ class LogIn extends Component {
 
         let display
 
-        if(this.props.isAuthenticated != '') {
-            if(this.props.isAuthenticated.data != '') {
+        if(this.props.currentUser != '') {
+            if(this.props.currentUser.data != '') {
                 this.props.history.push('/Dashboard')
             }
-
-            if(this.props.isAuthenticated.data == '') {
+ 
+            if(this.props.currentUser.data == '') {
                 display = <React.Fragment>
                     <ul>
                         <li><a href="/">Home</a></li>
@@ -80,7 +82,7 @@ class LogIn extends Component {
 
 const mapStateToProps = state => {
     return {
-        isAuthenticated: state.Authenticate.isAuthenticated
+        currentUser: state.Authenticate.currentUser
     }
 }
   

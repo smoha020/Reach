@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const fetch = require('node-fetch');
+const Users = require('../Models/Users');
+const allUsers = require('../Models/allUsers')
+const Likes = require('../Models/Likes')
+const Notifications = require('../Models/Notifications')
 
 
 //can you export from main app.js file? 
@@ -8,7 +12,36 @@ const authenticate = require('../config/authenticate');
 
 router.get('/test', (req, res) => {
     console.log("test hit: " + req.user)
-    res.send(/*req.isAuthenticated(),*/ req.user)
+    if(req.user && req.user.name) {
+        /*if we are logged in we get the user's credentials, 
+        likes and notifications*/
+        let currentUser = {}
+        let query = { username: req.user.name }
+        allUsers.findOne(query)
+        .then(data => {
+            
+            currentUser.credentials = data
+
+
+            return Likes.find({ user: req.user.name })
+        })
+        .then(data => {
+
+            currentUser.likes = [...data]
+            return Notifications.find({ reciever: req.user.name })
+        })
+        .then(data => {
+            
+            currentUser.notifications = [...data]
+            console.log(currentUser)
+            res.json(currentUser)
+        })
+        .catch(err => console.log(err))
+        //res.send(/*req.isAuthenticated(),*/ req.user.name)
+    }
+    else {
+        res.send(/*req.isAuthenticated(),*/ req.user)
+    }
 });
 
 router.get('/dashboard', authenticate.authenticated,
