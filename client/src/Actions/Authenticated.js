@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-const getcurrentUserRequest = () => {
+const loadingRequest = () => {
     return {
-        type: 'GET_CURRENTUSER_REQUEST'
+        type: 'LOADING_REQUEST'
     }
 }
 
@@ -45,12 +45,14 @@ const getAuthenticatedFailure = error => {
 //----methods?
 export const getAuthenticated = () => {
     return (dispatch) => {
-        dispatch(getcurrentUserRequest())
+        dispatch(loadingRequest())
+        console.log('loading being set for getAuth')
         axios.get('/test')
         .then(res => {
             console.log(res)
             const currentUser = res;
             dispatch(getcurrentUserSuccess(currentUser))
+            console.log('loading no longer set for getAuth')
         })
         .catch(err => {
             const error = err;
@@ -61,7 +63,8 @@ export const getAuthenticated = () => {
  
 export const signIn = (user) => {
     return (dispatch) => {
-        dispatch(getcurrentUserRequest())
+        dispatch(loadingRequest())
+        console.log('loading being set for signIn')
         axios.post('/users/login', user)
         .then(res => {
             console.log(res)
@@ -90,7 +93,7 @@ export const signIn = (user) => {
 export const signOut = () => {
     console.log('signOut')
     /*return (dispatch) => {
-        dispatch(getAuthenticatedRequest())
+        dispatch(loadingRequest())
         axios.get('users/logout')
         .then(res => {
             console.log(res)

@@ -1,5 +1,5 @@
 const initState = {
-    loading: false,
+    loading: true,
     currentUser: '',
     notifications: '',
     likes: '',
@@ -8,7 +8,7 @@ const initState = {
 
 const AuthenticateReducer = (state = initState, action) => {
     switch(action.type) {
-        case 'GET_CURRENTUSER_REQUEST': 
+        case 'LOADING_REQUEST': 
             return {
                 ...state,
                 loading: true

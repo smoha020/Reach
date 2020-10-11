@@ -107,25 +107,24 @@ class Dashboard extends Component {
 
     render() {
 
-        const { currentUser, posts } = this.props
+        const { currentUser, posts, loading } = this.props
         console.log(this.props)
 
         let display;
         let displayposts
+        let displayuser
         let deletedisplay
 
         /*WHEN YOU COME TO THIS PAGE VIA URL OR WHEN YOU REFRESH, 
         THE INITIAL RENDERING TAKES PLACE AND isAuthenticated is '', 
         AFTER THIS IT RE-RENDERS AND isAuthenticated GETS THE data PROPERTY*/
-        if(currentUser != '') {
-            if(currentUser.data == '') {
-                console.log('we are loading')
-                this.props.history.push('/LogIn')
-            }
-            
-            if(currentUser.data != '') {
-        
-                console.log('we r logged in')
+      
+        if(loading) {
+            return <div>Loading..</div>
+        } else {
+            if(currentUser && currentUser.data != '') {
+         
+                console.log('we r logged in so we r: ' + loading)
                 if(posts != []) {
                     displayposts  = posts.map((post, index) => {
                     
@@ -148,7 +147,7 @@ class Dashboard extends Component {
                                     <p>Comment count</p>
                                     <p>{post.commentCount} comments</p>
                                 </div>
-                               {/*<Link to={`Post/${post._id}`} >
+                            {/*<Link to={`Post/${post._id}`} >
                                     <button>
                                         OPEN
                                     </button>
@@ -221,21 +220,27 @@ class Dashboard extends Component {
                 </ React.Fragment>
                 
         
+            } else {
+                
+                console.log('therefore loading is: ' + loading)
+                this.props.history.push('/LogIn')
             }
         }
-        /*Because isAthenticated.data doesn't exist when isAuthenticated
-        is null, we will have an error*/
-        
+    
+    /*Because isAthenticated.data doesn't exist when isAuthenticated
+    is null, we will have an error*/
+    
         return (
             <div>{display}</div>
         )
     }
-}
+} 
 
 const mapStateToProps = state => {
     return {
         currentUser: state.Authenticate.currentUser,
-        posts: state.Posts.posts
+        posts: state.Posts.posts,
+        loading: state.Authenticate.loading
     }
 }
 

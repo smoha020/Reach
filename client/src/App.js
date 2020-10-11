@@ -45,7 +45,7 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: state.Authenticate.isAuthenticated
+    currentUser: state.Authenticate.currentUser
   }
 }
 

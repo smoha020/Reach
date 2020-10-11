@@ -32,47 +32,46 @@ class LogIn extends Component {
     }
     render () {
         console.log(this.props) 
+        const { currentUser } = this.props
 
         let display
 
-        if(this.props.currentUser != '') {
-            if(this.props.currentUser.data != '') {
-                this.props.history.push('/Dashboard')
-            }
- 
-            if(this.props.currentUser.data == '') {
-                display = <React.Fragment>
-                    <ul>
-                        <li><a href="/">Home</a></li>
-                    </ul>
-                    <br></br>
-                    <div className="container">
-                    {/*<%- include ('partials/messages') %>*/}
-                        <form onSubmit={this.onSubmit}/*action="/users/login" method="POST"*/>
-                            <div className="grid-container">
-                                <label className="iteml1" htmlFor="email">Email</label>
-                                <input className="iteml2" 
-                                type="email" 
-                                name="email" 
-                                value={this.state.email}
-                                /*value="<%= (function(){ return email})() %>"*/
-                                onChange={this.onChange}/>
-                                <label className="iteml3" htmlFor="password1">Password</label>
-                                <input className="iteml4" 
-                                type="password" 
-                                name="password" 
-                                value={this.state.password}
-                                /*value="<%= (function(){ return password})() %>"*/
-                                onChange={this.onChange}/>
-                                <input className="iteml5" 
-                                type="submit" 
-                                value="Sign In"/>
-                            </div>
-                        </form>
-                    </div>
-                </ React.Fragment>
-            }
+      
+        if(currentUser && currentUser.data) {
+            this.props.history.push('/Dashboard')
+        } else {
+            display = <React.Fragment>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                </ul>
+                <br></br>
+                <div className="container">
+                {/*<%- include ('partials/messages') %>*/}
+                    <form onSubmit={this.onSubmit}/*action="/users/login" method="POST"*/>
+                        <div className="grid-container">
+                            <label className="iteml1" htmlFor="email">Email</label>
+                            <input className="iteml2" 
+                            type="email" 
+                            name="email" 
+                            value={this.state.email}
+                            /*value="<%= (function(){ return email})() %>"*/
+                            onChange={this.onChange}/>
+                            <label className="iteml3" htmlFor="password1">Password</label>
+                            <input className="iteml4" 
+                            type="password" 
+                            name="password" 
+                            value={this.state.password}
+                            /*value="<%= (function(){ return password})() %>"*/
+                            onChange={this.onChange}/>
+                            <input className="iteml5" 
+                            type="submit" 
+                            value="Sign In"/>
+                        </div>
+                    </form>
+                </div>
+            </ React.Fragment>
         }
+        
 
         return (
             <React.Fragment>{display}</React.Fragment>

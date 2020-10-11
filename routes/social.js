@@ -227,13 +227,11 @@ router.post('/like/:postId', (req, res) => {
         })
         .then(() => {
             //we should send the post with updated likeCount
-            console.log('Notification made')
             res.send('Notification Sent')
         })
         .catch(err => res.json(err))
 
         } else {
-            console.log('You already liked this post')
             res.send('You already liked this post')
         }
     })
@@ -263,7 +261,6 @@ router.delete('/unlike/:postId', (req, res) => {
     })
     .then(() => { 
     
-        console.log('decremented')
         //get rid of the notification
         let filter = {
             notType: 'like',
@@ -273,7 +270,6 @@ router.delete('/unlike/:postId', (req, res) => {
         return Notifications.deleteOne(filter)
     })
     .then(() => {
-        console.log('Notification deleted')
         res.send('Notification deleted')
     })
     .catch(err => res.json(err))
