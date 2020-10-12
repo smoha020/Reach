@@ -61,9 +61,11 @@ class Post extends Component {
     render() {
 
         console.log(this.props)
+        const { post } = this.props
 
         let deletedisplay 
 
+        
         /*let commentdisplay = this.props.post.comments.map(comment => {
 
             if(comment.sender == this.props.isAuthenticated.data.email) {
@@ -76,12 +78,12 @@ class Post extends Component {
             return <p key={comment._id} >{deletedisplay}{comment.comment}</p>
         })*/
 
-        return (
+        return (post === undefined)? (
+            <div>...loading</div>
+        ): (
             <React.Fragment>
-                <div /*className='post'*/>
-                        <p>{this.props.post.user}</p>
-                        <p>{this.props.post._id}</p>
-                        <p>{/*this.props.post.body*/}</p>
+                <div className='post'>
+                       hi
                 </div>
                 {/*<div>
                     <form onSubmit={this.submitComment}>
@@ -103,16 +105,14 @@ class Post extends Component {
     }
 }
 
-export default Post
-/*const mapStateToProps = (state, ownProps) => {
-    let id = ownProps.match.params._id;
+const mapStateToProps = ( state ) => {
 
     return {
-        post: state.Posts.posts.find(post => post._id === id),
-        isAuthenticated: state.Authenticate.isAuthenticated
+        post: state.Posts.post,
+        currentUser: state.Authenticate.currentUser
     }
 }
 
 
 
-export default connect(mapStateToProps)(Post)*/
+export default connect(mapStateToProps)(Post)

@@ -1,7 +1,7 @@
 import React, { Component }from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
-import { getPosts, createPost } from '../Actions/Posts'
+import { getPosts, createPost, getPost } from '../Actions/Posts'
 import { signOut } from '../Actions/Authenticated'
 import { connect } from 'react-redux';
 import Post from './Post'
@@ -33,7 +33,9 @@ class Dashboard extends Component {
         this.setState({show: false});
     }
     handleShow2 = (post)=> {
+        
         this.setState({show2: true, postClicked: post});
+        this.props.getPost(post)
     }
 
     handleClose2 = () => {
@@ -61,7 +63,6 @@ class Dashboard extends Component {
             user: currentUser.email,
         }
 
-        console.log(newpost)
         this.props.createPost(newpost)
 
         /*axios.post('/social/posts', newpost)
@@ -124,13 +125,12 @@ class Dashboard extends Component {
         } else {
             if(currentUser && currentUser.data != '') {
          
-                console.log('we r logged in so we r: ' + loading)
                 if(posts != []) {
                     displayposts  = posts.map((post, index) => {
                     
-                        if(post.user == currentUser.data.email) {
+                        if(post.user == currentUser.data.credentials.username) {
                             deletedisplay = <button onClick={this.deletePost.bind(this, post)} style={{color: 'white'}, {background: 'red'}}>
-                                        X {currentUser.data.email} , {post.user}
+                                        X {currentUser.data.credentials.username} 
                                     </button>
                         } else deletedisplay = '' 
                         /*WITHTOUT THIS, deletedisplay WILL CONTINUE TO HAVE THE 
@@ -153,7 +153,7 @@ class Dashboard extends Component {
                                     </button>
                                 </Link> */}
                                 <Button variant="primary" onClick={this.handleShow2.bind(this, post)}>
-                                    click me
+                                    View comments
                                 </Button>
             
                             </React.Fragment>
@@ -194,7 +194,7 @@ class Dashboard extends Component {
                             <Modal.Title>Post</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <Post post={this.state.postClicked}/>
+                            <Post/>
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={this.handleClose2}>
@@ -222,7 +222,6 @@ class Dashboard extends Component {
         
             } else {
                 
-                console.log('therefore loading is: ' + loading)
                 this.props.history.push('/LogIn')
             }
         }
@@ -247,7 +246,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getPosts: () => dispatch(getPosts()),
-        createPost: (newpost) => dispatch(createPost(newpost)),
+        getPost: (postId) => dispatch(getPost(postId)),
+        createPost: (post) => dispatch(createPost(post)),
         signOut: () => dispatch(signOut())
     }
 }

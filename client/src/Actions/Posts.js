@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-const getPostsRequest = () => {
+const loadingRequest = () => {
     return {
-        type: 'GET_POSTS_REQUEST'
+        type: 'LOADING_REQUEST'
     }
 }
 
@@ -20,10 +20,24 @@ const getPostsFailure = error => {
     }
 }
 
+
+
+const getPostSuccess = post => {
+    return {
+        type: 'GET_POST_SUCCESS',
+        payload: post
+    }
+}
+
+const getPostFailure = error => {
+    return {
+        type: 'GET_POST_FAILURE',
+        payload: error
+    }
+}
 //GET POSTS
 export const getPosts = () => {
     return (dispatch) => {
-        dispatch(getPostsRequest())
         axios.get('/social/posts')
         .then(res => {
 
@@ -37,6 +51,23 @@ export const getPosts = () => {
         .catch(err => {
             const error = err;
             dispatch(getPostsFailure(error))
+        })
+    }
+}
+ 
+export const getPost = (post) => {
+    return (dispatch) => {
+        axios.get(`/social/posts/single/${post._id}`)
+        .then(res => {
+
+            console.log(res)
+            const post = res;
+            //console.log(posts)
+            dispatch(getPostSuccess(post))
+        })
+        .catch(err => {
+            const error = err;
+            dispatch(getPostFailure(error))
         })
     }
 }

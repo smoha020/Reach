@@ -1,26 +1,31 @@
 const initState = {
-    loading: false,
     posts: [],
+    post: '',
     error: ''
 }
 
 const PostReducer = (state = initState, action) => {
     switch(action.type) {
-        case 'GET_POSTS_REQUEST': 
-            return {
-                ...state,
-                loading: true
-            }
         case 'GET_POSTS_SUCCESS': 
             return {
-                loading: false,
                 posts: [...action.payload],
                 error: ''
             }
         case 'GET_POSTS_FAILURE': 
             return {
-                loading: false,
                 posts: [],
+                error: action.payload
+            }
+        case 'GET_POST_SUCCESS': 
+            return {
+                ...state,
+                post: action.payload,
+                error: ''
+            }
+        case 'GET_POST_FAILURE': 
+            return {
+                ...state,
+                post: '',
                 error: action.payload
             }
         default: return state
