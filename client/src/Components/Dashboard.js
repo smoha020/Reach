@@ -108,6 +108,7 @@ class Dashboard extends Component {
         let displayposts
         let displayuser
         let deletedisplay
+        let thumbsLogo = []
 
         /*WHEN YOU COME TO THIS PAGE VIA URL OR WHEN YOU REFRESH, 
         THE INITIAL RENDERING TAKES PLACE AND isAuthenticated is '', 
@@ -125,25 +126,28 @@ class Dashboard extends Component {
                             deletedisplay = <button onClick={this.deletePost.bind(this, post)} style={{color: 'white'}, {background: 'red'}}>
                                         X {currentUser.data.credentials.username} 
                                     </button>
-                        } else deletedisplay = '' 
+                        } else { deletedisplay = '' }
                         /*WITHTOUT THIS, deletedisplay WILL CONTINUE TO HAVE THE 
                         VALUE ABOVE FOR EVERY ITERATION AFTER THE FIRST TRUE IF STATEMENT.*/
         
-                        let thumbsLogo = currentUser.data.likes.map(like => {
-                            if(like.postId == post._id) {
-                                return like 
-                            }
+                        thumbsLogo = []
+                        thumbsLogo = currentUser.data.likes.map(like => {
+                            if(like.postId === post._id) {
+                                return post._id
+                            } 
                         })
-                        
+
                         console.log(thumbsLogo)
+                        
                         return (
-                            <React.Fragment key={post._id}>
+                            <React.Fragment key={index}>
                                 <div className='post'>
                                     {deletedisplay}
                                     <p>{post.user}</p>
                                     <p>{post.body}</p>
                                     <p>{post.createdAt}</p>
-                                    {(thumbsLogo.length == 0 )? (<button>thumbs up</button>) : (<button>thumbs down</button>)} 
+                                    {console.log("in return: " + thumbsLogo.includes(post._id) )}
+                                    {( thumbsLogo.includes(post._id) )? (<button>thumbs down</button>) : (<button>thumbs up</button>)} 
                                     <p>{post.likeCount} likes</p>
                                     <p>Comment count</p>
                                     <p>{post.commentCount} comments</p>

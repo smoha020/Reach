@@ -83,7 +83,11 @@ router.delete('/posts/:_id', (req, res) => {
     console.log('are we hitting it?')
     const filter = { _id: req.params._id };
     Posts.deleteOne(filter)
-        .then(() => res.json('deleted'))
+        .then(() => {
+            res.json('post deleted')
+            return Likes.deleteMany({ postId: req.params._id })
+        })
+        .then(res => console.log('likes deleted'))
         .catch((err) => console.log(err));
 })
 
