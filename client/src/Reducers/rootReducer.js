@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux'
-import PostReducer from './PostReducer'
+import DataReducer from './DataReducer'
 import NotificationReducer from './NotificationReducer'
 import UsersReducer from './UsersReducer'
 import AuthenticateReducer from './AuthenticateReducer'
 
 
 const rootReducer = combineReducers({
-    Posts: PostReducer,
+    Data: DataReducer,
     Notifications: NotificationReducer,
     Users: UsersReducer,
     Authenticate: AuthenticateReducer

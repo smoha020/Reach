@@ -11,10 +11,9 @@ const Likes = require('../Models/Likes');
 //CREDENTIALS POSTS AND NOTIFICATIONS
 
 //----------POSTS-----------//
-//READ POST
+//READ POSTS
 router.get('/posts', (req, res) => {
-
-    Posts.find()
+    Posts.find().sort({ createdAt: -1 })
     .then(data => res.json(data))
     .catch(err => console.log(err))
 })
@@ -62,7 +61,7 @@ router.get('/posts/single/:postId', (req, res) => {
 })
 
 //CREATE A POST
-router.post('/posts', (req, res) => {
+router.post('/posts/create', (req, res) => {
     
     //create a new post
     const newPost = new Posts({
@@ -91,17 +90,17 @@ router.delete('/posts/:_id', (req, res) => {
 //----------COMMENTS-----------//
 
 //ADD A COMMENT
-router.post('/posts/createcomment/:_id', (req, res) => {
+router.post('/posts/createcomment/:postId', (req, res) => {
 
     let Note = {};
     
-    const query = { _id: req.params._id }
+    const query = { _id: req.params.postId }
     
     //should we check if the post exists before adding the comment?
     const newComment = new Comments({
         body: req.body.body,
         user: req.body.user,
-        postId: req.params._id,
+        postId: req.body.postId,
         createdAt: new Date()
     })
 

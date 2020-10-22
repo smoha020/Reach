@@ -1,7 +1,7 @@
 import React, { Component }from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
-import { getPosts, createPost, getPost } from '../Actions/Posts'
+import { getPosts, createPost, deletePost } from '../Actions/Posts'
 import { signOut } from '../Actions/Authenticated'
 import { connect } from 'react-redux';
 import Post from './Post'
@@ -21,7 +21,7 @@ class Dashboard extends Component {
             comment: '',
             show: false,
             show2: false,
-            postClicked: ''
+            postId: ''
         }
     }
 
@@ -34,8 +34,7 @@ class Dashboard extends Component {
     }
     handleShow2 = (post)=> {
         
-        this.setState({show2: true, postClicked: post});
-        this.props.getPost(post)
+        this.setState({show2: true, postId: post._id})
     }
 
     handleClose2 = () => {
@@ -54,16 +53,16 @@ class Dashboard extends Component {
     //MAKE A POST 
     onSubmit = (e) => {
         //this.setState({show: false});
-        //e.preventDefault()
+        e.preventDefault()
         
-        let currentUser= currentUser.data
 
         let newpost = {
-            post: this.state.post,
-            user: currentUser.email,
+            body: this.state.post,
+            user: this.props.currentUser.data.credentials.username,
         }
 
         this.props.createPost(newpost)
+        this.setState({ show: false })
 
         /*axios.post('/social/posts', newpost)
         .then(data => console.log(data))
@@ -91,15 +90,9 @@ class Dashboard extends Component {
 
     deletePost = (post) => {
         console.log(post)
-        axios.delete(`/social/posts/${post._id}`)
-        .then(() => {
-            console.log('deleted post')
-            //IF WE PUT 'Dashboard' INSIDE PUSH, NOTHING WILL HAPPEN
-            this.props.history.push('/Login')
-        })
-        .catch(err => console.log(err))
+        this.props.deletePost(post)
     }
-
+    
     //LOG OUT
     logOut = () => { 
         this.props.signOut()
@@ -136,13 +129,21 @@ class Dashboard extends Component {
                         /*WITHTOUT THIS, deletedisplay WILL CONTINUE TO HAVE THE 
                         VALUE ABOVE FOR EVERY ITERATION AFTER THE FIRST TRUE IF STATEMENT.*/
         
+                        let thumbsLogo = currentUser.data.likes.map(like => {
+                            if(like.postId == post._id) {
+                                return like 
+                            }
+                        })
+                        
+                        console.log(thumbsLogo)
                         return (
-                            <React.Fragment>
-                                <div key={index} className='post'>
+                            <React.Fragment key={post._id}>
+                                <div className='post'>
                                     {deletedisplay}
                                     <p>{post.user}</p>
                                     <p>{post.body}</p>
-                                    <button>Thumbs up count</button>
+                                    <p>{post.createdAt}</p>
+                                    {(thumbsLogo.length == 0 )? (<button>thumbs up</button>) : (<button>thumbs down</button>)} 
                                     <p>{post.likeCount} likes</p>
                                     <p>Comment count</p>
                                     <p>{post.commentCount} comments</p>
@@ -155,6 +156,7 @@ class Dashboard extends Component {
                                 <Button variant="primary" onClick={this.handleShow2.bind(this, post)}>
                                     View comments
                                 </Button>
+                                
             
                             </React.Fragment>
                         )   
@@ -188,20 +190,21 @@ class Dashboard extends Component {
                             </Modal.Footer>
                         </form>
                     </Modal>
-
                     <Modal show={this.state.show2} onHide={this.handleClose2}>
                         <Modal.Header closeButton>
                             <Modal.Title>Post</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <Post/>
+                            <Post postId={this.state.postId}/>
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={this.handleClose2}>
                                 Close
-                            </Button>
+                           </Button>
                         </Modal.Footer>
                     </Modal>
+
+                    
 
                     <div className='display-flex'>
                         <div className='post-container'>
@@ -238,7 +241,7 @@ class Dashboard extends Component {
 const mapStateToProps = state => {
     return {
         currentUser: state.Authenticate.currentUser,
-        posts: state.Posts.posts,
+        posts: state.Data.posts,
         loading: state.Authenticate.loading
     }
 }
@@ -246,9 +249,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getPosts: () => dispatch(getPosts()),
-        getPost: (postId) => dispatch(getPost(postId)),
         createPost: (post) => dispatch(createPost(post)),
-        signOut: () => dispatch(signOut())
+        signOut: () => dispatch(signOut()),
+        deletePost: (post) => dispatch(deletePost(post))
     }
 }
 
