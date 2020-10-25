@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'; 
 import axios from 'axios'
-import { getPost, addComment } from '../Actions/Posts'
+import { getPost, addComment, deleteComment } from '../Actions/Posts'
 
 
 class Post extends Component {
@@ -42,15 +42,12 @@ class Post extends Component {
     }
  
  
-    /*deleteComment = (comment) => {
-        console.log(comment)
-        console.log(this.props.match.params._id)
-        console.log(comment._id)
+    deleteComment = (comment) => {
 
-        axios.put(`/social/posts/deletecomment/${this.props.post._id}`, comment)
-        .then(res =>  this.props.history.push('/Dashboard'))
-        .catch(err => err)
-    }*/
+        console.log(comment)
+        
+        this.props.deleteComment(comment)
+    }
 
     
     render() {
@@ -58,7 +55,7 @@ class Post extends Component {
     
         console.log(this.props)
         //console.log(this.props.post + ' and ' + this.state.loading)
-        const { post, loadingPost } = this.props
+        const { post, loadingPost, currentUser } = this.props
 
         let display 
         let displayComments 
@@ -81,8 +78,20 @@ class Post extends Component {
 
 
             displayComments = post.data.comments.map(comment => {
-                return <p key={comment._id}>{comment.body}</p>
+
+
+                if(comment.user == currentUser.data.credentials.username) {
+                    deletedisplay = <button onClick={this.deleteComment.bind(this, comment)} style={{color: 'white'}, {background: 'red'}}>
+                                X
+                            </button>
+                } else deletedisplay = ''
+
+
+                return <p key={comment._id} >{deletedisplay}{comment.body}</p>
+               
             })
+
+            
 
             display = 
                 <div className='post'>
@@ -105,17 +114,6 @@ class Post extends Component {
     
         }
         
-        /*let commentdisplay = this.props.post.comments.map(comment => {
-
-            if(comment.sender == this.props.isAuthenticated.data.email) {
-                deletedisplay = <button onClick={this.deleteComment.bind(this, comment)} style={{color: 'white'}, {background: 'red'}}>
-                            X
-                        </button>
-            } else deletedisplay = ''
-
-
-            return <p key={comment._id} >{deletedisplay}{comment.comment}</p>
-        })*/
   
         return (
             <React.Fragment>
@@ -137,7 +135,8 @@ const mapStateToProps = ( state ) => {
 const mapDispatchToProps = dispatch => {
     return {
         getPost: (postId) => dispatch(getPost(postId)),
-        addComment: (newComment) => dispatch(addComment(newComment))
+        addComment: (newComment) => dispatch(addComment(newComment)),
+        deleteComment: (comment) => dispatch(deleteComment(comment))
     }
 }
 

@@ -18,13 +18,27 @@ const AuthenticateReducer = (state = initState, action) => {
                 loading: false,
                 //When we submit a post, dashboard is refreshed
                 currentUser: action.payload,
+                likes: [...action.payload.data.likes],
                 error: ''
             }
         case 'GET_CURRENTUSER_FAILURE': 
             return {
                 loading: false,
                 currentUser: '',
+                likes: '',
                 error: action.payload
+            }
+        case 'LIKE_POST_SUCCESS': 
+            return {
+                ...state,
+                likes: [...state.likes, action.payload],
+                loading: false,
+            }
+        case 'UNLIKE_POST_FAILURE': 
+            return {
+                ...state,
+                likes: '',
+                loading: false,
             }
         default: return state
     }

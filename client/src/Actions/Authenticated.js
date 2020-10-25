@@ -1,19 +1,19 @@
 import axios from 'axios'
 
-const loadingRequest = () => {
+export const loadingRequest = () => {
     return {
         type: 'LOADING_REQUEST'
     }
 }
 
-const getcurrentUserSuccess = currentUser => {
+export const getcurrentUserSuccess = currentUser => {
     return {
         type: 'GET_CURRENTUSER_SUCCESS',
         payload: currentUser
     }
 }
 
-const getcurrentUserFailure = error => {
+export const getcurrentUserFailure = error => {
     return {
         type: 'GET_CURRENTUSER_FAILURE',
         payload: error

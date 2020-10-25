@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { loadingRequest, getcurrentUserSuccess, getcurrentUserFailure } from './Authenticated'
 
 const loadingPost = () => {
     return {
@@ -82,6 +83,20 @@ const addCommentFailure = error => {
     }
 }
 
+//LIKE POST 
+const likePostSuccess = (like) => {
+    return {
+        type: 'LIKE_POST_SUCCESS',
+        payload: like
+    }
+}
+
+const likePostFailure = (error) => {
+    return {
+        type: 'LIKE_POST_FAILURE',
+        payload: error
+    }
+}
 
 
 
@@ -161,7 +176,7 @@ export const getPost = (postId) => {
         })
     }
 }
- 
+  
 export const addComment = (newComment) => {
     return (dispatch) => {
         dispatch(loadingPost())
@@ -180,7 +195,62 @@ export const addComment = (newComment) => {
     }
 }
 
+export const deleteComment = (comment) => {
+    return (dispatch) => {
+        dispatch(loadingPost())
+        console.log('before the put ')
+        axios.put(`/social/posts/deletecomment/${comment.postId}`, comment)
+        .then(() => {
 
+            console.log("inside deleteComment")
+            dispatch(getPost(comment.postId))
+            dispatch(getPosts())
+            //dispatch(addCommentSuccess(res))
+        })
+        .catch(err => {
+            const error = err;
+            //dispatch(addCommentFailure(error))
+        })
+    }
+}
+
+export const likePost = (like) => {
+    return (dispatch) => {
+        //dispatch(loadingRequest())
+        console.log('before the post ')
+        axios.post(`/social/like/${like.postId}`, like)
+        .then(() => {
+
+            console.log("inside likePost ")
+            //dispatch(getPosts())
+            dispatch(likePostSuccess(like))
+            
+        })
+        .catch(err => {
+            const error = err;
+            dispatch(likePostFailure(err))
+            //dispatch(addCommentFailure(error))
+        })
+    }
+}
+
+export const unlikePost = (like) => {
+    return (dispatch) => {
+        //dispatch(loadingPost())
+        //console.log('before the put ')
+        axios.post(`/social/unlike/${like.postId}`, like)
+        .then(() => {
+
+            console.log("inside unlikePost ")
+            dispatch(getPosts())
+        })
+        .catch(err => {
+            const error = err;
+            
+            //dispatch(addCommentFailure(error))
+        })
+    }
+}
 
 //CREATE COMMENT (UPDATE POST)
 /*export const createComment = (link, newcomment) => {

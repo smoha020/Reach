@@ -1,7 +1,7 @@
 import React, { Component }from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
-import { getPosts, createPost, deletePost } from '../Actions/Posts'
+import { getPosts, createPost, deletePost, likePost, unlikePost } from '../Actions/Posts'
 import { signOut } from '../Actions/Authenticated'
 import { connect } from 'react-redux';
 import Post from './Post'
@@ -78,14 +78,23 @@ class Dashboard extends Component {
         console.log(this.state.comment)
         console.log(this.state.currentUser.email)
         console.log(post._id)
+    }
 
-        /*let newcomment = {
-            comment: this.state.comment,
-            sender: this.state.currentUser.email,
-            reciever: post.user
+    clickLike = (id) => {
+        let like = {
+            postId: id,
+            user: this.props.currentUser.data.credentials.username
         }
+        console.log(like)
+        this.props.likePost(like)
+    }
 
-        axios.put(`/social/posts/${post._id}`, newcomment)*/
+    clickUnlike = (id) => {
+        let like = {
+            postId: id,
+            user: this.props.currentUser.data.credentials.username
+        }
+        this.props.unlikePost(like)
     }
 
     deletePost = (post) => {
@@ -101,14 +110,14 @@ class Dashboard extends Component {
 
     render() {
 
-        const { currentUser, posts, loading } = this.props
+        const { currentUser, posts, loading, likes } = this.props
         console.log(this.props)
 
         let display;
         let displayposts
         let displayuser
         let deletedisplay
-        let thumbsLogo = []
+        let thumbsLogo 
 
         /*WHEN YOU COME TO THIS PAGE VIA URL OR WHEN YOU REFRESH, 
         THE INITIAL RENDERING TAKES PLACE AND isAuthenticated is '', 
@@ -131,13 +140,12 @@ class Dashboard extends Component {
                         VALUE ABOVE FOR EVERY ITERATION AFTER THE FIRST TRUE IF STATEMENT.*/
         
                         thumbsLogo = []
-                        thumbsLogo = currentUser.data.likes.map(like => {
+                        thumbsLogo = likes.map(like => {
                             if(like.postId === post._id) {
                                 return post._id
                             } 
                         })
 
-                        console.log(thumbsLogo)
                         
                         return (
                             <React.Fragment key={index}>
@@ -146,8 +154,11 @@ class Dashboard extends Component {
                                     <p>{post.user}</p>
                                     <p>{post.body}</p>
                                     <p>{post.createdAt}</p>
-                                    {console.log("in return: " + thumbsLogo.includes(post._id) )}
-                                    {( thumbsLogo.includes(post._id) )? (<button>thumbs down</button>) : (<button>thumbs up</button>)} 
+                                    {( thumbsLogo.includes(post._id) )? (
+                                    <Button onClick={this.clickUnlike.bind(this, post._id)}>thumbs down</Button>
+                                    ) : (
+                                    <Button onClick={this.clickLike.bind(this, post._id)}>thumbs up</Button>
+                                    )} 
                                     <p>{post.likeCount} likes</p>
                                     <p>Comment count</p>
                                     <p>{post.commentCount} comments</p>
@@ -245,6 +256,7 @@ class Dashboard extends Component {
 const mapStateToProps = state => {
     return {
         currentUser: state.Authenticate.currentUser,
+        likes: state.Authenticate.likes,
         posts: state.Data.posts,
         loading: state.Authenticate.loading
     }
@@ -255,7 +267,9 @@ const mapDispatchToProps = dispatch => {
         getPosts: () => dispatch(getPosts()),
         createPost: (post) => dispatch(createPost(post)),
         signOut: () => dispatch(signOut()),
-        deletePost: (post) => dispatch(deletePost(post))
+        deletePost: (post) => dispatch(deletePost(post)),
+        likePost: (like) => dispatch(likePost(like)),
+        unlikePost: (like) => dispatch(unlikePost(like))
     }
 }
 

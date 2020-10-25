@@ -139,42 +139,34 @@ router.post('/posts/createcomment/:postId', (req, res) => {
 
 
 //DELETE A COMMENT
-router.put('/posts/deletecomment/:_id', (req, res) => {
-    const filter= {_id: req.params._id};
+router.put('/posts/deletecomment/:postId', (req, res) => {
+    const filter= { postId: req.params.postId};
 
-    Posts.findOne(filter)
-    .then( data => {
-
-        let allComments = []
-        allComments = data.comments.filter(comment => (
-            comment._id != req.body._id
-        ))
-
-        Posts.updateOne(
-            filter,
-            {$set: { comments: [...allComments]}},
-        )
-        .then(data => {
-            
-            console.log('filler')
-        
-            /*WE NEED TO MAKE noticomment BECAUSE REQ.BODY 
-            CAN'T BE OUR FILTER SINCE IT HAS _id PROPERTY AND THE COMMENTS
-            IN NOTIFCATIONS DON'T*/
-            let noticomment = {
-                comment: req.body.comment,
-                sender: req.body.sender,
-                reciever: req.body.reciever
-            }
-            let notFilter = { data: noticomment }
-            console.log(notFilter)
-            Notifications.deleteOne(notFilter)
-            .then( () => console.log('deleted notification'))
-            .catch(err => console.log(err))
-        })
-        .catch(err => console.log(err))
+    Comments.deleteOne(filter)
+    .then(() => {
+        return Posts.updateOne( {_id: req.params.postId }, { $inc : {
+            commentCount: -1
+        } })
     })
-    .catch(err => console.log(err)) 
+    .then( () => {
+
+        /*WE NEED TO MAKE noticomment BECAUSE REQ.BODY 
+        CAN'T BE OUR FILTER SINCE IT HAS _id PROPERTY AND THE COMMENTS
+        IN NOTIFCATIONS DON'T*/
+        let filter = {
+            notType: 'comment',
+            postId: req.params.postId,
+            sender: req.body.user
+        }
+        return Notifications.deleteOne(filter)
+        
+    })
+    .then( () => {
+        //we MUST send a response
+        res.send('Notifaction deleted!')
+        console.log('deleted notification')
+    })
+    .catch(err => console.log(err))
 
 })
 
