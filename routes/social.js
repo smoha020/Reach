@@ -238,7 +238,7 @@ router.post('/like/:postId', (req, res) => {
 
 
 //UNLIKE 
-router.delete('/unlike/:postId', (req, res) => {
+router.post('/unlike/:postId', (req, res) => {
 
     let query = { 
         postId: req.params.postId, 

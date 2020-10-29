@@ -21,7 +21,8 @@ class Dashboard extends Component {
             comment: '',
             show: false,
             show2: false,
-            postId: ''
+            postId: '',
+            disabled: ''
         }
     }
 
@@ -64,9 +65,6 @@ class Dashboard extends Component {
         this.props.createPost(newpost)
         this.setState({ show: false })
 
-        /*axios.post('/social/posts', newpost)
-        .then(data => console.log(data))
-        .catch(err => console.log(err))*/
     }
 
     submitComment = (e, post)=> {
@@ -80,16 +78,32 @@ class Dashboard extends Component {
         console.log(post._id)
     }
 
-    clickLike = (id) => {
+    clickLike = (id, e ) => {
+        e.preventDefault()
+        
+        let button = e.target
+        button.disabled = true
+
+        setTimeout(function() {
+            button.disabled = false;
+        }, 2500)
+
         let like = {
             postId: id,
             user: this.props.currentUser.data.credentials.username
         }
-        console.log(like)
         this.props.likePost(like)
     }
 
-    clickUnlike = (id) => {
+    clickUnlike = (id, e) => {
+
+        let button = e.target
+        button.disabled = true
+
+        setTimeout(function() {
+            button.disabled = false;
+        }, 2500) 
+
         let like = {
             postId: id,
             user: this.props.currentUser.data.credentials.username
@@ -118,7 +132,7 @@ class Dashboard extends Component {
         let displayuser
         let deletedisplay
         let thumbsLogo 
-
+        let notesDisplay
         /*WHEN YOU COME TO THIS PAGE VIA URL OR WHEN YOU REFRESH, 
         THE INITIAL RENDERING TAKES PLACE AND isAuthenticated is '', 
         AFTER THIS IT RE-RENDERS AND isAuthenticated GETS THE data PROPERTY*/
@@ -130,7 +144,6 @@ class Dashboard extends Component {
          
                 if(posts != []) {
                     displayposts  = posts.map((post, index) => {
-                    
                         if(post.user == currentUser.data.credentials.username) {
                             deletedisplay = <button onClick={this.deletePost.bind(this, post)} style={{color: 'white'}, {background: 'red'}}>
                                         X {currentUser.data.credentials.username} 
@@ -155,9 +168,9 @@ class Dashboard extends Component {
                                     <p>{post.body}</p>
                                     <p>{post.createdAt}</p>
                                     {( thumbsLogo.includes(post._id) )? (
-                                    <Button onClick={this.clickUnlike.bind(this, post._id)}>thumbs down</Button>
+                                    <Button disabled={this.disabled} onClick={this.clickUnlike.bind(this, post._id)}>thumbs down</Button>
                                     ) : (
-                                    <Button onClick={this.clickLike.bind(this, post._id)}>thumbs up</Button>
+                                    <Button disabled={this.disabled} onClick={this.clickLike.bind(this, post._id)}>thumbs up</Button>
                                     )} 
                                     <p>{post.likeCount} likes</p>
                                     <p>Comment count</p>
@@ -178,11 +191,25 @@ class Dashboard extends Component {
                     })
                 }
 
+                notesDisplay = currentUser.data.notifications.map(note => {
+                    if(note.notType === 'like') { 
+
+                        return <li style={{color: 'white'}}>{note.sender} liked your post</li>
+                    } else {
+                        return <li style={{color: 'red'}}> {note.sender} commented on your post </li> 
+                    }
+                })
                 display = 
                 <React.Fragment>
                     <ul>
-                        <li className="company"><a>NewsQuest</a></li>
-                        <li><button onClick={this.logOut}>Log Out</button></li>
+                        <li className="company"><a style={{color: 'white'}}>NewsQuest</a></li>
+                        <li><Button onClick={this.logOut}>Log Out</Button></li>
+                        <li>
+                            <div>
+                                <Button >Notifications</Button>
+                                <div>{notesDisplay}</div>
+                            </div>
+                        </li>
                         <Button variant="primary" onClick={this.handleShow}> Add Post </Button>              
                     </ul>
 

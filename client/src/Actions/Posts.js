@@ -83,7 +83,7 @@ const addCommentFailure = error => {
     }
 }
 
-//LIKE POST 
+//LIKE AND UNLIKE POST
 const likePostSuccess = (like) => {
     return {
         type: 'LIKE_POST_SUCCESS',
@@ -98,7 +98,12 @@ const likePostFailure = (error) => {
     }
 }
 
-
+const unlikePostSuccess = (like) => {
+    return {
+        type: 'UNLIKE_POST_SUCCESS',
+        payload: like
+    }
+}
 
 //-----------------------------
 
@@ -126,15 +131,11 @@ export const getPosts = () => {
 
 //CREATE POST
 export const createPost = (newpost) => {
-    console.log('outside createPost')
     return (dispatch) => {
-        console.log('inside createPost')
         axios.post('/social/posts/create', newpost)
         .then(res => {
 
-            console.log('returned: ' + res)
             dispatch(createPostSuccess(res))
-            console.log('new post')
         })
         .catch(err => {
             dispatch(createPostFailure(err))
@@ -148,7 +149,6 @@ export const deletePost = (post) => {
         axios.delete(`/social/posts/${post._id}`)
         .then(res => {
             dispatch(deletePostSuccess(post))
-            console.log('deleted the post')
             
         })
         .catch(err => {
@@ -159,13 +159,11 @@ export const deletePost = (post) => {
 
 //GET POST
 export const getPost = (postId) => {
-    console.log('are we in getPost?')
     return (dispatch) => {
         dispatch(loadingPost())
         axios.get(`/social/posts/single/${postId}`)
         .then(res => {
 
-            console.log('inside getPost')
             const post = res;
             //console.log(posts)
             dispatch(getPostSuccess(post))
@@ -183,7 +181,6 @@ export const addComment = (newComment) => {
         axios.post(`/social/posts/createcomment/${newComment.postId}`, newComment)
         .then(res => {
 
-            console.log("inside addComment")
             dispatch(getPost(newComment.postId))
             dispatch(getPosts())
             //dispatch(addCommentSuccess(res))
@@ -202,7 +199,6 @@ export const deleteComment = (comment) => {
         axios.put(`/social/posts/deletecomment/${comment.postId}`, comment)
         .then(() => {
 
-            console.log("inside deleteComment")
             dispatch(getPost(comment.postId))
             dispatch(getPosts())
             //dispatch(addCommentSuccess(res))
@@ -216,12 +212,8 @@ export const deleteComment = (comment) => {
 
 export const likePost = (like) => {
     return (dispatch) => {
-        //dispatch(loadingRequest())
-        console.log('before the post ')
         axios.post(`/social/like/${like.postId}`, like)
         .then(() => {
-
-            console.log("inside likePost ")
             //dispatch(getPosts())
             dispatch(likePostSuccess(like))
             
@@ -241,13 +233,11 @@ export const unlikePost = (like) => {
         axios.post(`/social/unlike/${like.postId}`, like)
         .then(() => {
 
-            console.log("inside unlikePost ")
-            dispatch(getPosts())
+            dispatch(unlikePostSuccess(like))
         })
         .catch(err => {
             const error = err;
             
-            //dispatch(addCommentFailure(error))
         })
     }
 }

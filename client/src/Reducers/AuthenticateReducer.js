@@ -34,7 +34,16 @@ const AuthenticateReducer = (state = initState, action) => {
                 likes: [...state.likes, action.payload],
                 loading: false,
             }
-        case 'UNLIKE_POST_FAILURE': 
+        case 'UNLIKE_POST_SUCCESS': 
+
+        let newLikes = state.likes.filter(like => like.postId != action.payload.postId)
+        console.log(newLikes)
+            return {
+                ...state,
+                likes: [...newLikes],
+                loading: false,
+            }
+        case 'LIKE_POST_FAILURE': 
             return {
                 ...state,
                 likes: '',

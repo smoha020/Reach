@@ -72,13 +72,16 @@ const PostReducer = (state = initState, action) => {
             }
         case 'LIKE_POST_SUCCESS': 
         let index = state.posts.findIndex(post => post._id === action.payload.postId)
-        let updatedPost = state.posts[index]
+        state.posts[index].likeCount ++
+        /*let updatedPost = state.posts[index]
         updatedPost.likeCount = updatedPost.likeCount + 1
-        state.posts[index] = updatedPost
+        state.posts[index] = updatedPost*/
             return {
                 ...state
             }
-        case 'UNLIKE_POST_FAILURE': 
+        case 'UNLIKE_POST_SUCCESS': 
+        let index1 = state.posts.findIndex(post => post._id === action.payload.postId)
+        state.posts[index1].likeCount--
             return {
                 ...state
             }
