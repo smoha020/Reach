@@ -28,7 +28,7 @@ router.get('/test', (req, res) => {
         .then(data => {
 
             currentUser.likes = [...data]
-            return Notifications.find({ reciever: req.user.name })
+            return Notifications.find({ reciever: req.user.name, read: false, sender: {$ne: req.user.name} })
         })
         .then(data => {
             

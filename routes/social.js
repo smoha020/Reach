@@ -288,7 +288,7 @@ router.put('/notificationRead/:_id', (req, res) => {
 })
 
 //------------USER----------------//
-
+ 
 //READ
 router.get('/otheruser/:user', (req, res) => {
     let otherUser = {}

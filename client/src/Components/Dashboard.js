@@ -33,8 +33,15 @@ class Dashboard extends Component {
     handleClose = () => {
         this.setState({show: false});
     }
-    handleShow2 = (post)=> {
-        
+    handleShow2 = (post, note)=> {
+
+        if(note.read === false) {
+            axios.put(`/social/notificationRead/${note._id}`)
+            .then(data => console.log(data))
+            .catch(err => console.log(err))
+            
+        }
+        console.log(post)
         this.setState({show2: true, postId: post._id})
     }
 
@@ -190,13 +197,18 @@ class Dashboard extends Component {
                         )   
                     })
                 }
-
+ 
                 notesDisplay = currentUser.data.notifications.map(note => {
+                    let myPost = posts.map(post => {
+                        if(post._id === note.postId) { 
+                            return post
+                        }
+                    })
                     if(note.notType === 'like') { 
 
-                        return <li style={{color: 'white'}}>{note.sender} liked your post</li>
+                        return <li><Button variant="primary" style={{color: 'white'}} onClick={this.handleShow2.bind(this, myPost[0], note)}>{note.sender} liked your post</Button></li>
                     } else {
-                        return <li style={{color: 'red'}}> {note.sender} commented on your post </li> 
+                        return <li><Button variant="primary" style={{color: 'red'}} onClick={this.handleShow2.bind(this, myPost[0], note)}>{note.sender} commented on your post </Button></li> 
                     }
                 })
                 display = 
@@ -207,7 +219,7 @@ class Dashboard extends Component {
                         <li>
                             <div>
                                 <Button >Notifications</Button>
-                                <div>{notesDisplay}</div>
+                                <ul>{notesDisplay}</ul>
                             </div>
                         </li>
                         <Button variant="primary" onClick={this.handleShow}> Add Post </Button>              
