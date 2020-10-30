@@ -298,7 +298,7 @@ router.get('/otheruser/:user', (req, res) => {
     allUsers.findOne(query)
     .then(data => {
         
-        otherUser.data = [data]
+        otherUser.credentials = data
 
         return Posts.find({ user: req.params.user })
     })

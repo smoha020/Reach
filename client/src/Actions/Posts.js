@@ -105,6 +105,20 @@ const unlikePostSuccess = (like) => {
     }
 }
 
+
+const getOtherUserSuccess = (user) => {
+    return {
+        type: 'GET_OTHER_USER_SUCCESS',
+        payload: user
+    }
+}
+
+const getOtherUserFailure = (error) => {
+    return {
+        type: 'GET_OTHER_USER_FAILURE',
+        payload: error
+    }
+}
 //-----------------------------
 
 
@@ -238,6 +252,22 @@ export const unlikePost = (like) => {
         .catch(err => {
             const error = err;
             
+        })
+    }
+}
+
+//GET OTHER USER
+export const getOtherUser = (user) => {
+    return (dispatch) => {
+        //dispatch(loadingPost())
+        //console.log('before the put ')
+        axios.get(`/social/otheruser/${user}`)
+        .then((res) => {
+            console.log(res)
+            dispatch(getOtherUserSuccess(res))
+        })
+        .catch(err => {
+            dispatch(getOtherUserFailure(err))
         })
     }
 }

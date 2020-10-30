@@ -1,4 +1,5 @@
 const initState = {
+    otherUser: '',
     posts: [],
     post: '',
     error: '',
@@ -84,6 +85,18 @@ const PostReducer = (state = initState, action) => {
         state.posts[index1].likeCount--
             return {
                 ...state
+            }
+        case 'GET_OTHER_USER_SUCCESS': 
+            return {
+                ...state,
+                loadingPost: false,
+                otherUser: action.payload
+            }
+        case 'GET_OTHER_USER_FAILURE': 
+            return {
+                ...state,
+                loadingPost: false,
+                error: action.payload
             }
         default: return state
     }

@@ -171,7 +171,7 @@ class Dashboard extends Component {
                             <React.Fragment key={index}>
                                 <div className='post'>
                                     {deletedisplay}
-                                    <p>{post.user}</p>
+                                    <Link to={`/User/${post.user}`}>{post.user}</Link>
                                     <p>{post.body}</p>
                                     <p>{post.createdAt}</p>
                                     {( thumbsLogo.includes(post._id) )? (
