@@ -1,4 +1,4 @@
-const Users = require('../Models/Users');
+const allUsers = require('../Models/allUsers');
 const passport = require('passport')
 const mongoose = require('mongoose');
 const LocalStrategy = require('passport-local').Strategy;
@@ -10,7 +10,7 @@ module.exports = function (passport) {
         usernameField: 'email',
         },
         (email, password, done) => { //where are we getting these arguments from?
-            Users.findOne({ email: email})
+            allUsers.findOne({ email: email})
                 .then(user => {
                     if (!user) {
                         console.log('user doesnt exist');
@@ -39,7 +39,7 @@ module.exports = function (passport) {
     });
 
     passport.deserializeUser((id, done) => {
-        Users.findById(id)
+        allUsers.findById(id)
             .then(user => done(null, user))
     });
 }

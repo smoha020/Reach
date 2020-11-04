@@ -103,3 +103,21 @@ export const signOut = () => {
         })
     }*/
 }
+
+export const registerUser = (user) => {
+    return (dispatch) => {
+        dispatch(loadingRequest())
+        axios.post('/users/register', user)
+        .then(res => {
+            console.log(res)
+            //SHOULD WE BE RETURNING MORE THAN JUST THE CREDENTIALS
+            let currentUser = res.data
+            dispatch(getcurrentUserSuccess(currentUser))
+        })
+        .catch((err) => {
+            const error = err;
+            dispatch(getcurrentUserFailure(error))
+            
+        })
+    }
+}

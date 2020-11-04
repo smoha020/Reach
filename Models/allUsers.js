@@ -4,6 +4,8 @@ const allUsersSchema = new mongoose.Schema({
 
     pic: String,
     username: String,
+    password: String,
+    email: String,
     joinDate: Date,
     bio: String, 
     location: String,

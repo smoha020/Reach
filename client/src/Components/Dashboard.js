@@ -21,8 +21,13 @@ class Dashboard extends Component {
             comment: '',
             show: false,
             show2: false,
+            show3: false,
             postId: '',
-            disabled: ''
+            disabled: '',
+            username: '',
+            bio: '',
+            location: '',
+            website: ''
         }
     }
 
@@ -35,6 +40,8 @@ class Dashboard extends Component {
     }
     handleShow2 = (post, note)=> {
 
+        /*Once the notification is clicked, 
+        it will display the modal for the post*/
         if(note.read === false) {
             axios.put(`/social/notificationRead/${note._id}`)
             .then(data => console.log(data))
@@ -47,6 +54,14 @@ class Dashboard extends Component {
 
     handleClose2 = () => {
         this.setState({show2: false});
+    }
+
+    handleShow3 = ()=> {
+        this.setState({show3: true});
+    }
+
+    handleClose3 = () => {
+        this.setState({show3: false});
     }
 
     componentDidMount() {
@@ -118,6 +133,18 @@ class Dashboard extends Component {
         this.props.unlikePost(like)
     }
 
+    onSubmitProfile = (e) => {
+        e.preventDefault()
+
+        let credentials = {
+            username: this.state.username,
+            bio: this.state.bio,
+            location: this.state.location,
+            website: this.state.website
+        }
+        console.log(credentials)
+    }
+
     deletePost = (post) => {
         console.log(post)
         this.props.deletePost(post)
@@ -149,6 +176,7 @@ class Dashboard extends Component {
         } else {
             if(currentUser && currentUser.data != '') {
          
+                console.log(currentUser)
                 if(posts != []) {
                     displayposts  = posts.map((post, index) => {
                         if(post.user == currentUser.data.credentials.username) {
@@ -211,6 +239,8 @@ class Dashboard extends Component {
                         return <li><Button variant="primary" style={{color: 'red'}} onClick={this.handleShow2.bind(this, myPost[0], note)}>{note.sender} commented on your post </Button></li> 
                     }
                 })
+
+              
                 display = 
                 <React.Fragment>
                     <ul>
@@ -244,6 +274,7 @@ class Dashboard extends Component {
                             </Modal.Footer>
                         </form>
                     </Modal>
+
                     <Modal show={this.state.show2} onHide={this.handleClose2}>
                         <Modal.Header closeButton>
                             <Modal.Title>Post</Modal.Title>
@@ -258,6 +289,50 @@ class Dashboard extends Component {
                         </Modal.Footer>
                     </Modal>
 
+                    <Modal show={this.state.show3} onHide={this.handleClose3}>
+                        <form onSubmit={this.onSubmitProfile}> 
+                            <Modal.Header closeButton>
+                                <Modal.Title>Modal heading</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <label>
+                                    username: 
+                                    <input type='text'
+                                    name="username"
+                                    value={this.state.username}
+                                    onChange={this.onChange} />
+                                </label>
+                                <label>
+                                    Bio: 
+                                    <input type='text'
+                                    name="bio"
+                                    value={this.state.bio}
+                                    onChange={this.onChange} />
+                                </label>
+                                <label>
+                                    Location: 
+                                    <input type='text'
+                                    name="location"
+                                    value={this.state.location}
+                                    onChange={this.onChange} />
+                                </label>
+                                <label>
+                                    website: 
+                                    <input type='website'
+                                    name="website"
+                                    value={this.state.website}
+                                    onChange={this.onChange} />
+                                </label>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={this.handleClose3}>
+                                    Close
+                                </Button>
+                                <input type="submit" value="submit"/>
+                            </Modal.Footer>
+                        </form>
+                    </Modal>
+
                     
 
                     <div className='display-flex'>
@@ -265,12 +340,13 @@ class Dashboard extends Component {
                             {displayposts}
                         </div>        
                         <div className="profile">
-                            <p>Picture: {currentUser.data.credentials.pic}</p>
-                            <p>Name: {currentUser.data.credentials.username}</p>
-                            <p>Location: {currentUser.data.credentials.location}</p>
-                            <p>Bio: {currentUser.data.credentials.bio}</p>
-                            <p>Website: {currentUser.data.credentials.website}</p>
+                            {(currentUser.data.credentials.pic)? (<p>{currentUser.data.credentials.pic}</p>): (null)}
+                            <p>{currentUser.data.credentials.username}</p>
+                            {(currentUser.data.credentials.location)? (<p>{currentUser.data.credentials.location}</p>): (null)}
+                            {(currentUser.data.credentials.bio)? (<p>{currentUser.data.credentials.bio}</p>): (null)}
+                            {(currentUser.data.credentials.website)? (<p>{currentUser.data.credentials.website}</p>): (null)}
                             <p>Joined: {currentUser.data.credentials.joinDate}</p>
+                            <Button variant="primary" onClick={this.handleShow3}>Update Profile</Button>
                         </div>
                     </div>
             

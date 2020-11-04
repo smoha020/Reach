@@ -24,35 +24,36 @@ router.get('/login', authenticate.notAuthenticated, (req, res) => {
     res.render('log_in', {email: '', password: '', message: req.flash('log')})});
 
 router.post('/register', (req, res) => {
-   
-    const {name, email, password} = req.body;
 
-    if((name == '') || (email == '') || (password == '') ) {
-        res.redirect('/flash-register')
+    console.log('inside the call')
+    const {username, email, password} = req.body;
+ 
+    if((username == '') || (email == '') || (password == '') ) {
+        res.send('Please complete form!')
     } else {
-        Users.findOne({email: email}) 
+        allUsers.findOne({email: email}) 
             .then(user => {
                 if(user) {
                     res.redirect('/flash-exist');
                 } else {
-                    
-                bcrypt.genSalt(10, (err, salt) => {
-                    bcrypt.hash(password, salt, (err, hash) => {
-                        if(err) throw err;
-                        
-                        // Store hash in your password DB.
-                        const newUser = new Users({
-                            name: name,
-                            email: email,
-                            password: hash
+                    bcrypt.genSalt(10, (err, salt) => {
+                        bcrypt.hash(password, salt, (err, hash) => {
+                            if(err) throw err;
+                            
+                            // Store hash in your password DB.
+                            const newUser = new allUsers({
+                                username: username,
+                                email: email,
+                                password: hash,
+                                joinDate: new Date()
+                            });
+                            newUser.save()
+                                .then( user => {
+                                    res.send(user)
+                                })
+                                .catch(err => console.log(err))
                         });
-                        newUser.save()
-                            .then( user => {
-                                res.redirect('/users/login')
-                            })
-                            .catch(err => console.log(err))
                     });
-                });
                 }
             })         
             .catch(err => err)
@@ -65,19 +66,19 @@ router.post('/login',
     failureRedirect: '/flash-fail' }*/),
     (req, res) => {
         let currentUser = {}
-        let query = { username: req.user.name }
+        let query = { username: req.user.username }
         allUsers.findOne(query)
         .then(data => {
             
             currentUser.credentials = data
 
 
-            return Likes.find({ user: req.user.name })
+            return Likes.find({ user: req.user.username })
         })
         .then(data => {
 
             currentUser.likes = [...data]
-            return Notifications.find({ reciever: req.user.name, read: false, sender: {$ne: req.user.name}  })
+            return Notifications.find({ reciever: req.user.username, read: false, sender: {$ne: req.user.name}  })
         })
         .then(data => {
             

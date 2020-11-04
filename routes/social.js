@@ -305,7 +305,7 @@ router.get('/otheruser/:user', (req, res) => {
     .then(data => {
  
         console.log('posts data: ' + data)
-        otherUser.Posts = [...data]
+        otherUser.posts = [...data]
         console.log('otheruser: ' + otherUser)
         res.json(otherUser)
     })
@@ -318,6 +318,7 @@ router.post('/users/add', (req, res) => {
     //create a new user
     const newUser = new allUsers({
         pic: req.body.pic,
+        email: req.body.email,
         username: req.body.username,
         bio: req.body.bio,
         location: req.body.location,
@@ -334,12 +335,13 @@ router.post('/users/add', (req, res) => {
 router.put('/users/:_id', (req, res) => {
 
     const filter= {_id: req.params._id};
-
+ 
     allUsers.updateOne(
         filter, 
         {$set: { 
             pic: req.body.pic,
             username: req.body.username,
+            email: req.body.email,
             bio: req.body.bio,
             location: req.body.location,
             website: req.body.website
