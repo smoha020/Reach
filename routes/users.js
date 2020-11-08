@@ -39,7 +39,7 @@ router.post('/register', (req, res) => {
                     bcrypt.genSalt(10, (err, salt) => {
                         bcrypt.hash(password, salt, (err, hash) => {
                             if(err) throw err;
-                            
+                            let currentUser = {}
                             // Store hash in your password DB.
                             const newUser = new allUsers({
                                 username: username,
@@ -48,8 +48,12 @@ router.post('/register', (req, res) => {
                                 joinDate: new Date()
                             });
                             newUser.save()
-                                .then( user => {
-                                    res.send(user)
+                                .then( response => {
+                                    currentUser.credentials = response
+                                    currentUser.likes = []
+                                    currentUser.notifications = []
+                                    console.log('the new user: ' + currentUser)
+                                    res.send(currentUser)
                                 })
                                 .catch(err => console.log(err))
                         });

@@ -12,23 +12,23 @@ const authenticate = require('../config/authenticate');
 
 router.get('/test', (req, res) => {
     console.log("test hit: " + req.user)
-    if(req.user && req.user.name) {
+    if(req.user && req.user.username) {
         /*if we are logged in we get the user's credentials, 
         likes and notifications*/
         let currentUser = {}
-        let query = { username: req.user.name }
+        let query = { username: req.user.username }
         allUsers.findOne(query)
         .then(data => {
             
             currentUser.credentials = data
 
 
-            return Likes.find({ user: req.user.name })
+            return Likes.find({ user: req.user.username })
         })
         .then(data => {
 
             currentUser.likes = [...data]
-            return Notifications.find({ reciever: req.user.name, read: false, sender: {$ne: req.user.name} })
+            return Notifications.find({ reciever: req.user.username, read: false, sender: {$ne: req.user.name} })
         })
         .then(data => {
             
@@ -37,7 +37,7 @@ router.get('/test', (req, res) => {
             res.json(currentUser)
         })
         .catch(err => console.log(err))
-        //res.send(/*req.isAuthenticated(),*/ req.user.name)
+        //res.send(/*req.isAuthenticated(),*/ req.user.username)
     }
     else {
         res.send(/*req.isAuthenticated(),*/ req.user)

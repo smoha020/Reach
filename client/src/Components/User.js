@@ -98,12 +98,13 @@ class User extends Component {
                             {displayposts}
                         </div>        
                         <div className="profile">
-                            <p>Picture: {otherUser.data.credentials.pic}</p>
-                            <p>Name: {otherUser.data.credentials.username}</p>
-                            <p>Location: {otherUser.data.credentials.location}</p>
-                            <p>Bio: {otherUser.data.credentials.bio}</p>
-                            <p>Website: {otherUser.data.credentials.website}</p>
+                            {(otherUser.data.credentials.pic)? (<p>{otherUser.data.credentials.pic}</p>): (null)}
+                            <p>{otherUser.data.credentials.username}</p>
+                            {(otherUser.data.credentials.location)? (<p>{otherUser.data.credentials.location}</p>): (null)}
+                            {(otherUser.data.credentials.bio)? (<p>{otherUser.data.credentials.bio}</p>): (null)}
+                            {(otherUser.data.credentials.website)? (<p>{otherUser.data.credentials.website}</p>): (null)}
                             <p>Joined: {otherUser.data.credentials.joinDate}</p>
+                            <Button variant="primary" onClick={this.handleShow3}>Update Profile</Button>
                         </div>
                     </div>
             </React.Fragment>

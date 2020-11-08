@@ -110,8 +110,8 @@ export const registerUser = (user) => {
         axios.post('/users/register', user)
         .then(res => {
             console.log(res)
-            //SHOULD WE BE RETURNING MORE THAN JUST THE CREDENTIALS
-            let currentUser = res.data
+            
+            let currentUser = res
             dispatch(getcurrentUserSuccess(currentUser))
         })
         .catch((err) => {

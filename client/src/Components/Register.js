@@ -38,53 +38,57 @@ class Register extends Component {
     render () {
 
         console.log(this.props) 
-        const { currentUser } = this.props
+        const { currentUser, loading } = this.props
 
         let display
 
-        if(currentUser && currentUser.data) {
-            this.props.history.push('/Dashboard')
-        } else {
-            display = 
-            <React.Fragment>
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><Link to="/logIn">Log In</Link></li>
-                </ul>
-                <br></br>
-                <div className="container">
-                {/*<%- include ('partials/messages') %> <!-- This syntax is newer-->*/}
-                <br></br>
-                    <form onSubmit={this.onSubmit}>
-                        <div className="grid-container">
-                            <label className="item1" htmlFor="name">Name</label>
-                            <input className="iteml2" 
-                            type="username" 
-                            name="username" 
-                            value={this.state.username}
-                            /*value="<%= (function(){ return email})() %>"*/
-                            onChange={this.onChange}/>
-                            <label className="iteml1" htmlFor="email">Email</label>
-                            <input className="iteml2" 
-                            type="email" 
-                            name="email" 
-                            value={this.state.email}
-                            /*value="<%= (function(){ return email})() %>"*/
-                            onChange={this.onChange}/>
-                            <label className="item5" htmlFor="password1">Password</label>
-                            <input className="item6" 
-                            type="password" 
-                            name="password" 
-                            value={this.state.password}
-                            /*value="<%= (function(){ return password})() %>"*/
-                            onChange={this.onChange}/>
-                            <input className="iteml5" 
-                            type="submit" 
-                            value="Register"/>
-                        </div>
-                    </form>
-                </div>
-            </ React.Fragment>
+        if(!loading){
+
+            if(currentUser && currentUser.data) {
+                display = <div>Loading...</div>
+                this.props.history.push('/Dashboard')
+            } else {
+                display = 
+                <React.Fragment>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><Link to="/logIn">Log In</Link></li>
+                    </ul>
+                    <br></br>
+                    <div className="container">
+                    {/*<%- include ('partials/messages') %> <!-- This syntax is newer-->*/}
+                    <br></br>
+                        <form onSubmit={this.onSubmit}>
+                            <div className="grid-container">
+                                <label className="item1" htmlFor="name">Name</label>
+                                <input className="iteml2" 
+                                type="username" 
+                                name="username" 
+                                value={this.state.username}
+                                /*value="<%= (function(){ return email})() %>"*/
+                                onChange={this.onChange}/>
+                                <label className="iteml1" htmlFor="email">Email</label>
+                                <input className="iteml2" 
+                                type="email" 
+                                name="email" 
+                                value={this.state.email}
+                                /*value="<%= (function(){ return email})() %>"*/
+                                onChange={this.onChange}/>
+                                <label className="item5" htmlFor="password1">Password</label>
+                                <input className="item6" 
+                                type="password" 
+                                name="password" 
+                                value={this.state.password}
+                                /*value="<%= (function(){ return password})() %>"*/
+                                onChange={this.onChange}/>
+                                <input className="iteml5" 
+                                type="submit" 
+                                value="Register"/>
+                            </div>
+                        </form>
+                    </div>
+                </ React.Fragment>
+            }
         }
 
         return (
@@ -102,7 +106,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        
         registerUser: (user) => dispatch(registerUser(user))
     }
 }
