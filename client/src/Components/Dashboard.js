@@ -2,7 +2,7 @@ import React, { Component }from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
 import { getPosts, createPost, deletePost, likePost, unlikePost } from '../Actions/Posts'
-import { signOut } from '../Actions/Authenticated'
+import { signOut, updateUser } from '../Actions/Authenticated'
 import { connect } from 'react-redux';
 import Post from './Post'
 import Button from 'react-bootstrap/Button';
@@ -24,6 +24,7 @@ class Dashboard extends Component {
             show3: false,
             postId: '',
             disabled: '',
+            pic: '',
             username: '',
             bio: '',
             location: '',
@@ -44,7 +45,10 @@ class Dashboard extends Component {
         it will display the modal for the post*/
         if(note.read === false) {
             axios.put(`/social/notificationRead/${note._id}`)
-            .then(data => console.log(data))
+            .then(data => {
+                //SHOULD WE REFRESH PAGE HERE??
+                console.log(data)
+            })
             .catch(err => console.log(err))
             
         }
@@ -71,6 +75,10 @@ class Dashboard extends Component {
 
     onChange = (e) => {
         this.setState({[e.target.name]: e.target.value})
+    }
+    onChangeFile = (e) => {
+        console.log(e.target.files[0])
+        this.setState({ pic: e.target.files[0] })
     }
     
     //MAKE A POST 
@@ -136,13 +144,15 @@ class Dashboard extends Component {
     onSubmitProfile = (e) => {
         e.preventDefault()
 
-        let credentials = {
-            username: this.state.username,
+        let user = {
+            _id: this.props.currentUser.data.credentials._id,
+            pic: this.state.pic,
             bio: this.state.bio,
             location: this.state.location,
             website: this.state.website
         }
-        console.log(credentials)
+        console.log(user)
+        this.props.updateUser(user)
     }
 
     deletePost = (post) => {
@@ -159,6 +169,7 @@ class Dashboard extends Component {
     render() {
 
         const { currentUser, posts, loading, likes } = this.props
+        console.log(this.state.pic)
         console.log(this.props)
 
         let display;
@@ -296,6 +307,13 @@ class Dashboard extends Component {
                             </Modal.Header>
                             <Modal.Body>
                                 <label>
+                                    pic: 
+                                    <input type='file'
+                                    name="pic"
+                                    value={this.state.pic}
+                                    onChange={this.onChange} />
+                                </label>
+                                <label>
                                     username: 
                                     <input type='text'
                                     name="username"
@@ -328,7 +346,7 @@ class Dashboard extends Component {
                                 <Button variant="secondary" onClick={this.handleClose3}>
                                     Close
                                 </Button>
-                                <input type="submit" value="submit"/>
+                                <input type="submit" value="update"/>
                             </Modal.Footer>
                         </form>
                     </Modal>
@@ -340,7 +358,7 @@ class Dashboard extends Component {
                             {displayposts}
                         </div>        
                         <div className="profile">
-                            {(currentUser.data.credentials.pic)? (<p>{currentUser.data.credentials.pic}</p>): (null)}
+                            {(currentUser.data.pic)? (<p><img src={currentUser.data.pic} alt='jpg'/></p>): (null)}
                             <p>{currentUser.data.credentials.username}</p>
                             {(currentUser.data.credentials.location)? (<p>{currentUser.data.credentials.location}</p>): (null)}
                             {(currentUser.data.credentials.bio)? (<p>{currentUser.data.credentials.bio}</p>): (null)}
@@ -349,7 +367,7 @@ class Dashboard extends Component {
                             <Button variant="primary" onClick={this.handleShow3}>Update Profile</Button>
                         </div>
                     </div>
-            
+                
                 </ React.Fragment>
                 
         
@@ -384,7 +402,8 @@ const mapDispatchToProps = dispatch => {
         signOut: () => dispatch(signOut()),
         deletePost: (post) => dispatch(deletePost(post)),
         likePost: (like) => dispatch(likePost(like)),
-        unlikePost: (like) => dispatch(unlikePost(like))
+        unlikePost: (like) => dispatch(unlikePost(like)),
+        updateUser: (user) => dispatch(updateUser(user))
     }
 }
 

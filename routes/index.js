@@ -5,6 +5,21 @@ const Users = require('../Models/Users');
 const allUsers = require('../Models/allUsers')
 const Likes = require('../Models/Likes')
 const Notifications = require('../Models/Notifications')
+const userImage = require('../Models/userImage')
+var fs = require('fs'); 
+var path = require('path'); 
+var multer = require('multer'); 
+  
+var storage = multer.diskStorage({ 
+    destination: (req, file, cb) => { 
+        cb(null, 'uploads') 
+    }, 
+    filename: (req, file, cb) => { 
+        cb(null, file.fieldname + '-' + Date.now()) 
+    } 
+}); 
+  
+var upload = multer({ storage: storage }); 
 
 
 //can you export from main app.js file? 
@@ -40,7 +55,7 @@ router.get('/test', (req, res) => {
         //res.send(/*req.isAuthenticated(),*/ req.user.username)
     }
     else {
-        res.send(/*req.isAuthenticated(),*/ req.user)
+        res.send(/*req.isAuthenticated(),*/ "not logged in")
     }
 });
 

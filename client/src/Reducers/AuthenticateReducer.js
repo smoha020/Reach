@@ -49,6 +49,20 @@ const AuthenticateReducer = (state = initState, action) => {
                 likes: '',
                 loading: false,
             }
+        case 'GET_UPDATEDUSER_SUCCESS': 
+            return {
+                ...state, 
+                loading: false, 
+                currentUser: action.payload, 
+                error: '' 
+            }
+        case 'GET_UPDATEDUSER_FAILURE': 
+            return {
+                ...state,
+                loading: false,
+                currentUser: '',
+                error: action.payload
+            }
         default: return state
     }
 }

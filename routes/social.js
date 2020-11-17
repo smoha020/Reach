@@ -290,27 +290,7 @@ router.put('/notificationRead/:_id', (req, res) => {
 //------------USER----------------//
  
 //READ
-router.get('/otheruser/:user', (req, res) => {
-    let otherUser = {}
-    let query = { username: req.params.user }
 
-    console.log(req.params.user)
-    allUsers.findOne(query)
-    .then(data => {
-        
-        otherUser.credentials = data
-
-        return Posts.find({ user: req.params.user })
-    })
-    .then(data => {
- 
-        console.log('posts data: ' + data)
-        otherUser.posts = [...data]
-        console.log('otheruser: ' + otherUser)
-        res.json(otherUser)
-    })
-    .catch(err => console.log(err))   
-})
 
 //CREATE
 router.post('/users/add', (req, res) => {
@@ -331,25 +311,6 @@ router.post('/users/add', (req, res) => {
     .catch(err => console.log(err))
 })
 
-//UPDATE 
-router.put('/users/:_id', (req, res) => {
 
-    const filter= {_id: req.params._id};
- 
-    allUsers.updateOne(
-        filter, 
-        {$set: { 
-            pic: req.body.pic,
-            username: req.body.username,
-            email: req.body.email,
-            bio: req.body.bio,
-            location: req.body.location,
-            website: req.body.website
-        }}
-    )
-    .then(data => {
-        res.json(data)})
-    .catch(err => console.log(err))
-})
 
 module.exports = router;

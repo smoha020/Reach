@@ -18,6 +18,20 @@ export const getcurrentUserFailure = error => {
         type: 'GET_CURRENTUSER_FAILURE',
         payload: error
     }
+} 
+
+export const getupdatedUserSuccess = credentials => {
+    return {
+        type: 'GET_UPDATEDUSER_SUCCESS',
+        payload: credentials
+    }
+}
+
+export const getupdatedUserFailure = error => {
+    return {
+        type: 'GET_UPDATEDUSER_FAILURE',
+        payload: error
+    }
 }
 
 //----
@@ -121,3 +135,22 @@ export const registerUser = (user) => {
         })
     }
 }
+
+export const updateUser = (user) => {
+    return (dispatch) => {
+
+        dispatch(loadingRequest())
+        axios.post(`/users/update/${user._id}`, user)
+        .then(res => {
+            console.log(res)
+            
+            dispatch(getcurrentUserSuccess(res))
+        })
+        .catch((err) => {
+            const error = err;
+            dispatch(getcurrentUserFailure(error))
+            
+        })
+    }
+}
+

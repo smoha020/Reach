@@ -261,7 +261,7 @@ export const getOtherUser = (user) => {
     return (dispatch) => {
         //dispatch(loadingPost())
         //console.log('before the put ')
-        axios.get(`/social/otheruser/${user}`)
+        axios.get(`/users/otheruser/${user}`)
         .then((res) => {
             console.log(res)
             dispatch(getOtherUserSuccess(res))
