@@ -160,7 +160,14 @@ class Dashboard extends Component {
             website: this.state.website
         }
         console.log(user)
-        this.props.updateUser(user)
+        axios.post(`/users/update/${user._id}`, user)
+        .then(res => {
+            this.props.getAuthenticated()
+            this.setState({ show3: false })
+        })
+        .catch((err) => {
+            const error = err;  
+        })
     }
 
     onChangePic = (e) => {

@@ -134,35 +134,20 @@ router.post('/update/:_id', (req, res) => {
 
     const filter= { _id: req.params._id };
     let query = { username: req.user.username }
- 
-    let currentUser = {}
-    console.log('req body: ' + req.body)
-    allUsers.updateOne(
-        filter, 
-        {$set: { 
-            bio: req.body.bio,
-            location: req.body.location,
-            website: req.body.website
-        }}
-    )
-    .then(() => {
-        return allUsers.findOne(filter)
-    })
-    .then(data => {
-        console.log('here r the new creds: ' + data)
-        currentUser.credentials = data
-        return Likes.find({ user: req.user.username })
-    })
+
+    allUsers.findOne(query)
     .then(data => {
 
-        currentUser.likes = [...data]
-        return Notifications.find({ reciever: req.user.username, read: false, sender: {$ne: req.user.name}  })
-    })
-    .then(data => {
-        
-        currentUser.notifications = [...data]
-        
-        res.json(currentUser)
+        return allUsers.updateOne(
+            filter, 
+            {$set: { 
+                bio: (req.body.bio)? (req.body.bio) : (data.bio),
+                location: (req.body.location)? (req.body.location): (data.location),
+                website: (req.body.website)? (req.body.website): (data.website)
+            }}
+        )
+        .then(() => res.send('user updated'))
+        .catch(err => res.send(err))
     })
     .catch(err => res.json(err))
 })
