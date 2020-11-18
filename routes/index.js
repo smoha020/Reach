@@ -48,7 +48,17 @@ router.get('/test', (req, res) => {
         .then(data => {
             
             currentUser.notifications = [...data]
-            console.log(currentUser)
+            return userImage.findOne({user: req.user.username})
+
+        })
+        .then(data => {
+            console.log(data)
+
+            let baseData = Buffer.from(data.pic.data).toString('base64')
+            currentUser.pic = baseData
+            
+            //console.log(baseData)
+            
             res.json(currentUser)
         })
         .catch(err => console.log(err))

@@ -2,13 +2,14 @@ import React, { Component }from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
 import { getPosts, createPost, deletePost, likePost, unlikePost } from '../Actions/Posts'
-import { signOut, updateUser } from '../Actions/Authenticated'
+import { signOut, updateUser, getAuthenticated } from '../Actions/Authenticated'
 import { connect } from 'react-redux';
 import Post from './Post'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Modal2 from 'react-bootstrap/Modal';
 import CommentInput from './CommentInput'
+import uploads from '../uploads/pic-1605638298190.jpg'
 
 
 class Dashboard extends Component {
@@ -22,6 +23,7 @@ class Dashboard extends Component {
             show: false,
             show2: false,
             show3: false,
+            show4: false,
             postId: '',
             disabled: '',
             pic: '',
@@ -66,6 +68,13 @@ class Dashboard extends Component {
 
     handleClose3 = () => {
         this.setState({show3: false});
+    }
+    handleShow4 = ()=> {
+        this.setState({show4: true});
+    }
+
+    handleClose4 = () => {
+        this.setState({show4: false});
     }
 
     componentDidMount() {
@@ -146,13 +155,32 @@ class Dashboard extends Component {
 
         let user = {
             _id: this.props.currentUser.data.credentials._id,
-            pic: this.state.pic,
             bio: this.state.bio,
             location: this.state.location,
             website: this.state.website
         }
         console.log(user)
         this.props.updateUser(user)
+    }
+
+    onChangePic = (e) => {
+        this.setState({
+            pic: e.target.files[0]
+        })
+    }
+
+    onSubmitPic = (e) => {
+        e.preventDefault()
+        const fd = new FormData();
+        fd.append('pic', this.state.pic, this.state.pic.name)
+        axios.post('/users/uploadImage', fd)
+        .then(() => {
+            this.props.getAuthenticated()
+            this.setState({ show4: false })
+        })
+        .catch(err => {
+            console.log(err)
+        })
     }
 
     deletePost = (post) => {
@@ -269,7 +297,7 @@ class Dashboard extends Component {
                     <Modal show={this.state.show} onHide={this.handleClose}>
                         <form onSubmit={this.onSubmit}> 
                             <Modal.Header closeButton>
-                                <Modal.Title>Modal heading</Modal.Title>
+                                <Modal.Title>New Post</Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
                                 <input type='text'
@@ -303,16 +331,9 @@ class Dashboard extends Component {
                     <Modal show={this.state.show3} onHide={this.handleClose3}>
                         <form onSubmit={this.onSubmitProfile}> 
                             <Modal.Header closeButton>
-                                <Modal.Title>Modal heading</Modal.Title>
+                                <Modal.Title>Update My Profile</Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
-                                <label>
-                                    pic: 
-                                    <input type='file'
-                                    name="pic"
-                                    value={this.state.pic}
-                                    onChange={this.onChange} />
-                                </label>
                                 <label>
                                     username: 
                                     <input type='text'
@@ -351,6 +372,28 @@ class Dashboard extends Component {
                         </form>
                     </Modal>
 
+                    <Modal show={this.state.show4} onHide={this.handleClose4}>
+                        <form onSubmit={this.onSubmitPic}> 
+                            <Modal.Header closeButton>
+                                <Modal.Title>Update Pic</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <label>
+                                    pic: 
+                                    <input 
+                                    type='file'
+                                    onChange={this.onChangePic} />
+                                </label>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={this.handleClose4}>
+                                    Close
+                                </Button>
+                                <input type="submit" value="update"/>
+                            </Modal.Footer>
+                        </form>
+                    </Modal>
+
                     
 
                     <div className='display-flex'>
@@ -358,7 +401,8 @@ class Dashboard extends Component {
                             {displayposts}
                         </div>        
                         <div className="profile">
-                            {(currentUser.data.pic)? (<p><img src={currentUser.data.pic} alt='jpg'/></p>): (null)}
+                            {(currentUser.data.pic)? (<p><img style={{width: '20%'}} src={`data:image/png;base64,${currentUser.data.pic}`} alt='jpg'/></p>): (null)}
+                            <Button variant="primary" onClick={this.handleShow4}>Update My Pic</Button>
                             <p>{currentUser.data.credentials.username}</p>
                             {(currentUser.data.credentials.location)? (<p>{currentUser.data.credentials.location}</p>): (null)}
                             {(currentUser.data.credentials.bio)? (<p>{currentUser.data.credentials.bio}</p>): (null)}
@@ -403,7 +447,8 @@ const mapDispatchToProps = dispatch => {
         deletePost: (post) => dispatch(deletePost(post)),
         likePost: (like) => dispatch(likePost(like)),
         unlikePost: (like) => dispatch(unlikePost(like)),
-        updateUser: (user) => dispatch(updateUser(user))
+        updateUser: (user) => dispatch(updateUser(user)),
+        getAuthenticated: () => dispatch(getAuthenticated()),
     }
 }
 

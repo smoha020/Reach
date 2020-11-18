@@ -15,7 +15,7 @@ const multer = require('multer');
   
 const storage = multer.diskStorage({ 
     destination: (req, file, cb) => { 
-        cb(null, 'uploads') 
+        cb(null, './client/src/uploads') 
     }, 
     filename: (req, file, cb) => { 
         cb(null, file.fieldname + '-' + Date.now() +
@@ -108,11 +108,17 @@ router.post('/login',
 
         })
         .then(data => {
-            console.log(data)
-            console.log(data.pic.name)
-            currentUser.pic = data.pic.name
-            console.log('currentUser: ' + currentUser)
-            res.json(currentUser)
+
+            if(!data){
+                res.send(currentUser)
+            } else {
+                let baseData = Buffer.from(data.pic.data).toString('base64')
+                currentUser.pic = baseData
+                
+                
+                res.json(currentUser)
+            }
+
         })
         .catch(err => console.log(err))
     }    
@@ -134,7 +140,6 @@ router.post('/update/:_id', (req, res) => {
     allUsers.updateOne(
         filter, 
         {$set: { 
-            pic: req.body.pic,
             bio: req.body.bio,
             location: req.body.location,
             website: req.body.website
@@ -165,17 +170,41 @@ router.post('/update/:_id', (req, res) => {
 //UPLOAD PHOTO
 router.post('/uploadImage', upload.single('pic'), (req, res) => {
 
-    console.log(req.file)
-    const newImage = new userImage({
-        user: req.body.user,
-        pic: {
-            data: fs.readFileSync(path.join(__dirname + '/../uploads/' + req.file.filename )), 
-            contentType: 'image/png',
-            name: path.join(__dirname + '/../uploads/' + req.file.filename )
+    console.log('current user is: ' + req.user.username)
+    let filter = { user: req.user.username }
+    userImage.findOne(filter)
+    .then(data => {
+        if(!data) {
+            const newImage = new userImage({
+                user: req.user.username,
+                pic: {
+                    data: fs.readFileSync(path.join(__dirname + '/../client/src/uploads/' + req.file.filename )), 
+                    contentType: 'image/png',
+                    name: `../uploads/${req.file.filename}`
+                }
+            })
+            newImage.save()
+            .then(res => res.send(res))
+            .catch(err => res.send(err))
         }
+        else {
+            
+            userImage.updateOne(
+                filter, 
+                {$set: { 
+                    pic: {
+                        data: fs.readFileSync(path.join(__dirname + '/../client/src/uploads/' + req.file.filename )), 
+                        contentType: 'image/png',
+                        name: `../uploads/${req.file.filename}`
+                    }
+                }}
+            )
+            .then(() => res.send('pic updated'))
+            .catch(err => res.send(err))
+        }
+    
+    
     })
-    newImage.save()
-    .then(res => res.send(res))
     .catch(err => res.send(err))
      
 }) 
