@@ -196,7 +196,7 @@ export const addComment = (newComment) => {
         .then(res => {
 
             dispatch(getPost(newComment.postId))
-            dispatch(getPosts())
+            //dispatch(getPosts())
             //dispatch(addCommentSuccess(res))
         })
         .catch(err => {
@@ -214,7 +214,7 @@ export const deleteComment = (comment) => {
         .then(() => {
 
             dispatch(getPost(comment.postId))
-            dispatch(getPosts())
+            //dispatch(getPosts())
             //dispatch(addCommentSuccess(res))
         })
         .catch(err => {

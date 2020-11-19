@@ -60,6 +60,7 @@ class Dashboard extends Component {
 
     handleClose2 = () => {
         this.setState({show2: false});
+        this.props.getPosts()
     }
 
     handleShow3 = ()=> {

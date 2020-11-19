@@ -127,20 +127,24 @@ router.post('/posts/createcomment/:postId', (req, res) => {
         Note.reciever = data.user
         Note.createdAt = new Date()
 
-        const notification = new Notifications(Note)
-    
-        return notification.save()
+        if(Note.reciever != Note.sender) {
+            const notification = new Notifications(Note)
+            notification.save()
+            .then(() => res.send('Notification Sent'))
+            .catch(err => res.send(err))
+        } else {
+            res.send('No Notification Sent')
+        }
     })
-    .then(data =>{ 
-        res.send('Notifaction made!')
-        console.log("Notification: " + data)})
     .catch(err => console.log(err))
 })
-
+  
 
 //DELETE A COMMENT
 router.put('/posts/deletecomment/:postId', (req, res) => {
-    const filter= { postId: req.params.postId};
+    const filter = { 
+        _id: req.body._id,
+    };
 
     Comments.deleteOne(filter)
     .then(() => {
@@ -156,7 +160,7 @@ router.put('/posts/deletecomment/:postId', (req, res) => {
         let filter = {
             notType: 'comment',
             postId: req.params.postId,
-            sender: req.body.user
+            sender: req.body.user,
         }
         return Notifications.deleteOne(filter)
         
@@ -192,39 +196,41 @@ router.post('/like/:postId', (req, res) => {
             user: req.body.user,
             postId: req.params.postId,
             createdAt: new Date()
-        })
+            })
      
-        newLike.save()
-        .then(data => {
-    
-            Note.sender = data.user
-            Note.notType = 'like'
-            Note.postId = data.postId
-            Note.read = false
-    
-            return Posts.updateOne(query, { $inc : {
-                likeCount: 1
-            } })
-        })
-        .then(() => {
-            
-            //the sender is 'user' in post
-            return Posts.findOne(query)
-        })
-        .then(data => { 
-    
-            Note.reciever = data.user;
-            Note.createdAt = new Date();
-    
-            const notification = new Notifications(Note)
+            newLike.save()
+            .then(data => {
         
-            return notification.save()
-        })
-        .then(() => {
-            //we should send the post with updated likeCount
-            res.send('Notification Sent')
-        })
-        .catch(err => res.json(err))
+                Note.sender = data.user
+                Note.notType = 'like'
+                Note.postId = data.postId
+                Note.read = false
+        
+                return Posts.updateOne(query, { $inc : {
+                    likeCount: 1
+                } })
+            })
+            .then(() => {
+                
+                //the sender is 'user' in post
+                return Posts.findOne(query)
+            })
+            .then(data => { 
+        
+                Note.reciever = data.user;
+                Note.createdAt = new Date();
+            
+                if(Note.reciever != Note.sender) {
+                    const notification = new Notifications(Note)
+                    notification.save()
+                    .then(() => res.send('Notification Sent'))
+                    .catch(err => res.send(err))
+                } else {
+                    res.send('No Notification Sent')
+                }
+            
+            })
+            .catch(err => res.json(err))
 
         } else {
             res.send('You already liked this post')

@@ -126,7 +126,12 @@ export const registerUser = (user) => {
             console.log(res)
             
             let currentUser = res
-            dispatch(getcurrentUserSuccess(currentUser))
+            let loginUser = {
+                email: user.email,
+                password: user.password
+            } 
+            dispatch(signIn(loginUser))
+            //dispatch(getcurrentUserSuccess(currentUser))
         })
         .catch((err) => {
             const error = err;

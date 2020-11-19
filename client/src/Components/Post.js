@@ -27,7 +27,7 @@ class Post extends Component {
 
         let newComment = {
             body: this.state.comment,
-            user: this.props.post.data.user,
+            user: this.props.currentUser.data.credentials.username,
             postId: this.props.postId
         }
 
