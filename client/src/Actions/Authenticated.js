@@ -34,6 +34,19 @@ export const getupdatedUserFailure = error => {
     }
 }
 
+export const logOutSuccess = () => {
+    return {
+        type: 'LOG_OUT_SUCCESS',
+    }
+}
+
+export const logOutFailure = error => {
+    return {
+        type: 'LOG_OUT_FAILURE',
+        payload: error
+    }
+}
+
 //----
 const getAuthenticatedRequest = () => {
     return {
@@ -102,20 +115,19 @@ export const signIn = (user) => {
 }
 
 export const signOut = () => {
-    console.log('signOut')
-    /*return (dispatch) => {
+    
+    return (dispatch) => {
         dispatch(loadingRequest())
         axios.get('users/logout')
-        .then(res => {
-            console.log(res)
-            const isAuthenticated = res;
-            dispatch(getAuthenticatedSuccess(isAuthenticated))
+        .then(() => {
+            
+            dispatch(logOutSuccess())
         })
         .catch(err => {
             const error = err;
-            dispatch(getAuthenticatedFailure(error))
+            dispatch(logOutFailure(error))
         })
-    }*/
+    }
 }
 
 export const registerUser = (user) => {

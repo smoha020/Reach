@@ -170,7 +170,7 @@ export const deletePost = (post) => {
         })
     }
 }
-
+  
 //GET POST
 export const getPost = (postId) => {
     return (dispatch) => {

@@ -79,7 +79,6 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
-        console.log('dashboard componentDidMount')
         this.props.getPosts()
     }
 
@@ -87,7 +86,6 @@ class Dashboard extends Component {
         this.setState({[e.target.name]: e.target.value})
     }
     onChangeFile = (e) => {
-        console.log(e.target.files[0])
         this.setState({ pic: e.target.files[0] })
     }
     
@@ -111,11 +109,6 @@ class Dashboard extends Component {
     
         e.preventDefault();
 
-        console.log(post.user)
-        console.log('here is a comment')
-        console.log(this.state.comment)
-        console.log(this.state.currentUser.email)
-        console.log(post._id)
     }
 
     clickLike = (id, e ) => {
@@ -160,7 +153,6 @@ class Dashboard extends Component {
             location: this.state.location,
             website: this.state.website
         }
-        console.log(user)
         axios.post(`/users/update/${user._id}`, user)
         .then(res => {
             this.props.getAuthenticated()
@@ -192,7 +184,6 @@ class Dashboard extends Component {
     }
 
     deletePost = (post) => {
-        console.log(post)
         this.props.deletePost(post)
     }
     
@@ -205,7 +196,6 @@ class Dashboard extends Component {
     render() {
 
         const { currentUser, posts, loading, likes } = this.props
-        console.log(this.state.pic)
         console.log(this.props)
 
         let display;
@@ -266,24 +256,21 @@ class Dashboard extends Component {
                                 <Button variant="primary" onClick={this.handleShow2.bind(this, post)}>
                                     View comments
                                 </Button>
-                                
-            
                             </React.Fragment>
                         )   
                     })
                 }
  
-                notesDisplay = currentUser.data.notifications.map(note => {
-                    let myPost = posts.map(post => {
-                        if(post._id === note.postId) { 
-                            return post
-                        }
+                notesDisplay = currentUser.data.notifications.map((note, index) => {
+                    let myPost = posts.find( post => {
+                        return (post._id === note.postId) 
                     })
+                    console.log(myPost)
                     if(note.notType === 'like') { 
 
-                        return <li><Button variant="primary" style={{color: 'white'}} onClick={this.handleShow2.bind(this, myPost[0], note)}>{note.sender} liked your post</Button></li>
+                        return <li key={index}><Button variant="primary" style={{color: 'white'}} onClick={this.handleShow2.bind(this, myPost, note)}>{note.sender} liked your post</Button></li>
                     } else {
-                        return <li><Button variant="primary" style={{color: 'red'}} onClick={this.handleShow2.bind(this, myPost[0], note)}>{note.sender} commented on your post </Button></li> 
+                        return <li key={index}><Button variant="primary" style={{color: 'red'}} onClick={this.handleShow2.bind(this, myPost, note)}>{note.sender} commented on your post </Button></li> 
                     }
                 })
 

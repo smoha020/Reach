@@ -16,7 +16,6 @@ const AuthenticateReducer = (state = initState, action) => {
         case 'GET_CURRENTUSER_SUCCESS': 
             return {
                 loading: false,
-                //When we submit a post, dashboard is refreshed
                 currentUser: action.payload,
                 likes: [...action.payload.data.likes],
                 error: ''
@@ -61,6 +60,23 @@ const AuthenticateReducer = (state = initState, action) => {
                 ...state,
                 loading: false,
                 currentUser: '',
+                error: action.payload
+            }
+        case 'LOG_OUT_SUCCESS': 
+            return {
+                loading: false,
+                //When we submit a post, dashboard is refreshed
+                currentUser: '',
+                notifications: '',
+                likes: '',
+                error: ''
+            }
+        case 'LOG_OUT_FAILURE': 
+            return {
+                loading: false,
+                currentUser: '',
+                notifications: '',
+                likes: '',
                 error: action.payload
             }
         default: return state
