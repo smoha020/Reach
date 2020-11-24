@@ -9,7 +9,6 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Modal2 from 'react-bootstrap/Modal';
 import CommentInput from './CommentInput'
-import uploads from '../uploads/pic-1605638298190.jpg'
 
 
 class Dashboard extends Component {

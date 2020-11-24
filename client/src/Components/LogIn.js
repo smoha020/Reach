@@ -1,5 +1,6 @@
 import React, { Component }from 'react';
 import { connect } from 'react-redux';
+import TextField from '@material-ui/core/TextField';
 import { signIn } from '../Actions/Authenticated'
 
 class LogIn extends Component {
@@ -47,26 +48,31 @@ class LogIn extends Component {
                     </ul>
                     <br></br>
                     <div className="container">
-                    {/*<%- include ('partials/messages') %>*/}
-                        <form onSubmit={this.onSubmit}/*action="/users/login" method="POST"*/>
-                            <div className="grid-container">
-                                <label className="iteml1" htmlFor="email">Email</label>
-                                <input className="iteml2" 
-                                type="email" 
-                                name="email" 
-                                value={this.state.email}
-                                /*value="<%= (function(){ return email})() %>"*/
-                                onChange={this.onChange}/>
-                                <label className="iteml3" htmlFor="password1">Password</label>
-                                <input className="iteml4" 
-                                type="password" 
-                                name="password" 
-                                value={this.state.password}
-                                /*value="<%= (function(){ return password})() %>"*/
-                                onChange={this.onChange}/>
-                                <input className="iteml5" 
-                                type="submit" 
-                                value="Sign In"/>
+                        <form onSubmit={this.onSubmit}>
+                            <div className="register-form">
+                                <div className='register-form-child'>
+                                    <TextField className="register-text-input" 
+                                    id="standard-basic" 
+                                    label="email" 
+                                    type="email" 
+                                    name="email" 
+                                    value={this.state.email}
+                                    onChange={this.onChange}/>
+                                </div>
+                                <div className='register-form-child'>
+                                    <TextField className="register-text-input" 
+                                    id="standard-basic" 
+                                    label="password"  
+                                    type="password" 
+                                    name="password" 
+                                    value={this.state.password}
+                                    onChange={this.onChange}/>
+                                </div>
+                                <div className='register-form-child'>
+                                    <input className="register-submit"
+                                    type="submit" 
+                                    value="Sign In"/>
+                                </div>
                             </div>
                         </form>
                     </div>

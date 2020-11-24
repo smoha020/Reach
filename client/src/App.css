@@ -1,4 +1,87 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+.home-container {
+  display: flex
+}
+.home-left, .home-right {
+  width: 50%;
+  height: 90vh;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.home-left {
+  background: #2196f3;
+}
+.home-left-mid {
+  width: 70%;
+}
+.home-left-mid div {
+  margin: 10% 2%;
+  font-size: xx-large;
+  font-weight: bold;
+}
+.home-right {
+  vertical-align: top;
+  flex-direction: column;
+}
+.home-right-top {
+  height: 20%;
+  margin: 0 1%;
+  display: block;
+  color: black;
+  font-size: xxx-large;
+  font-weight: bold;
+}
+.home-right-mid {
+  width: 90%;
+  height: 40%;
+}
+.home-right-mid-btn {
+  background: #2196f3;
+  color: white;
+  font-size: x-large;
+  font-weight: bold;
+  width: 95%;
+  height: 18%;
+  border-radius: 25px;
+  text-align: center;
+  margin: 9% auto;
+  padding: 1%;
+}
 
+/*---------REGISTER------*/
+.register-form {
+  display: flex;
+  flex-direction: column;
+  height: 60vh;
+  width: 60vw;
+  margin: auto;
+  box-shadow: 0 10px 20px gray;
+}
+.register-form-child {
+  margin: auto;
+  text-align: center;
+  width: 38%;
+  height: 12%;
+}
+.register-text-input {
+  width: 100%;
+}
+.register-submit {
+  background: #2196f3;
+  color: white;
+  border: none;
+  font-size: large;
+  width: 100%;
+  height: 100%;
+}
+
+
+/*--------------------------OLD DESIGN ------------------------*/
 *{
   box-sizing: border-box;
 }

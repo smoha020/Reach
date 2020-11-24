@@ -1,5 +1,6 @@
 import React, { Component }from 'react';
 import { Link } from 'react-router-dom';
+import TextField from '@material-ui/core/TextField';
 import { registerUser } from '../Actions/Authenticated'
 import { connect } from 'react-redux';
 
@@ -59,31 +60,41 @@ class Register extends Component {
                     {/*<%- include ('partials/messages') %> <!-- This syntax is newer-->*/}
                     <br></br>
                         <form onSubmit={this.onSubmit}>
-                            <div className="grid-container">
-                                <label className="item1" htmlFor="name">Name</label>
-                                <input className="iteml2" 
-                                type="username" 
-                                name="username" 
-                                value={this.state.username}
-                                /*value="<%= (function(){ return email})() %>"*/
-                                onChange={this.onChange}/>
-                                <label className="iteml1" htmlFor="email">Email</label>
-                                <input className="iteml2" 
-                                type="email" 
-                                name="email" 
-                                value={this.state.email}
-                                /*value="<%= (function(){ return email})() %>"*/
-                                onChange={this.onChange}/>
-                                <label className="item5" htmlFor="password1">Password</label>
-                                <input className="item6" 
-                                type="password" 
-                                name="password" 
-                                value={this.state.password}
-                                /*value="<%= (function(){ return password})() %>"*/
-                                onChange={this.onChange}/>
-                                <input className="iteml5" 
-                                type="submit" 
-                                value="Register"/>
+                            <div className='register-form'>
+                                <div className='register-form-child'>
+                                    <TextField className="register-text-input" 
+                                    id="standard-basic" 
+                                    label="name" 
+                                    type="username" 
+                                    name="username" 
+                                    value={this.state.username}
+                                    onChange={this.onChange}/>
+                                </div>
+                                <div className='register-form-child'>
+                                    <TextField className="register-text-input" 
+                                    id="standard-basic" 
+                                    label="email" 
+                                    type="email" 
+                                    name="email" 
+                                    value={this.state.email}
+                                    /*value="<%= (function(){ return email})() %>"*/
+                                    onChange={this.onChange}/>
+                                </div>
+                                <div className='register-form-child'> 
+                                    <TextField className="register-text-input" 
+                                    id="standard-basic" 
+                                    label="password" 
+                                    type="password" 
+                                    name="password" 
+                                    value={this.state.password}
+                                    /*value="<%= (function(){ return password})() %>"*/
+                                    onChange={this.onChange}/>
+                                </div>
+                                <div className='register-form-child'> 
+                                    <input className="register-submit"
+                                    type="submit" 
+                                    value="Register"/>
+                                </div>
                             </div>
                         </form>
                     </div>
