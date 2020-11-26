@@ -2,6 +2,27 @@
   padding: 0;
   margin: 0;
 }
+/*--------NAVBAR-------*/
+.my-nav {
+  background: #2196f3;
+  height: 12vh;
+  overflow: hidden;
+}
+.my-nav .link-div {
+  display: inline-block;
+  background: #2196f3;
+  height: 100%;
+  padding: 30px 30px;
+  color: white;
+  font-size: x-large;
+}
+
+.my-nav .link-div:hover {
+  background: #1976d2; 
+  border-radius: 4px;
+  color: white;
+}
+
 .home-container {
   display: flex
 }
@@ -96,29 +117,9 @@ body {
   width: 80%;
   height: 100vh;
 }
-ul {
-  list-style-type: none; 
-  background: rgb(0, 0, 255);
-  padding: 0;
-  overflow: hidden;
-}
 
-li {
-  float: right;
-  background: rgb(0, 0, 255);
-}
 
-li a {
-  display: block;
-  text-decoration: none;
-  padding: 15px 15px;
-  color: white;
-}
 
-li a:hover {
-  background: #210BE2; 
-  border-radius: 4px;
-}
 
 .company {
   float: left;

@@ -1,8 +1,8 @@
 import React, { Component }from 'react';
-import { Link } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import { registerUser } from '../Actions/Authenticated'
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 
 
@@ -51,13 +51,12 @@ class Register extends Component {
             } else {
                 display = 
                 <React.Fragment>
-                    <ul>
-                        <li><a href="/">Home</a></li>
-                        <li><Link to="/logIn">Log In</Link></li>
-                    </ul>
+                    <div className='my-nav'>
+                        <Link to="/"><div className='link-div'>Home</div></Link>
+                        <Link to="/LogIn"><div className='link-div'>Log In</div></Link>
+                    </div>
                     <br></br>
-                    <div className="container">
-                    {/*<%- include ('partials/messages') %> <!-- This syntax is newer-->*/}
+                    <div>
                     <br></br>
                         <form onSubmit={this.onSubmit}>
                             <div className='register-form'>

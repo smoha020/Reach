@@ -2,6 +2,7 @@ import React, { Component }from 'react';
 import { connect } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import { signIn } from '../Actions/Authenticated'
+import { Link } from 'react-router-dom';
 
 class LogIn extends Component {
     constructor(props) {
@@ -43,9 +44,10 @@ class LogIn extends Component {
                 this.props.history.push('/Dashboard')
             } else {
                 display = <React.Fragment>
-                    <ul>
-                        <li><a href="/">Home</a></li>
-                    </ul>
+                    <div className='my-nav'>
+                        <Link to="/"><div className='link-div'>Home</div></Link>
+                        <Link to="/Register"><div className='link-div'>Sign Up</div></Link>
+                    </div>
                     <br></br>
                     <div className="container">
                         <form onSubmit={this.onSubmit}>

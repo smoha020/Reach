@@ -276,17 +276,15 @@ class Dashboard extends Component {
               
                 display = 
                 <React.Fragment>
-                    <ul>
-                        <li className="company"><a style={{color: 'white'}}>NewsQuest</a></li>
-                        <li><Button onClick={this.logOut}>Log Out</Button></li>
-                        <li>
-                            <div>
+                    <div className='my-nav'>
+                        <div className='link-div'>NewsQuest</div>
+                        <Button onClick={this.logOut}><div className='link-div'>Log Out</div></Button>
+                            <div className='link-div'>
                                 <Button >Notifications</Button>
-                                <ul>{notesDisplay}</ul>
+                                <p>{notesDisplay}</p>
                             </div>
-                        </li>
-                        <Button variant="primary" onClick={this.handleShow}> Add Post </Button>              
-                    </ul>
+                        <Button variant="primary" onClick={this.handleShow}><div className='link-div'>Add Post </div></Button>              
+                    </div>
 
                     <Modal show={this.state.show} onHide={this.handleClose}>
                         <form onSubmit={this.onSubmit}> 
