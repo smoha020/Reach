@@ -52,10 +52,11 @@ router.get('/test', (req, res) => {
 
         })
         .then(data => {
-            console.log(data)
 
-            let baseData = Buffer.from(data.pic.data).toString('base64')
-            currentUser.pic = baseData
+            if(data) {
+                let baseData = Buffer.from(data.pic.data).toString('base64')
+                currentUser.pic = baseData
+            }
             
             //console.log(baseData)
             

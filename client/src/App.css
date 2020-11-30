@@ -6,7 +6,7 @@
 .my-nav {
   background: #2196f3;
   height: 12vh;
-  overflow: hidden;
+  position: relative;
 }
 .my-nav .link-div {
   display: inline-block;
@@ -22,7 +22,67 @@
   border-radius: 4px;
   color: white;
 }
+.brand-name {
+  display: inline-block;
+  background: #2196f3;
+  height: 100%;
+  padding: 30px 30px;
+  color: white;
+  font-size: x-large;
+}
+/*-------------NAVBAR ON DASHBOARD--------*/
+.move-right {
+  display: -webkit-inline-flex;
+  position: absolute;
+  right: 0;
+  width: 25%;
+  height: 100%;
+  justify-content: center;
+}
+.notes-display {
+  display: relative;
+  width: 40%;
+  height: 100%;
+}
+.notes-icon {
+  font-size: small;
+  color: white;
+  cursor: pointer;
+  margin: 18%;
+}
+.notes-menu {
+  position: absolute;
+  width: 40%;
+  background: red;
+}
+.notes-menu div {
+  background: #e3f2fd;
+  width: 150%;
+  padding: 8%;
+  color: dimgrey;
+  cursor: pointer;
+  border: solid;
+  border-width: 1px;
+  border-color: lightgrey;
+}
+.notes-menu div:hover {
+  background: #bbdefb;
+}
+.post-icon {
+  font-size: small;
+  margin: auto;
+  color: white;
+  cursor: pointer;
+}
+.log-out {
+  cursor: pointer;
+  margin: auto;
+  color: white;
+  padding: 7%;
+  font-size: large;
+}
 
+/*----------HOME PAGE--------------*/
 .home-container {
   display: flex
 }
@@ -101,7 +161,17 @@
   height: 100%;
 }
 
-
+/*----------DASHBOARD--------*/
+.post-time {
+  display: inline-block;
+  margin: 2%;
+}
+.post-bottom {
+  display: flex;
+}
+.post-bottom div {
+  margin: 2%;
+}
 /*--------------------------OLD DESIGN ------------------------*/
 *{
   box-sizing: border-box;

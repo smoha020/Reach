@@ -7,6 +7,11 @@ import { connect } from 'react-redux';
 import Post from './Post'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import PostAddIcon from '@material-ui/icons/PostAdd';
+import CommentIcon from '@material-ui/icons/Comment';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import Modal2 from 'react-bootstrap/Modal';
 import CommentInput from './CommentInput'
 
@@ -29,7 +34,10 @@ class Dashboard extends Component {
             username: '',
             bio: '',
             location: '',
-            website: ''
+            website: '',
+            notes: 'notes',
+            visible: false,
+            notesColor: 'white'
         }
     }
 
@@ -192,6 +200,25 @@ class Dashboard extends Component {
         //this.props.history.push('/')
     }
 
+    //DELETE THIS
+    changeNotes = () => {
+
+        //-------------
+        //FOR TEST
+        if(this.state.visible) {
+            this.setState({ 
+                visible: false, 
+                notesColor: 'white'
+            })
+        } else {
+            this.setState({ 
+                visible: true,
+                notesColor: '#0d47a1'
+            })
+        }
+        
+    }
+
     render() {
 
         const { currentUser, posts, loading, likes } = this.props
@@ -235,26 +262,21 @@ class Dashboard extends Component {
                             <React.Fragment key={index}>
                                 <div className='post'>
                                     {deletedisplay}
-                                    <Link to={`/User/${post.user}`}>{post.user}</Link>
-                                    <p>{post.body}</p>
-                                    <p>{post.createdAt}</p>
-                                    {( thumbsLogo.includes(post._id) )? (
-                                    <Button disabled={this.disabled} onClick={this.clickUnlike.bind(this, post._id)}>thumbs down</Button>
-                                    ) : (
-                                    <Button disabled={this.disabled} onClick={this.clickLike.bind(this, post._id)}>thumbs up</Button>
-                                    )} 
-                                    <p>{post.likeCount} likes</p>
-                                    <p>Comment count</p>
-                                    <p>{post.commentCount} comments</p>
+                                    <Link to={`/User/${post.user}`} style={{ fontWeight: 'bold'}}>{post.user}</Link>
+                                    <div className='post-time'>{post.createdAt}</div>
+                                    <div className='post-body'>{post.body}</div>
+                                    <div className='post-bottom'>
+                                        {( thumbsLogo.includes(post._id) )? (
+                                        <div><ThumbDownIcon disabled={this.state.disabled} onClick={this.clickUnlike.bind(this, post._id)} style={{ fontSize: 30, color: 'gray', cursor: 'pointer'}}>thumbs down</ThumbDownIcon></div>
+                                        ) : (
+                                        <div><ThumbUpIcon disabled={this.state.disabled} onClick={this.clickLike.bind(this, post._id)} style={{ fontSize: 30, color: 'gray', cursor: 'pointer'}}>thumbs up</ThumbUpIcon></div>
+                                        )} 
+                                        <div>{post.likeCount}</div>
+                                        <div><CommentIcon style={{ fontSize: 30, color: 'gray', cursor: 'pointer'}} onClick={this.handleShow2.bind(this, post)}></CommentIcon></div>
+                                        <div>{post.commentCount}</div>
+                                    </div>
                                 </div>
-                            {/*<Link to={`Post/${post._id}`} >
-                                    <button>
-                                        OPEN
-                                    </button>
-                                </Link> */}
-                                <Button variant="primary" onClick={this.handleShow2.bind(this, post)}>
-                                    View comments
-                                </Button>
+                                
                             </React.Fragment>
                         )   
                     })
@@ -267,9 +289,9 @@ class Dashboard extends Component {
                     console.log(myPost)
                     if(note.notType === 'like') { 
 
-                        return <li key={index}><Button variant="primary" style={{color: 'white'}} onClick={this.handleShow2.bind(this, myPost, note)}>{note.sender} liked your post</Button></li>
+                        return <div key={index} variant="primary" onClick={this.handleShow2.bind(this, myPost, note)}>{note.sender} liked your post </div>
                     } else {
-                        return <li key={index}><Button variant="primary" style={{color: 'red'}} onClick={this.handleShow2.bind(this, myPost, note)}>{note.sender} commented on your post </Button></li> 
+                        return <div key={index} variant="primary" onClick={this.handleShow2.bind(this, myPost, note)}>{note.sender} commented on your post </div>
                     }
                 })
 
@@ -277,15 +299,20 @@ class Dashboard extends Component {
                 display = 
                 <React.Fragment>
                     <div className='my-nav'>
-                        <div className='link-div'>NewsQuest</div>
-                        <Button onClick={this.logOut}><div className='link-div'>Log Out</div></Button>
-                            <div className='link-div'>
-                                <Button >Notifications</Button>
-                                <p>{notesDisplay}</p>
+                        <div className='brand-name'>NewsQuest</div>
+                        <div className='move-right'>   
+                            <div className='notes-display'>
+                                <NotificationsIcon className='notes-icon' style={{ fontSize: 40, color: `${this.state.notesColor}` }} onClick={this.changeNotes}></NotificationsIcon>
+                                {(this.state.visible)? (
+                                    <div className='notes-menu'>
+                                        {notesDisplay}
+                                    </div>): (null)}
                             </div>
-                        <Button variant="primary" onClick={this.handleShow}><div className='link-div'>Add Post </div></Button>              
+                            <PostAddIcon className='post-icon' style={{ fontSize: 40 }} onClick={this.handleShow}></PostAddIcon>  
+                            <div onClick={this.logOut} className='log-out'>Log Out</div>    
+                        </div>   
                     </div>
-
+ 
                     <Modal show={this.state.show} onHide={this.handleClose}>
                         <form onSubmit={this.onSubmit}> 
                             <Modal.Header closeButton>
