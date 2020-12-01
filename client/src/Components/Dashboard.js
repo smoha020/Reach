@@ -261,19 +261,28 @@ class Dashboard extends Component {
                         return (
                             <React.Fragment key={index}>
                                 <div className='post'>
-                                    {deletedisplay}
-                                    <Link to={`/User/${post.user}`} style={{ fontWeight: 'bold'}}>{post.user}</Link>
-                                    <div className='post-time'>{post.createdAt}</div>
-                                    <div className='post-body'>{post.body}</div>
-                                    <div className='post-bottom'>
-                                        {( thumbsLogo.includes(post._id) )? (
-                                        <div><ThumbDownIcon disabled={this.state.disabled} onClick={this.clickUnlike.bind(this, post._id)} style={{ fontSize: 30, color: 'gray', cursor: 'pointer'}}>thumbs down</ThumbDownIcon></div>
-                                        ) : (
-                                        <div><ThumbUpIcon disabled={this.state.disabled} onClick={this.clickLike.bind(this, post._id)} style={{ fontSize: 30, color: 'gray', cursor: 'pointer'}}>thumbs up</ThumbUpIcon></div>
-                                        )} 
-                                        <div>{post.likeCount}</div>
-                                        <div><CommentIcon style={{ fontSize: 30, color: 'gray', cursor: 'pointer'}} onClick={this.handleShow2.bind(this, post)}></CommentIcon></div>
-                                        <div>{post.commentCount}</div>
+                                    <div className='post-pic'>pic is here</div>
+                                    <div className='post-right'>
+                                        {deletedisplay}
+                                        <div><Link to={`/User/${post.user}`} style={{ fontWeight: 'bold'}}>{post.user}</Link></div>
+                                        <div className='post-time'>{post.createdAt}</div>
+                                        <div className='post-body'>{post.body}</div>
+                                        <div className='post-bottom'>
+                                            <div className='bottom-thumb'>
+                                                <div>
+                                                    {( thumbsLogo.includes(post._id) )? (
+                                                    <ThumbDownIcon disabled={this.state.disabled} onClick={this.clickUnlike.bind(this, post._id)} style={{ fontSize: 30, color: 'gray', cursor: 'pointer'}}></ThumbDownIcon>
+                                                    ) : (
+                                                    <ThumbUpIcon disabled={this.state.disabled} onClick={this.clickLike.bind(this, post._id)} style={{ fontSize: 30, color: 'gray', cursor: 'pointer'}}></ThumbUpIcon>
+                                                    )} 
+                                                </div>
+                                                <div>{post.likeCount}</div>
+                                            </div>
+                                            <div className='bottom-comment'>
+                                                <div><CommentIcon style={{ fontSize: 30, color: 'gray', cursor: 'pointer'}} onClick={this.handleShow2.bind(this, post)}></CommentIcon></div>
+                                                <div>{post.commentCount}</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 

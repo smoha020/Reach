@@ -162,16 +162,50 @@
 }
 
 /*----------DASHBOARD--------*/
+.post-container {
+  display: inline-block;
+  width: 65%;
+}
+.post {
+  overflow: hidden;
+  margin: 20px;
+  padding: 10px;
+  box-shadow: 0 10px 20px gray;
+}
+.post-pic, .post-right {
+  display: inline-block;
+  background: green;
+}
+.post-right {
+  width: 75%;
+}
+.post-pic {
+  background: blue;
+  vertical-align: top;
+  margin: 2% 1%;
+  padding: 4%;
+}
 .post-time {
   display: inline-block;
   margin: 2%;
+}
+.post-body {
+  background: red;
+  margin: 0% 3%;
 }
 .post-bottom {
   display: flex;
 }
 .post-bottom div {
-  margin: 2%;
+  margin: 2% 5%;
 }
+.bottom-thumb, .bottom-comment {
+  display: flex;
+}
+.bottom-thumb div, .bottom-comment div {
+  padding: 15%;
+}
+
 /*--------------------------OLD DESIGN ------------------------*/
 *{
   box-sizing: border-box;
@@ -282,17 +316,7 @@ body input[type=text] {
   margin: auto;
   width: 90%;
 }
-.post-container {
-  display: inline-block;
-  width: 65%;
-}
-.post {
-  overflow: hidden;
-  margin: 20px;
-  padding: 10px;
-  clear: both;
-  box-shadow: 0 10px 20px gray;
-}
+
 .profile {
   background: red;
   display: inline-block;
