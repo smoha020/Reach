@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const userImage = require('../Models/userImage')
 const Posts = require('../Models/Posts')
 const Notifications = require('../Models/Notifications')
 const allUsers = require('../Models/allUsers')
@@ -63,18 +64,47 @@ router.get('/posts/single/:postId', (req, res) => {
 //CREATE A POST
 router.post('/posts/create', (req, res) => {
     
-    //create a new post
-    const newPost = new Posts({
-        user: req.body.user,
-        body: req.body.body,
-        likeCount: 0,
-        commentCount: 0,
-        createdAt: new Date(),
+
+    //look for user image
+    console.log('it is user with name: ' + req.user.username)
+    userImage.findOne({ user: req.body.user })
+    .then( data => {
+
+        if(!data) {
+            
+            console.log('no image')
+            const newPost = new Posts({
+                user: req.body.user,
+                body: req.body.body,
+                likeCount: 0,
+                commentCount: 0,
+                pic: '',
+                createdAt: new Date(),
+            })
+            
+            newPost.save()
+            .then(data => res.json(data))
+            .catch(err => console.log(err))
+        } else {
+            console.log('we got an image')
+            let baseData = Buffer.from(data.pic.data).toString('base64')
+
+            const newPost = new Posts({
+                user: req.body.user,
+                body: req.body.body,
+                likeCount: 0,
+                commentCount: 0,
+                pic: baseData,
+                createdAt: new Date(),
+            })
+            
+            newPost.save()
+            .then(data => res.json(data))
+            .catch(err => console.log(err))
+        }
+
     })
-    
-    newPost.save()
-    .then(data => res.json(data))
-    .catch(err => console.log(err))
+    .catch(err => res.send(err))
 })
 
 //DELETE POST

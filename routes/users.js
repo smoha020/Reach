@@ -12,6 +12,7 @@ const authenticate = require('../config/authenticate');
 const fs = require('fs'); 
 const path = require('path'); 
 const multer = require('multer'); 
+const Posts = require('../Models/Posts');
   
 const storage = multer.diskStorage({ 
     destination: (req, file, cb) => { 
@@ -169,7 +170,30 @@ router.post('/uploadImage', upload.single('pic'), (req, res) => {
                 }
             })
             newImage.save()
-            .then(res => res.send(res))
+            .then(res => {
+                
+                userImage.findOne(filter)
+                .then(data => {
+
+                    let baseData = Buffer.from(data.pic.data).toString('base64')
+            
+                    Posts.findOne(filter)
+                    .then(data => {
+                        //if no previos posts made by user
+                        if(!data) {
+                            console.log('no previous posts')
+                        } else {
+                            Posts.updateMany(filter, { pic: baseData})
+                            .then(() => console.log('post pics also updated'))
+                            .catch(err => console.log(err))
+                        }
+                    })
+                    .catch(err => console.log(err))
+                })
+                .catch(err => console.log(err))
+                
+                res.send('pic also updated')
+            })
             .catch(err => res.send(err))
         }
         else {
@@ -184,7 +208,36 @@ router.post('/uploadImage', upload.single('pic'), (req, res) => {
                     }
                 }}
             )
-            .then(() => res.send('pic updated'))
+            .then(() => {
+                console.log('are we in the else')
+                userImage.findOne(filter)
+                .then(data => {
+
+                    let baseData = Buffer.from(data.pic.data).toString('base64')
+            
+                    Posts.findOne(filter)
+                    .then(data => {
+                        //if no previos posts made by user
+                        if(!data) {
+                            console.log('no previous posts')
+                        } else {
+                            Posts.updateMany(filter, { pic: baseData})
+                            .then(() => {
+                                /*must send otherwise ggetPosts will
+                                not show the changed pics unless page is refreshed*/
+                                res.send(baseData)
+                                console.log('post pics updated')
+                            })
+                            .catch(err => console.log(err))
+                        }
+                    })
+                    .catch(err => console.log(err))
+                })
+                .catch(err => console.log(err))
+                
+
+                console.log('post pics updated')
+            })
             .catch(err => res.send(err))
         }
     

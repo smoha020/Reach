@@ -21,12 +21,12 @@ class Home extends Component {
               <p>Welcome to the network</p>
             </div>
             <div className='home-right-mid'>
-              <Link to='/Register'>
+              <Link to='/Register' style={{ textDecoration: 'none'}}>
                 <div className='home-right-mid-btn'>
                   Sign Up
                 </div>
               </Link>
-              <Link to='/LogIn'>
+              <Link to='/LogIn' style={{ textDecoration: 'none'}}>
                 <div className='home-right-mid-btn'>
                   Log In
                 </div>

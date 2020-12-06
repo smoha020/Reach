@@ -7,6 +7,7 @@ const PostsSchema = new mongoose.Schema({
     likeCount: Number,
     commentCount: Number,
     createdAt: Date,
+    pic: String,
     
 })
 

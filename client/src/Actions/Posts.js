@@ -132,6 +132,7 @@ export const getPosts = () => {
                 return post
             })
             const posts = listPosts;
+            console.log(posts)
             //console.log(posts)
             dispatch(getPostsSuccess(posts))
         })
