@@ -170,7 +170,7 @@ router.post('/uploadImage', upload.single('pic'), (req, res) => {
                 }
             })
             newImage.save()
-            .then(res => {
+            .then(() => {
                 
                 userImage.findOne(filter)
                 .then(data => {
@@ -181,10 +181,14 @@ router.post('/uploadImage', upload.single('pic'), (req, res) => {
                     .then(data => {
                         //if no previos posts made by user
                         if(!data) {
-                            console.log('no previous posts')
+                            console.log('also no previous posts')
+                            res.send('also no previous posts')
                         } else {
                             Posts.updateMany(filter, { pic: baseData})
-                            .then(() => console.log('post pics also updated'))
+                            .then(() => {
+                                res.send(baseData)
+                                console.log('post pics also updated')
+                            })
                             .catch(err => console.log(err))
                         }
                     })
@@ -192,7 +196,7 @@ router.post('/uploadImage', upload.single('pic'), (req, res) => {
                 })
                 .catch(err => console.log(err))
                 
-                res.send('pic also updated')
+                console.log('pic also updated')
             })
             .catch(err => res.send(err))
         }
@@ -220,13 +224,14 @@ router.post('/uploadImage', upload.single('pic'), (req, res) => {
                         //if no previos posts made by user
                         if(!data) {
                             console.log('no previous posts')
+                            res.send('no previous posts')
                         } else {
                             Posts.updateMany(filter, { pic: baseData})
                             .then(() => {
-                                /*must send otherwise ggetPosts will
+                                /*must send otherwise getPosts will
                                 not show the changed pics unless page is refreshed*/
-                                res.send(baseData)
                                 console.log('post pics updated')
+                                res.send(baseData)
                             })
                             .catch(err => console.log(err))
                         }

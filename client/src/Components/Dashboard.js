@@ -243,8 +243,8 @@ class Dashboard extends Component {
                 if(posts != []) {
                     displayposts  = posts.map((post, index) => {
                         if(post.user == currentUser.data.credentials.username) {
-                            deletedisplay = <button onClick={this.deletePost.bind(this, post)} style={{color: 'white'}, {background: 'red'}}>
-                                        X {currentUser.data.credentials.username} 
+                            deletedisplay = <button onClick={this.deletePost.bind(this, post)}>
+                                        Delete
                                     </button>
                         } else { deletedisplay = '' }
                         /*WITHTOUT THIS, deletedisplay WILL CONTINUE TO HAVE THE 
@@ -263,12 +263,12 @@ class Dashboard extends Component {
                                 <div className='post'>
                                     <div className='post-pic'>
                                         {(post.pic)? (
-                                            <img style={{width: '20%'}} src={`data:image/png;base64,${post.pic}`} alt='jpg'/>
+                                            <img src={`data:image/png;base64,${post.pic}`} alt='jpg'/>
                                         ): (null)}
                                     </div>
                                     <div className='post-right'>
                                         <div className='post-right-top'>
-                                            <div className='post-name'><Link to={`/User/${post.user}`} style={{ fontWeight: 'bold'}}>{post.user}</Link></div>
+                                            <div className='post-name'><Link style={{ textDecoration: 'none'}} to={`/User/${post.user}`} style={{ fontWeight: 'bold'}}>{post.user}</Link></div>
                                             <div className='post-time'>{post.createdAt}</div>
                                             <div className='post-delete'>{deletedisplay}</div>
                                         </div>
