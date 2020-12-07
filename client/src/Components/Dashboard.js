@@ -13,6 +13,8 @@ import CommentIcon from '@material-ui/icons/Comment';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import PhotoIcon from '@material-ui/icons/Photo';
+import Badge from '@material-ui/core/Badge';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Modal2 from 'react-bootstrap/Modal';
 import CommentInput from './CommentInput'
 
@@ -54,22 +56,34 @@ class Dashboard extends Component {
 
         /*Once the notification is clicked, 
         it will display the modal for the post*/
+        this.setState({
+            show2: true, 
+            postId: post._id
+        })
+
+        
         if(note.read === false) {
             axios.put(`/social/notificationRead/${note._id}`)
             .then(data => {
-                //SHOULD WE REFRESH PAGE HERE??
                 console.log(data)
+                
             })
             .catch(err => console.log(err))
-            
         }
-        console.log(post)
-        this.setState({show2: true, postId: post._id})
+        
     }
 
     handleClose2 = () => {
-        this.setState({show2: false});
-        this.props.getPosts()
+
+        //If modal was opened for notifications
+        if(this.state.visible == true) {
+            console.log('refresh?')
+            //this.props.history.push('/Dashboard')
+            window.location.reload()
+        } else {
+            this.setState({show2: false});
+            this.props.getPosts()
+        }
     }
 
     handleShow3 = ()=> {
@@ -88,9 +102,10 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
+        console.log('componentDidMount')
         this.props.getPosts()
     }
-
+ 
     onChange = (e) => {
         this.setState({[e.target.name]: e.target.value})
     }
@@ -231,17 +246,21 @@ class Dashboard extends Component {
         let displayuser
         let deletedisplay
         let thumbsLogo 
-        let notesDisplay
+        let notesDisplay 
+    
         /*WHEN YOU COME TO THIS PAGE VIA URL OR WHEN YOU REFRESH, 
         THE INITIAL RENDERING TAKES PLACE AND isAuthenticated is '', 
         AFTER THIS IT RE-RENDERS AND isAuthenticated GETS THE data PROPERTY*/
       
         if(loading) {
             console.log('dash loading')
-            return <div>Loading..</div>
+            return <CircularProgress />
         } else {
-            if(currentUser && currentUser.data != '' && posts != []) {
+            if(currentUser && currentUser.data != '') {
          
+                /*the if statement below is needed because when the above 
+                if statement is true, the post is still being fetched
+                and posts.map will cause an error*/
                 if(posts != []) {
                     displayposts  = posts.map((post, index) => {
                         if(post.user == currentUser.data.credentials.username) {
@@ -311,168 +330,176 @@ class Dashboard extends Component {
                 })
 
               
-                display = 
-                <React.Fragment>
-                    <div className='my-nav'>
-                        <div className='brand-name'>NewsQuest</div>
-                        <div className='move-right'>   
-                            <div className='notes-display'>
-                                <NotificationsIcon className='notes-icon' style={{ fontSize: 40, color: `${this.state.notesColor}` }} onClick={this.changeNotes}></NotificationsIcon>
-                                {(this.state.visible)? (
-                                    <div className='notes-menu'>
-                                        {notesDisplay}
-                                    </div>): (null)}
-                            </div>
-                            <PostAddIcon className='post-icon' style={{ fontSize: 40 }} onClick={this.handleShow}></PostAddIcon>  
-                            <div onClick={this.logOut} className='log-out'>Log Out</div>    
-                        </div>   
-                    </div>
- 
-                    <Modal show={this.state.show} onHide={this.handleClose}>
-                        <form onSubmit={this.onSubmit}> 
-                            <Modal.Header closeButton>
-                                <Modal.Title>New Post</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body style={{width: '100%'}}>
-                                <textarea
-                                type='text'
-                                name="post"
-                                value={this.state.post}
-                                style={{ background: 'rgb(230, 234, 247)', width: '90%'}}
-                                onChange={this.onChange} />
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <button 
-                                style={btnStyle} 
-                                onClick={this.handleClose}>
-                                    Close
-                                </button>
-                                <input 
-                                style={btnStyle} 
-                                type="submit" 
-                                value="post"/>
-                            </Modal.Footer>
-                        </form>
-                    </Modal>
+                if(posts.length != 0) {
+                    display = 
+                    <React.Fragment>
+                        <div className='my-nav'>
+                            <div className='brand-name'>NewsQuest</div>
+                            <div className='move-right'>   
+                                <div className='notes-display'>
+                                    <Badge className='notes-icon' color="secondary" badgeContent={currentUser.data.notifications.length}>
+                                        <NotificationsIcon  style={{ fontSize: 40, color: `${this.state.notesColor}` }} onClick={this.changeNotes}></NotificationsIcon>
+                                    </Badge>
+                                    {(this.state.visible)? (
+                                        <div className='notes-menu'>
+                                            {notesDisplay}
+                                        </div>): (null)}
+                                </div>
+                                <PostAddIcon className='post-icon' style={{ fontSize: 40 }} onClick={this.handleShow}></PostAddIcon>  
+                                <div onClick={this.logOut} className='log-out'>Log Out</div>    
+                            </div>   
+                        </div>
+    
+                        <Modal show={this.state.show} onHide={this.handleClose}>
+                            <form onSubmit={this.onSubmit}> 
+                                <Modal.Header closeButton>
+                                    <Modal.Title>New Post</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body style={{width: '100%'}}>
+                                    <textarea
+                                    type='text'
+                                    name="post"
+                                    value={this.state.post}
+                                    style={{ background: 'rgb(230, 234, 247)', width: '90%'}}
+                                    onChange={this.onChange} />
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <button 
+                                    style={btnStyle} 
+                                    onClick={this.handleClose}>
+                                        Close
+                                    </button>
+                                    <input 
+                                    style={btnStyle} 
+                                    type="submit" 
+                                    value="post"/>
+                                </Modal.Footer>
+                            </form>
+                        </Modal>
 
-                    <Modal show={this.state.show2} onHide={this.handleClose2}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Post</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <Post postId={this.state.postId}/>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={this.handleClose2}>
-                                Close
-                           </Button>
-                        </Modal.Footer>
-                    </Modal>
-
-                    <Modal show={this.state.show3} onHide={this.handleClose3}>
-                        <form onSubmit={this.onSubmitProfile}> 
+                        <Modal show={this.state.show2} onHide={this.handleClose2}>
                             <Modal.Header closeButton>
-                                <Modal.Title>Update My Profile</Modal.Title>
+                                <Modal.Title>Post</Modal.Title>
                             </Modal.Header>
-                            <Modal.Body style={{width: '100%'}}>
-                                <label>
-                                    <input type='text'
-                                    name="username"
-                                    value={this.state.username}
-                                    placeholder="username"
-                                    style={{ background: 'rgb(230, 234, 247)', width: '90%'}}
-                                    onChange={this.onChange} />
-                                </label>
-                                <label>
-                                    <input type='text'
-                                    name="bio"
-                                    value={this.state.bio}
-                                    placeholder="bio"
-                                    style={{ background: 'rgb(230, 234, 247)', width: '90%'}}
-                                    onChange={this.onChange} />
-                                </label>
-                                <label>
-                                    <input type='text'
-                                    name="location"
-                                    value={this.state.location}
-                                    placeholder="location"
-                                    style={{ background: 'rgb(230, 234, 247)', width: '90%'}}
-                                    onChange={this.onChange} />
-                                </label>
-                                <label>
-                                    <input type='text'
-                                    name="website"
-                                    value={this.state.website}
-                                    placeholder="website"
-                                    style={{ background: 'rgb(230, 234, 247)', width: '90%'}}
-                                    onChange={this.onChange} />
-                                </label>
+                            <Modal.Body>
+                                <Post postId={this.state.postId}/>
                             </Modal.Body>
                             <Modal.Footer>
                                 <button
                                 style={btnStyle}
-                                onClick={this.handleClose3}>
+                                onClick={this.handleClose2}>
                                     Close
                                 </button>
-                                <input 
-                                style={btnStyle}
-                                type="submit" value="update"/>
                             </Modal.Footer>
-                        </form>
-                    </Modal>
+                        </Modal>
 
-                    <Modal show={this.state.show4} onHide={this.handleClose4}>
-                        <form onSubmit={this.onSubmitPic}> 
-                            <Modal.Header closeButton>
-                                <Modal.Title>Update Pic</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <label>
-                                    
+                        <Modal show={this.state.show3} onHide={this.handleClose3}>
+                            <form onSubmit={this.onSubmitProfile}> 
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Update My Profile</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body style={{width: '100%'}}>
+                                    <label>
+                                        <input type='text'
+                                        name="username"
+                                        value={this.state.username}
+                                        placeholder="username"
+                                        style={{ background: 'rgb(230, 234, 247)', width: '90%'}}
+                                        onChange={this.onChange} />
+                                    </label>
+                                    <label>
+                                        <input type='text'
+                                        name="bio"
+                                        value={this.state.bio}
+                                        placeholder="bio"
+                                        style={{ background: 'rgb(230, 234, 247)', width: '90%'}}
+                                        onChange={this.onChange} />
+                                    </label>
+                                    <label>
+                                        <input type='text'
+                                        name="location"
+                                        value={this.state.location}
+                                        placeholder="location"
+                                        style={{ background: 'rgb(230, 234, 247)', width: '90%'}}
+                                        onChange={this.onChange} />
+                                    </label>
+                                    <label>
+                                        <input type='text'
+                                        name="website"
+                                        value={this.state.website}
+                                        placeholder="website"
+                                        style={{ background: 'rgb(230, 234, 247)', width: '90%'}}
+                                        onChange={this.onChange} />
+                                    </label>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <button
+                                    style={btnStyle}
+                                    onClick={this.handleClose3}>
+                                        Close
+                                    </button>
                                     <input 
-                                    type='file'
-                                    onChange={this.onChangePic} />
-                                </label>
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <button 
-                                style={btnStyle} 
-                                onClick={this.handleClose4}>
-                                    Close
-                                </button>
-                                <input 
-                                style={btnStyle}
-                                type="submit" 
-                                value="update"/>
-                            </Modal.Footer>
-                        </form>
-                    </Modal>
+                                    style={btnStyle}
+                                    type="submit" value="update"/>
+                                </Modal.Footer>
+                            </form>
+                        </Modal>
 
+                        <Modal show={this.state.show4} onHide={this.handleClose4}>
+                            <form onSubmit={this.onSubmitPic}> 
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Update Pic</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <label>
+                                        
+                                        <input 
+                                        type='file'
+                                        onChange={this.onChangePic} />
+                                    </label>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <button 
+                                    style={btnStyle} 
+                                    onClick={this.handleClose4}>
+                                        Close
+                                    </button>
+                                    <input 
+                                    style={btnStyle}
+                                    type="submit" 
+                                    value="update"/>
+                                </Modal.Footer>
+                            </form>
+                        </Modal>
+
+                        
+
+                        <div className='display-flex'>
+                            <div className="profile">
+                                <div className='profile-pic'>
+                                    {(currentUser.data.pic)? (
+                                        <img style={{width: '20%'}} src={`data:image/png;base64,${currentUser.data.pic}`} alt='jpg'/>
+                                    ): (null)}
+                                    <div className='profile-pic-btn' style={{margin: '1%'}}><PhotoIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}} onClick={this.handleShow4}></PhotoIcon></div>
+                                </div>
+                                <div className='profile-details'>
+                                    <p style={{ fontWeight: 'bold', fontSize: 'x-large'}}>{currentUser.data.credentials.username}</p>
+                                    {(currentUser.data.credentials.location)? (<p>From: {currentUser.data.credentials.location}</p>): (null)}
+                                    {(currentUser.data.credentials.bio)? (<p>About: {currentUser.data.credentials.bio}</p>): (null)}
+                                    {(currentUser.data.credentials.website)? (<p>{currentUser.data.credentials.website}</p>): (null)}
+                                    <p>Joined: {currentUser.data.credentials.joinDate}</p>
+                                    <Button variant="primary" onClick={this.handleShow3}>Update Profile</Button>
+                                </div>
+                            </div>
+                            <div className='post-container'>
+                                {displayposts}
+                            </div>
+                        </div>
                     
-
-                    <div className='display-flex'>
-                        <div className="profile">
-                            <div className='profile-pic'>
-                                {(currentUser.data.pic)? (
-                                    <img style={{width: '20%'}} src={`data:image/png;base64,${currentUser.data.pic}`} alt='jpg'/>
-                                ): (null)}
-                                <div className='profile-pic-btn' style={{margin: '1%'}}><PhotoIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}} onClick={this.handleShow4}></PhotoIcon></div>
-                            </div>
-                            <div className='profile-details'>
-                                <p style={{ fontWeight: 'bold', fontSize: 'x-large'}}>{currentUser.data.credentials.username}</p>
-                                {(currentUser.data.credentials.location)? (<p>From: {currentUser.data.credentials.location}</p>): (null)}
-                                {(currentUser.data.credentials.bio)? (<p>About: {currentUser.data.credentials.bio}</p>): (null)}
-                                {(currentUser.data.credentials.website)? (<p>{currentUser.data.credentials.website}</p>): (null)}
-                                <p>Joined: {currentUser.data.credentials.joinDate}</p>
-                                <Button variant="primary" onClick={this.handleShow3}>Update Profile</Button>
-                            </div>
-                        </div>
-                        <div className='post-container'>
-                            {displayposts}
-                        </div>
-                    </div>
-                
-                </ React.Fragment>
+                    </ React.Fragment>
+                } else {
+                    display = <React.Fragment><CircularProgress /></React.Fragment>
+                }
                 
         
             } else {

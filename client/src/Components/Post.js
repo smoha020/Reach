@@ -107,7 +107,10 @@ class Post extends Component {
                         value={this.state.comment}
                         onChange={this.onChange} />
                         <br></br>
-                        <input type="submit" value="submit"/>
+                        <input 
+                        type="submit" 
+                        value="submit"
+                        style={btnStyle} />
                     </form>
                 </div>
             
@@ -140,5 +143,11 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-
+const btnStyle = {
+    background: '#2196f3', 
+    color: 'white', 
+    border: 'none', 
+    cursor: 'pointer', 
+    padding: '3%'
+}
 export default connect(mapStateToProps, mapDispatchToProps)(Post)
