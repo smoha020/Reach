@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'; 
+import { Link } from 'react-router-dom';
 import axios from 'axios'
 import { getPost, addComment, deleteComment } from '../Actions/Posts'
 
@@ -82,19 +83,36 @@ class Post extends Component {
 
                 if(comment.user == currentUser.data.credentials.username) {
                     deletedisplay = <button onClick={this.deleteComment.bind(this, comment)} style={{color: 'white'}, {background: 'red'}}>
-                                X
+                                Delete
                             </button>
                 } else deletedisplay = ''
 
 
-                return <p key={comment._id} >{deletedisplay}{comment.body}</p>
+                return (
+                    <div className='comment' key={comment._id} >
+                        <div className='comment-pic'>
+                            {(post.pic)? (
+                                <img src={`data:image/png;base64,${post.pic}`} alt='jpg'></img>
+                                ): (<div className='comment-pic-second'></div>)}
+                        </div>
+                        <div className='comment-right'>
+                            <div className='comment-right-top'>
+                                <div className='comment-name'><Link style={{ textDecoration: 'none'}} to={`/User/${post.user}`} style={{ fontWeight: 'bold'}}>{comment.user}</Link></div>
+                                <div className='comment-time'>{comment.createdAt}</div>
+                                <div className='comment-delete'>{deletedisplay}</div>
+                            </div>
+                            <div className='comment-body'>{comment.body} is body</div>
+                        </div>
+                        
+                    </div>
+                )
                
             })
 
             
 
             display = 
-                <div className='post'>
+                <div>
                     <p>{post.data.user}</p>
                     <p>{post.data.body}</p>
                     {displayComments}
