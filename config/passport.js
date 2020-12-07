@@ -9,7 +9,7 @@ module.exports = function (passport) {
     passport.use(new LocalStrategy({
         usernameField: 'email',
         },
-        (email, password, done) => { //where are we getting these arguments from?
+        (email, password, done) => { 
             allUsers.findOne({ email: email})
                 .then(user => {
                     if (!user) {

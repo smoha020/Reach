@@ -12,6 +12,7 @@ import PostAddIcon from '@material-ui/icons/PostAdd';
 import CommentIcon from '@material-ui/icons/Comment';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import PhotoIcon from '@material-ui/icons/Photo';
 import Modal2 from 'react-bootstrap/Modal';
 import CommentInput from './CommentInput'
 
@@ -119,7 +120,7 @@ class Dashboard extends Component {
 
     }
 
-    clickLike = ( e, id ) => {
+    clickLike = ( id ) => {
         
         this.setState({ disabled: true })
         
@@ -127,6 +128,7 @@ class Dashboard extends Component {
             this.setState({ disabled: false })
         }, 2500) 
         
+        console.log(id)
         let like = {
             postId: id,
             user: this.props.currentUser.data.credentials.username
@@ -134,14 +136,13 @@ class Dashboard extends Component {
         this.props.likePost(like)
     }
 
-    clickUnlike = ( e, id ) => {
+    clickUnlike = ( id ) => {
 
         this.setState({ disabled: true })
         
         setTimeout(() => {
             this.setState({ disabled: false })
         }, 2500) 
-        console.log(this.state.disabled)
         
         let like = {
             postId: id,
@@ -236,9 +237,10 @@ class Dashboard extends Component {
         AFTER THIS IT RE-RENDERS AND isAuthenticated GETS THE data PROPERTY*/
       
         if(loading) {
+            console.log('dash loading')
             return <div>Loading..</div>
         } else {
-            if(currentUser && currentUser.data != '') {
+            if(currentUser && currentUser.data != '' && posts != []) {
          
                 if(posts != []) {
                     displayposts  = posts.map((post, index) => {
@@ -264,7 +266,7 @@ class Dashboard extends Component {
                                     <div className='post-pic'>
                                         {(post.pic)? (
                                             <img src={`data:image/png;base64,${post.pic}`} alt='jpg'/>
-                                        ): (null)}
+                                        ): (<div className='post-pic-second'></div>)}
                                     </div>
                                     <div className='post-right'>
                                         <div className='post-right-top'>
@@ -276,7 +278,7 @@ class Dashboard extends Component {
                                         <div className='post-bottom'>
                                             <div className='bottom-thumb'>
                                                 {( thumbsLogo.includes(post._id) )? (
-                                                    <button disabled={this.state.disabled} onClick={this.clickUnlike.bind(this, post._id)} ><ThumbDownIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}}></ThumbDownIcon></button>
+                                                    <button disabled={this.state.disabled} onClick={this.clickUnlike.bind(this, post._id)}><ThumbDownIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}}></ThumbDownIcon></button>
                                                 ) : (
                                                     <button disabled={this.state.disabled} onClick={this.clickLike.bind(this, post._id)} ><ThumbUpIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}}></ThumbUpIcon></button>
                                                 )} 
@@ -331,17 +333,24 @@ class Dashboard extends Component {
                             <Modal.Header closeButton>
                                 <Modal.Title>New Post</Modal.Title>
                             </Modal.Header>
-                            <Modal.Body>
-                                <input type='text'
+                            <Modal.Body style={{width: '100%'}}>
+                                <textarea
+                                type='text'
                                 name="post"
                                 value={this.state.post}
+                                style={{ background: 'rgb(230, 234, 247)', width: '90%'}}
                                 onChange={this.onChange} />
                             </Modal.Body>
                             <Modal.Footer>
-                                <Button variant="secondary" onClick={this.handleClose}>
+                                <button 
+                                style={btnStyle} 
+                                onClick={this.handleClose}>
                                     Close
-                                </Button>
-                                <input type="submit" value="post"/>
+                                </button>
+                                <input 
+                                style={btnStyle} 
+                                type="submit" 
+                                value="post"/>
                             </Modal.Footer>
                         </form>
                     </Modal>
@@ -365,41 +374,49 @@ class Dashboard extends Component {
                             <Modal.Header closeButton>
                                 <Modal.Title>Update My Profile</Modal.Title>
                             </Modal.Header>
-                            <Modal.Body>
+                            <Modal.Body style={{width: '100%'}}>
                                 <label>
-                                    username: 
                                     <input type='text'
                                     name="username"
                                     value={this.state.username}
+                                    placeholder="username"
+                                    style={{ background: 'rgb(230, 234, 247)', width: '90%'}}
                                     onChange={this.onChange} />
                                 </label>
                                 <label>
-                                    Bio: 
                                     <input type='text'
                                     name="bio"
                                     value={this.state.bio}
+                                    placeholder="bio"
+                                    style={{ background: 'rgb(230, 234, 247)', width: '90%'}}
                                     onChange={this.onChange} />
                                 </label>
                                 <label>
-                                    Location: 
                                     <input type='text'
                                     name="location"
                                     value={this.state.location}
+                                    placeholder="location"
+                                    style={{ background: 'rgb(230, 234, 247)', width: '90%'}}
                                     onChange={this.onChange} />
                                 </label>
                                 <label>
-                                    website: 
-                                    <input type='website'
+                                    <input type='text'
                                     name="website"
                                     value={this.state.website}
+                                    placeholder="website"
+                                    style={{ background: 'rgb(230, 234, 247)', width: '90%'}}
                                     onChange={this.onChange} />
                                 </label>
                             </Modal.Body>
                             <Modal.Footer>
-                                <Button variant="secondary" onClick={this.handleClose3}>
+                                <button
+                                style={btnStyle}
+                                onClick={this.handleClose3}>
                                     Close
-                                </Button>
-                                <input type="submit" value="update"/>
+                                </button>
+                                <input 
+                                style={btnStyle}
+                                type="submit" value="update"/>
                             </Modal.Footer>
                         </form>
                     </Modal>
@@ -411,17 +428,22 @@ class Dashboard extends Component {
                             </Modal.Header>
                             <Modal.Body>
                                 <label>
-                                    pic: 
+                                    
                                     <input 
                                     type='file'
                                     onChange={this.onChangePic} />
                                 </label>
                             </Modal.Body>
                             <Modal.Footer>
-                                <Button variant="secondary" onClick={this.handleClose4}>
+                                <button 
+                                style={btnStyle} 
+                                onClick={this.handleClose4}>
                                     Close
-                                </Button>
-                                <input type="submit" value="update"/>
+                                </button>
+                                <input 
+                                style={btnStyle}
+                                type="submit" 
+                                value="update"/>
                             </Modal.Footer>
                         </form>
                     </Modal>
@@ -432,9 +454,9 @@ class Dashboard extends Component {
                         <div className="profile">
                             <div className='profile-pic'>
                                 {(currentUser.data.pic)? (
-                                    <p><img style={{width: '20%'}} src={`data:image/png;base64,${currentUser.data.pic}`} alt='jpg'/></p>
+                                    <img style={{width: '20%'}} src={`data:image/png;base64,${currentUser.data.pic}`} alt='jpg'/>
                                 ): (null)}
-                                <Button variant="primary" onClick={this.handleShow4}>Update My Pic</Button>
+                                <div className='profile-pic-btn' style={{margin: '1%'}}><PhotoIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}} onClick={this.handleShow4}></PhotoIcon></div>
                             </div>
                             <div className='profile-details'>
                                 <p style={{ fontWeight: 'bold', fontSize: 'x-large'}}>{currentUser.data.credentials.username}</p>
@@ -490,4 +512,11 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
+const btnStyle = {
+    background: '#2196f3', 
+    color: 'white', 
+    border: 'none', 
+    cursor: 'pointer', 
+    padding: '3%'
+}
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
