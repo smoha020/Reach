@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'; 
 import { Link } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import axios from 'axios'
 import { getPost, addComment, deleteComment } from '../Actions/Posts'
 
@@ -74,7 +75,15 @@ class Post extends Component {
         */
         if( loadingPost === undefined || loadingPost == true) {
             console.log('first round')
-            display = <div>...loading</div>
+            display = 
+            <div style={{ 
+                height: '40vh',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'}}
+            >
+                <CircularProgress />
+            </div>
         } else {
 
 
@@ -82,8 +91,8 @@ class Post extends Component {
 
 
                 if(comment.user == currentUser.data.credentials.username) {
-                    deletedisplay = <button onClick={this.deleteComment.bind(this, comment)} style={{color: 'white'}, {background: 'red'}}>
-                                Delete
+                    deletedisplay = <button onClick={this.deleteComment.bind(this, comment)} >
+                                x
                             </button>
                 } else deletedisplay = ''
 
@@ -91,17 +100,17 @@ class Post extends Component {
                 return (
                     <div className='comment' key={comment._id} >
                         <div className='comment-pic'>
-                            {(post.pic)? (
-                                <img src={`data:image/png;base64,${post.pic}`} alt='jpg'></img>
+                            {(comment.pic)? (
+                                <img src={`data:image/png;base64,${comment.pic}`} alt='jpg'></img>
                                 ): (<div className='comment-pic-second'></div>)}
                         </div>
                         <div className='comment-right'>
                             <div className='comment-right-top'>
-                                <div className='comment-name'><Link style={{ textDecoration: 'none'}} to={`/User/${post.user}`} style={{ fontWeight: 'bold'}}>{comment.user}</Link></div>
+                                <div className='comment-name'><Link style={{ textDecoration: 'none'}} to={`/User/${comment.user}`} style={{ fontWeight: 'bold'}}>{comment.user}</Link></div>
                                 <div className='comment-time'>{comment.createdAt}</div>
                                 <div className='comment-delete'>{deletedisplay}</div>
                             </div>
-                            <div className='comment-body'>{comment.body} is body</div>
+                            <div className='comment-body'>{comment.body} </div>
                         </div>
                         
                     </div>
@@ -109,26 +118,44 @@ class Post extends Component {
                
             })
 
-            
-
             display = 
                 <div>
-                    <p>{post.data.user}</p>
-                    <p>{post.data.body}</p>
+                    <div className='post'>
+                        <div className='post-pic'>
+                            {(post.data.pic)? (
+                                <img src={`data:image/png;base64,${post.data.pic}`} alt='jpg'/>
+                            ): (<div className='post-pic-second'></div>)}
+                        </div>
+                        <div className='post-right'>
+                            <div className='post-right-top'>
+                                <div className='post-name'><Link style={{ textDecoration: 'none'}} to={`/User/${post.data.user}`} style={{ fontWeight: 'bold'}}>{post.data.user}</Link></div>
+                                <div className='post-time'>{post.data.createdAt}</div>
+                            </div>
+                            <div className='post-body'>{post.data.body}</div>
+                        </div>
+                    </div>          
+                    <br></br>    
                     {displayComments}
+                    <br></br>   
+                    <br></br> 
                     <form onSubmit={this.submitComment}> 
-                        <label>
-                        Write a comment
-                        </label>
                         <input type='text'
                         name="comment"
                         value={this.state.comment}
+                        style={{ background: 'rgb(230, 234, 247)', width: '70%'}}
                         onChange={this.onChange} />
-                        <br></br>
+                        
                         <input 
                         type="submit" 
                         value="submit"
-                        style={btnStyle} />
+                        style={{
+                            background: '#2196f3', 
+                            color: 'white', 
+                            border: 'none', 
+                            cursor: 'pointer', 
+                            padding: '3%', 
+                            float: 'right'
+                        }} />
                     </form>
                 </div>
             

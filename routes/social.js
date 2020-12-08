@@ -47,7 +47,9 @@ router.get('/posts/single/:postId', (req, res) => {
         singlePost.body = data.body
         singlePost.likeCount = data.likeCount
         singlePost.commentCount = data.commentCount
+        singlePost.pic = data.pic
         singlePost.createdAt = data.createdAt
+        
 
         return Comments.find(query).sort({ Date: -1 })
     })
@@ -55,7 +57,6 @@ router.get('/posts/single/:postId', (req, res) => {
         
         singlePost.comments = [...data]
 
-        console.log(singlePost)
         res.json(singlePost)
     })
     .catch(err => console.log(err))
@@ -65,8 +66,6 @@ router.get('/posts/single/:postId', (req, res) => {
 router.post('/posts/create', (req, res) => {
     
 
-    //look for user image
-    console.log('it is user with name: ' + req.user.username)
     userImage.findOne({ user: req.body.user })
     .then( data => {
 
@@ -130,15 +129,33 @@ router.post('/posts/createcomment/:postId', (req, res) => {
     
     const query = { _id: req.params.postId }
     
-    //should we check if the post exists before adding the comment?
-    const newComment = new Comments({
-        body: req.body.body,
-        user: req.body.user,
-        postId: req.body.postId,
-        createdAt: new Date()
-    })
+    userImage.findOne({ user: req.body.user })
+    .then( data => {
+        let newComment 
+        if(!data) {
+            
+            newComment = new Comments({
+                body: req.body.body,
+                user: req.body.user,
+                postId: req.body.postId,
+                pic: '',
+                createdAt: new Date()
+            })
+        } else {
+            
+            let baseData = Buffer.from(data.pic.data).toString('base64')
 
-    newComment.save()
+            newComment = new Comments({
+                body: req.body.body,
+                user: req.body.user,
+                postId: req.body.postId,
+                pic: baseData,
+                createdAt: new Date()
+            })
+         }
+         
+         return newComment.save() 
+    })
     .then(data => {
        
         Note.sender = data.user

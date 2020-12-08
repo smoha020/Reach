@@ -5,7 +5,8 @@ const CommentsSchema = new mongoose.Schema({
     body: String,
     user: String,
     postId: String,
-    createdAt: Date
+    createdAt: Date,
+    pic: String,
 
 })
 

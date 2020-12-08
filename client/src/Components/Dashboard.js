@@ -219,8 +219,7 @@ class Dashboard extends Component {
 
     changeNotes = () => {
 
-        //-------------
-        //FOR TEST
+        
         if(this.state.visible) {
             this.setState({ 
                 visible: false, 
@@ -254,7 +253,16 @@ class Dashboard extends Component {
       
         if(loading) {
             console.log('dash loading')
-            return <CircularProgress />
+            return (
+                <div style={{ 
+                    height: '100vh',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'}}
+                >
+                    <CircularProgress />
+                </div>
+            )
         } else {
             if(currentUser && currentUser.data != '') {
          
@@ -498,7 +506,15 @@ class Dashboard extends Component {
                     
                     </ React.Fragment>
                 } else {
-                    display = <React.Fragment><CircularProgress /></React.Fragment>
+                    display = 
+                    <div style={{ 
+                        height: '100vh',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <CircularProgress/>
+                    </div>
                 }
                 
         
