@@ -10,9 +10,18 @@ import rootReducer from './Reducers/rootReducer'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
+//----TIME AGO----
+import TimeAgo from 'javascript-time-ago'
+ 
+import en from 'javascript-time-ago/locale/en'
+import ru from 'javascript-time-ago/locale/ru'
+ 
+TimeAgo.addDefaultLocale(en)
+TimeAgo.addLocale(ru)
+
 const store = createStore(rootReducer, 
   composeWithDevTools(applyMiddleware(thunk)));
-
+//-----------
 
 ReactDOM.render(
   <Provider store={store}>

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'; 
 import { Link } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import ReactTimeAgo from 'react-time-ago'
 import axios from 'axios'
 import { getPost, addComment, deleteComment } from '../Actions/Posts'
 
@@ -27,15 +28,18 @@ class Post extends Component {
     
         e.preventDefault();
 
-        let newComment = {
-            body: this.state.comment,
-            user: this.props.currentUser.data.credentials.username,
-            postId: this.props.postId
-        }
+        if(this.state.comment != '') {
+            console.log('not blank')
+            let newComment = {
+                body: this.state.comment,
+                user: this.props.currentUser.data.credentials.username,
+                postId: this.props.postId
+            }
 
-        console.log(newComment)
-        this.props.addComment(newComment)
-        this.setState({ comment: '' })
+            console.log(newComment)
+            this.props.addComment(newComment)
+            this.setState({ comment: '' })
+        }
     }
  
     componentDidMount(){
@@ -57,7 +61,7 @@ class Post extends Component {
     
         console.log(this.props)
         //console.log(this.props.post + ' and ' + this.state.loading)
-        const { post, loadingPost, currentUser } = this.props
+        const { post, currentUser, postId } = this.props
 
         let display 
         let displayComments 
@@ -73,7 +77,7 @@ class Post extends Component {
         3rd rendering happens when the new post is recieved hence the 
         new post is displayed.
         */
-        if( loadingPost === undefined || loadingPost == true) {
+        if( !post ) {
             console.log('first round')
             display = 
             <div style={{ 
@@ -81,83 +85,98 @@ class Post extends Component {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center'}}
-            >
+            > 
                 <CircularProgress />
             </div>
         } else {
 
 
-            displayComments = post.data.comments.map(comment => {
+            /*don't display previously opened post 
+            during the first render */
+            if(post.data._id === postId) {
+
+                displayComments = post.data.comments.map(comment => {
 
 
-                if(comment.user == currentUser.data.credentials.username) {
-                    deletedisplay = <button onClick={this.deleteComment.bind(this, comment)} >
-                                x
-                            </button>
-                } else deletedisplay = ''
+                    if(comment.user == currentUser.data.credentials.username) {
+                        deletedisplay = <button onClick={this.deleteComment.bind(this, comment)} >
+                                    x
+                                </button>
+                    } else deletedisplay = ''
 
 
-                return (
-                    <div className='comment' key={comment._id} >
-                        <div className='comment-pic'>
-                            {(comment.pic)? (
-                                <img src={`data:image/png;base64,${comment.pic}`} alt='jpg'></img>
-                                ): (<div className='comment-pic-second'></div>)}
-                        </div>
-                        <div className='comment-right'>
-                            <div className='comment-right-top'>
-                                <div className='comment-name'><Link style={{ textDecoration: 'none'}} to={`/User/${comment.user}`} style={{ fontWeight: 'bold'}}>{comment.user}</Link></div>
-                                <div className='comment-time'>{comment.createdAt}</div>
-                                <div className='comment-delete'>{deletedisplay}</div>
+                    return (
+                        <div className='comment' key={comment._id} >
+                            <div className='comment-pic'>
+                                {(comment.pic)? (
+                                    <img src={`data:image/png;base64,${comment.pic}`} alt='jpg'></img>
+                                    ): (<div className='comment-pic-second'></div>)}
                             </div>
-                            <div className='comment-body'>{comment.body} </div>
+                            <div className='comment-right'>
+                                <div className='comment-right-top'>
+                                    <div className='comment-name'><Link style={{ textDecoration: 'none'}} to={`/User/${comment.user}`} style={{ fontWeight: 'bold'}}>{comment.user}</Link></div>
+                                    <div className='comment-time'><ReactTimeAgo date={comment.createdAt} locale="en-US"/></div>
+                                    <div className='comment-delete'>{deletedisplay}</div>
+                                </div>
+                                <div className='comment-body'>{comment.body} </div>
+                            </div>
+                            
                         </div>
-                        
+                    )
+                
+                })
+
+                display = 
+                    <div>
+                        <div className='post'>
+                            <div className='post-pic'>
+                                {(post.data.pic)? (
+                                    <img src={`data:image/png;base64,${post.data.pic}`} alt='jpg'/>
+                                ): (<div className='post-pic-second'></div>)}
+                            </div>
+                            <div className='post-right'>
+                                <div className='post-right-top'>
+                                    <div className='post-name'><Link style={{ textDecoration: 'none'}} to={`/User/${post.data.user}`} style={{ fontWeight: 'bold'}}>{post.data.user}</Link></div>
+                                    <div className='post-time'><ReactTimeAgo date={post.data.createdAt} locale="en-US"/></div>
+                                </div>
+                                <div className='post-body'>{post.data.body}</div>
+                            </div>
+                        </div>          
+                        <br></br>    
+                        {displayComments}
+                        <br></br>   
+                        <br></br> 
+                        <form onSubmit={this.submitComment}> 
+                            <input type='text'
+                            name="comment"
+                            value={this.state.comment}
+                            style={{ background: 'rgb(230, 234, 247)', width: '70%'}}
+                            onChange={this.onChange} />
+                            
+                            <input 
+                            type="submit" 
+                            value="submit"
+                            style={{
+                                background: '#2196f3', 
+                                color: 'white', 
+                                border: 'none', 
+                                cursor: 'pointer', 
+                                padding: '3%', 
+                                float: 'right'
+                            }} />
+                        </form>
                     </div>
-                )
-               
-            })
-
-            display = 
-                <div>
-                    <div className='post'>
-                        <div className='post-pic'>
-                            {(post.data.pic)? (
-                                <img src={`data:image/png;base64,${post.data.pic}`} alt='jpg'/>
-                            ): (<div className='post-pic-second'></div>)}
-                        </div>
-                        <div className='post-right'>
-                            <div className='post-right-top'>
-                                <div className='post-name'><Link style={{ textDecoration: 'none'}} to={`/User/${post.data.user}`} style={{ fontWeight: 'bold'}}>{post.data.user}</Link></div>
-                                <div className='post-time'>{post.data.createdAt}</div>
-                            </div>
-                            <div className='post-body'>{post.data.body}</div>
-                        </div>
-                    </div>          
-                    <br></br>    
-                    {displayComments}
-                    <br></br>   
-                    <br></br> 
-                    <form onSubmit={this.submitComment}> 
-                        <input type='text'
-                        name="comment"
-                        value={this.state.comment}
-                        style={{ background: 'rgb(230, 234, 247)', width: '70%'}}
-                        onChange={this.onChange} />
-                        
-                        <input 
-                        type="submit" 
-                        value="submit"
-                        style={{
-                            background: '#2196f3', 
-                            color: 'white', 
-                            border: 'none', 
-                            cursor: 'pointer', 
-                            padding: '3%', 
-                            float: 'right'
-                        }} />
-                    </form>
+            } else {
+                display = 
+                <div style={{ 
+                    height: '40vh',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'}}
+                > 
+                    <CircularProgress />
                 </div>
+            }
             
     
         }
@@ -175,8 +194,7 @@ const mapStateToProps = ( state ) => {
 
     return {
         post: state.Data.post,
-        currentUser: state.Authenticate.currentUser,
-        loadingPost: state.Data.loadingPost
+        currentUser: state.Authenticate.currentUser
     }
 }
 

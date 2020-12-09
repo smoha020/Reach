@@ -175,7 +175,7 @@ export const deletePost = (post) => {
 //GET POST
 export const getPost = (postId) => {
     return (dispatch) => {
-        dispatch(loadingPost())
+        //dispatch(loadingPost())
         axios.get(`/social/posts/single/${postId}`)
         .then(res => {
 
@@ -192,13 +192,14 @@ export const getPost = (postId) => {
   
 export const addComment = (newComment) => {
     return (dispatch) => {
-        dispatch(loadingPost())
+        //dispatch(loadingPost())
         axios.post(`/social/posts/createcomment/${newComment.postId}`, newComment)
         .then(res => {
 
-            dispatch(getPost(newComment.postId))
+            console.log(res.data)
+            //dispatch(getPost(newComment.postId))
             //dispatch(getPosts())
-            //dispatch(addCommentSuccess(res))
+            dispatch(addCommentSuccess(res.data))
         })
         .catch(err => {
             const error = err;

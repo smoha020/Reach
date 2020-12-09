@@ -15,6 +15,7 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import PhotoIcon from '@material-ui/icons/Photo';
 import Badge from '@material-ui/core/Badge';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import ReactTimeAgo from 'react-time-ago'
 import Modal2 from 'react-bootstrap/Modal';
 import CommentInput from './CommentInput'
 
@@ -82,7 +83,8 @@ class Dashboard extends Component {
             window.location.reload()
         } else {
             this.setState({show2: false});
-            this.props.getPosts()
+            console.log('inside handleClose2')
+            //this.props.getPosts()
         }
     }
 
@@ -102,8 +104,10 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
-        console.log('componentDidMount')
-        this.props.getPosts()
+        //if(this.props.currentUser && this.props.currentUser.data != '') {
+            console.log('componentDidMount')
+            this.props.getPosts()
+        //}
     }
  
     onChange = (e) => {
@@ -199,6 +203,7 @@ class Dashboard extends Component {
         .then( data => {
             console.log(data)
             this.props.getAuthenticated()
+            console.log('inside uploadImage submit')
             this.props.getPosts()
             this.setState({ show4: false })
         })
@@ -250,7 +255,6 @@ class Dashboard extends Component {
         /*WHEN YOU COME TO THIS PAGE VIA URL OR WHEN YOU REFRESH, 
         THE INITIAL RENDERING TAKES PLACE AND isAuthenticated is '', 
         AFTER THIS IT RE-RENDERS AND isAuthenticated GETS THE data PROPERTY*/
-      
         if(loading) {
             console.log('dash loading')
             return (
@@ -270,6 +274,7 @@ class Dashboard extends Component {
                 if statement is true, the post is still being fetched
                 and posts.map will cause an error*/
                 if(posts != []) {
+                    console.log('posts not empty: ' + posts)
                     displayposts  = posts.map((post, index) => {
                         if(post.user == currentUser.data.credentials.username) {
                             deletedisplay = <button onClick={this.deletePost.bind(this, post)}>
@@ -298,7 +303,7 @@ class Dashboard extends Component {
                                     <div className='post-right'>
                                         <div className='post-right-top'>
                                             <div className='post-name'><Link style={{ textDecoration: 'none'}} to={`/User/${post.user}`} style={{ fontWeight: 'bold'}}>{post.user}</Link></div>
-                                            <div className='post-time'>{post.createdAt}</div>
+                                            <div className='post-time'><ReactTimeAgo date={post.createdAt} locale="en-US"/></div>
                                             <div className='post-delete'>{deletedisplay}</div>
                                         </div>
                                         <div className='post-body'>{post.body}</div>
@@ -495,7 +500,7 @@ class Dashboard extends Component {
                                     {(currentUser.data.credentials.location)? (<p>From: {currentUser.data.credentials.location}</p>): (null)}
                                     {(currentUser.data.credentials.bio)? (<p>About: {currentUser.data.credentials.bio}</p>): (null)}
                                     {(currentUser.data.credentials.website)? (<p>{currentUser.data.credentials.website}</p>): (null)}
-                                    <p>Joined: {currentUser.data.credentials.joinDate}</p>
+                                    <p>Joined: <ReactTimeAgo date={currentUser.data.credentials.joinDate} locale="en-US"/></p>
                                     <Button variant="primary" onClick={this.handleShow3}>Update Profile</Button>
                                 </div>
                             </div>

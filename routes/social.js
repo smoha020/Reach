@@ -14,8 +14,12 @@ const Likes = require('../Models/Likes');
 //----------POSTS-----------//
 //READ POSTS
 router.get('/posts', (req, res) => {
+    console.log('start')
     Posts.find().sort({ createdAt: -1 })
-    .then(data => res.json(data))
+    .then(data => {
+        console.log('b4 finish')
+        res.json(data)
+    })
     .catch(err => console.log(err))
 })
 
@@ -128,10 +132,10 @@ router.post('/posts/createcomment/:postId', (req, res) => {
     let Note = {};
     
     const query = { _id: req.params.postId }
-    
+    let newComment 
     userImage.findOne({ user: req.body.user })
     .then( data => {
-        let newComment 
+        
         if(!data) {
             
             newComment = new Comments({
@@ -177,10 +181,10 @@ router.post('/posts/createcomment/:postId', (req, res) => {
         if(Note.reciever != Note.sender) {
             const notification = new Notifications(Note)
             notification.save()
-            .then(() => res.send('Notification Sent'))
+            .then(() => res.send(newComment))
             .catch(err => res.send(err))
         } else {
-            res.send('No Notification Sent')
+            res.send(newComment)
         }
     })
     .catch(err => console.log(err))

@@ -26,7 +26,7 @@ var upload = multer({ storage: storage });
 const authenticate = require('../config/authenticate'); 
 
 router.get('/test', (req, res) => {
-    console.log("test hit: " + req.user)
+    
     if(req.user && req.user.username) {
         /*if we are logged in we get the user's credentials, 
         likes and notifications*/
