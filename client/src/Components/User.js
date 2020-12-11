@@ -94,19 +94,19 @@ class User extends Component {
                     <Button variant="primary" onClick={this.handleShow}> Add Post </Button>              
                 </ul>
                 <div className='display-flex'>
-                        <div className='post-container'>
-                            {displayposts}
-                        </div>        
-                        <div className="profile">
-                            {(otherUser.data.credentials.pic)? (<p>{otherUser.data.credentials.pic}</p>): (null)}
-                            <p>{otherUser.data.credentials.username}</p>
-                            {(otherUser.data.credentials.location)? (<p>{otherUser.data.credentials.location}</p>): (null)}
-                            {(otherUser.data.credentials.bio)? (<p>{otherUser.data.credentials.bio}</p>): (null)}
-                            {(otherUser.data.credentials.website)? (<p>{otherUser.data.credentials.website}</p>): (null)}
-                            <p>Joined: {otherUser.data.credentials.joinDate}</p>
-                            <Button variant="primary" onClick={this.handleShow3}>Update Profile</Button>
-                        </div>
+                    <div className='post-container'>
+                        {displayposts}
+                    </div>        
+                    <div className="profile">
+                        {(otherUser.data.credentials.pic)? (<p>{otherUser.data.credentials.pic}</p>): (null)}
+                        <p>{otherUser.data.credentials.username}</p>
+                        {(otherUser.data.credentials.location)? (<p>{otherUser.data.credentials.location}</p>): (null)}
+                        {(otherUser.data.credentials.bio)? (<p>{otherUser.data.credentials.bio}</p>): (null)}
+                        {(otherUser.data.credentials.website)? (<p>{otherUser.data.credentials.website}</p>): (null)}
+                        <p>Joined: {otherUser.data.credentials.joinDate}</p>
+                        <Button variant="primary" onClick={this.handleShow3}>Update Profile</Button>
                     </div>
+                </div>
             </React.Fragment>
         }
         return(

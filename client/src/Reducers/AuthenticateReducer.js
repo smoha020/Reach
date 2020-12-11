@@ -16,7 +16,7 @@ const AuthenticateReducer = (state = initState, action) => {
         case 'GET_CURRENTUSER_SUCCESS': 
             return {
                 loading: false,
-                currentUser: action.payload,
+                currentUser: action.payload.data,
                 likes: [...action.payload.data.likes],
                 error: ''
             }
@@ -52,7 +52,7 @@ const AuthenticateReducer = (state = initState, action) => {
             return {
                 ...state, 
                 loading: false, 
-                currentUser: action.payload, 
+                currentUser: action.payload.data, 
                 error: '' 
             }
         case 'GET_UPDATEDUSER_FAILURE': 
@@ -78,6 +78,15 @@ const AuthenticateReducer = (state = initState, action) => {
                 notifications: '',
                 likes: '',
                 error: action.payload
+            }
+        case 'GET_NOTEREAD_SUCCESS': 
+        let filterNotes = state.currentUser.notifications.filter(note => note._id != action.payload._id)
+            return {
+                ...state,
+                currentUser: {
+                    ...state.currentUser,
+                    notifications: [...filterNotes]
+                }
             }
         default: return state
     }

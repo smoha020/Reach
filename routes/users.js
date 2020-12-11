@@ -257,7 +257,6 @@ router.get('/otheruser/:user', (req, res) => {
     let otherUser = {}
     let query = { username: req.params.user }
 
-    console.log(req.params.user)
     allUsers.findOne(query)
     .then(data => {
         
@@ -267,9 +266,7 @@ router.get('/otheruser/:user', (req, res) => {
     })
     .then(data => {
  
-        console.log('posts data: ' + data)
         otherUser.posts = [...data]
-        console.log('otheruser: ' + otherUser)
         res.json(otherUser)
     })
     .catch(err => console.log(err))   

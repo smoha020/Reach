@@ -2,7 +2,7 @@ import React, { Component }from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
 import { getPosts, createPost, deletePost, likePost, unlikePost } from '../Actions/Posts'
-import { signOut, updateUser, getAuthenticated } from '../Actions/Authenticated'
+import { signOut, updateUser, getAuthenticated, NoteRead } from '../Actions/Authenticated'
 import { connect } from 'react-redux';
 import Post from './Post'
 import Button from 'react-bootstrap/Button';
@@ -55,6 +55,7 @@ class Dashboard extends Component {
     }
     handleShow2 = (post, note)=> {
 
+
         /*Once the notification is clicked, 
         it will display the modal for the post*/
         this.setState({
@@ -64,12 +65,7 @@ class Dashboard extends Component {
 
         
         if(note.read === false) {
-            axios.put(`/social/notificationRead/${note._id}`)
-            .then(data => {
-                console.log(data)
-                
-            })
-            .catch(err => console.log(err))
+            this.props.NoteRead(note)
         }
         
     }
@@ -78,9 +74,10 @@ class Dashboard extends Component {
 
         //If modal was opened for notifications
         if(this.state.visible == true) {
+            this.setState({show2: false});
             console.log('refresh?')
             //this.props.history.push('/Dashboard')
-            window.location.reload()
+            //window.location.reload()
         } else {
             this.setState({show2: false});
             console.log('inside handleClose2')
@@ -104,10 +101,10 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
-        //if(this.props.currentUser && this.props.currentUser.data != '') {
-            console.log('componentDidMount')
+        if(this.props.posts.length === 0) {
+            console.log('componentDidMount: ' + this.props.posts.length)
             this.props.getPosts()
-        //}
+        }
     }
  
     onChange = (e) => {
@@ -125,7 +122,7 @@ class Dashboard extends Component {
 
         let newpost = {
             body: this.state.post,
-            user: this.props.currentUser.data.credentials.username,
+            user: this.props.currentUser.credentials.username,
         }
 
         this.props.createPost(newpost)
@@ -150,7 +147,7 @@ class Dashboard extends Component {
         console.log(id)
         let like = {
             postId: id,
-            user: this.props.currentUser.data.credentials.username
+            user: this.props.currentUser.credentials.username
         }
         this.props.likePost(like)
     }
@@ -165,7 +162,7 @@ class Dashboard extends Component {
         
         let like = {
             postId: id,
-            user: this.props.currentUser.data.credentials.username
+            user: this.props.currentUser.credentials.username
         }
         this.props.unlikePost(like)
     }
@@ -174,7 +171,7 @@ class Dashboard extends Component {
         e.preventDefault()
 
         let user = {
-            _id: this.props.currentUser.data.credentials._id,
+            _id: this.props.currentUser.credentials._id,
             bio: this.state.bio,
             location: this.state.location,
             website: this.state.website
@@ -268,78 +265,81 @@ class Dashboard extends Component {
                 </div>
             )
         } else {
-            if(currentUser && currentUser.data != '') {
+            if(currentUser && currentUser.credentials != '') {
          
-                /*the if statement below is needed because when the above 
-                if statement is true, the post is still being fetched
-                and posts.map will cause an error*/
-                if(posts != []) {
-                    console.log('posts not empty: ' + posts)
-                    displayposts  = posts.map((post, index) => {
-                        if(post.user == currentUser.data.credentials.username) {
-                            deletedisplay = <button onClick={this.deletePost.bind(this, post)}>
-                                        Delete
-                                    </button>
-                        } else { deletedisplay = '' }
-                        /*WITHTOUT THIS, deletedisplay WILL CONTINUE TO HAVE THE 
-                        VALUE ABOVE FOR EVERY ITERATION AFTER THE FIRST TRUE IF STATEMENT.*/
-        
-                        thumbsLogo = []
-                        thumbsLogo = likes.map(like => {
-                            if(like.postId === post._id) {
-                                return post._id
-                            } 
-                        })
+                
+                displayposts  = posts.map((post, index) => {
+                    if(post.user == currentUser.credentials.username) {
+                        deletedisplay = <button onClick={this.deletePost.bind(this, post)}>
+                                    Delete
+                                </button>
+                    } else { deletedisplay = '' }
+                    /*WITHTOUT THIS, deletedisplay WILL CONTINUE TO HAVE THE 
+                    VALUE ABOVE FOR EVERY ITERATION AFTER THE FIRST TRUE IF STATEMENT.*/
+    
+                    thumbsLogo = []
+                    thumbsLogo = likes.map(like => {
+                        if(like.postId === post._id) {
+                            return post._id
+                        } 
+                    })
 
-                        
-                        return (
-                            <React.Fragment key={index}>
-                                <div className='post'>
-                                    <div className='post-pic'>
-                                        {(post.pic)? (
-                                            <img src={`data:image/png;base64,${post.pic}`} alt='jpg'/>
-                                        ): (<div className='post-pic-second'></div>)}
+                    
+                    return (
+                        <React.Fragment key={index}>
+                            <div className='post'>
+                                <div className='post-pic'>
+                                    {(post.pic)? (
+                                        <img src={`data:image/png;base64,${post.pic}`} alt='jpg'/>
+                                    ): (<div className='post-pic-second'></div>)}
+                                </div>
+                                <div className='post-right'>
+                                    <div className='post-right-top'>
+                                        <div className='post-name'><Link style={{ textDecoration: 'none'}} to={`/User/${post.user}`} style={{ fontWeight: 'bold'}}>{post.user}</Link></div>
+                                        <div className='post-time'><ReactTimeAgo date={post.createdAt} locale="en-US"/></div>
+                                        <div className='post-delete'>{deletedisplay}</div>
                                     </div>
-                                    <div className='post-right'>
-                                        <div className='post-right-top'>
-                                            <div className='post-name'><Link style={{ textDecoration: 'none'}} to={`/User/${post.user}`} style={{ fontWeight: 'bold'}}>{post.user}</Link></div>
-                                            <div className='post-time'><ReactTimeAgo date={post.createdAt} locale="en-US"/></div>
-                                            <div className='post-delete'>{deletedisplay}</div>
+                                    <div className='post-body'>{post.body}</div>
+                                    <div className='post-bottom'>
+                                        <div className='bottom-thumb'>
+                                            {( thumbsLogo.includes(post._id) )? (
+                                                <button disabled={this.state.disabled} onClick={this.clickUnlike.bind(this, post._id)}><ThumbDownIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}}></ThumbDownIcon></button>
+                                            ) : (
+                                                <button disabled={this.state.disabled} onClick={this.clickLike.bind(this, post._id)} ><ThumbUpIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}}></ThumbUpIcon></button>
+                                            )} 
+                                            <div>{post.likeCount}</div>
                                         </div>
-                                        <div className='post-body'>{post.body}</div>
-                                        <div className='post-bottom'>
-                                            <div className='bottom-thumb'>
-                                                {( thumbsLogo.includes(post._id) )? (
-                                                    <button disabled={this.state.disabled} onClick={this.clickUnlike.bind(this, post._id)}><ThumbDownIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}}></ThumbDownIcon></button>
-                                                ) : (
-                                                    <button disabled={this.state.disabled} onClick={this.clickLike.bind(this, post._id)} ><ThumbUpIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}}></ThumbUpIcon></button>
-                                                )} 
-                                                <div>{post.likeCount}</div>
-                                            </div>
-                                            <div className='bottom-comment'>
-                                                <div><CommentIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}} onClick={this.handleShow2.bind(this, post)}></CommentIcon></div>
-                                                <div>{post.commentCount}</div>
-                                            </div>
+                                        <div className='bottom-comment'>
+                                            <div><CommentIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}} onClick={this.handleShow2.bind(this, post)}></CommentIcon></div>
+                                            <div>{post.commentCount}</div>
                                         </div>
                                     </div>
                                 </div>
-                                
-                            </React.Fragment>
-                        )   
-                    })
-                }
- 
-                notesDisplay = currentUser.data.notifications.map((note, index) => {
+                            </div>
+                            
+                        </React.Fragment>
+                    )   
+                })
+            
+                /*We use this to get the number in the red 
+                circle on the notifications*/
+                let noteCount = []
+                notesDisplay = currentUser.notifications.map((note, index) => {
                     let myPost = posts.find( post => {
                         return (post._id === note.postId) 
                     })
                     
-                    if(note.notType === 'like') { 
+                    
+                    if(myPost) {
+                        noteCount = [...noteCount, myPost]
+                        console.log('myPost is not undefined: ' + noteCount)
+                        if(note.notType === 'like') { 
 
-                        return <div key={index} variant="primary" onClick={this.handleShow2.bind(this, myPost, note)}>{note.sender} liked your post </div>
-                    } else {
-                        return <div key={index} variant="primary" onClick={this.handleShow2.bind(this, myPost, note)}>{note.sender} commented on your post </div>
-                    }
+                            return <div key={index} variant="primary" onClick={this.handleShow2.bind(this, myPost, note)}>{note.sender} liked your post </div>
+                        } else {
+                            return <div key={index} variant="primary" onClick={this.handleShow2.bind(this, myPost, note)}>{note.sender} commented on your post </div>
+                        }
+                    } else return null
                 })
 
               
@@ -347,10 +347,10 @@ class Dashboard extends Component {
                     display = 
                     <React.Fragment>
                         <div className='my-nav'>
-                            <div className='brand-name'>NewsQuest</div>
+                            <div className='brand-name'>Reach</div>
                             <div className='move-right'>   
                                 <div className='notes-display'>
-                                    <Badge className='notes-icon' color="secondary" badgeContent={currentUser.data.notifications.length}>
+                                    <Badge className='notes-icon' color="secondary" badgeContent={(noteCount.length != 0)?(noteCount.length):(0)}>
                                         <NotificationsIcon  style={{ fontSize: 40, color: `${this.state.notesColor}` }} onClick={this.changeNotes}></NotificationsIcon>
                                     </Badge>
                                     {(this.state.visible)? (
@@ -398,11 +398,6 @@ class Dashboard extends Component {
                                 <Post postId={this.state.postId}/>
                             </Modal.Body>
                             <Modal.Footer>
-                                <button
-                                style={btnStyle}
-                                onClick={this.handleClose2}>
-                                    Close
-                                </button>
                             </Modal.Footer>
                         </Modal>
 
@@ -490,17 +485,17 @@ class Dashboard extends Component {
                         <div className='display-flex'>
                             <div className="profile">
                                 <div className='profile-pic'>
-                                    {(currentUser.data.pic)? (
-                                        <img style={{width: '20%'}} src={`data:image/png;base64,${currentUser.data.pic}`} alt='jpg'/>
+                                    {(currentUser.pic)? (
+                                        <img style={{width: '20%'}} src={`data:image/png;base64,${currentUser.pic}`} alt='jpg'/>
                                     ): (null)}
                                     <div className='profile-pic-btn' style={{margin: '1%'}}><PhotoIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}} onClick={this.handleShow4}></PhotoIcon></div>
                                 </div>
                                 <div className='profile-details'>
-                                    <p style={{ fontWeight: 'bold', fontSize: 'x-large'}}>{currentUser.data.credentials.username}</p>
-                                    {(currentUser.data.credentials.location)? (<p>From: {currentUser.data.credentials.location}</p>): (null)}
-                                    {(currentUser.data.credentials.bio)? (<p>About: {currentUser.data.credentials.bio}</p>): (null)}
-                                    {(currentUser.data.credentials.website)? (<p>{currentUser.data.credentials.website}</p>): (null)}
-                                    <p>Joined: <ReactTimeAgo date={currentUser.data.credentials.joinDate} locale="en-US"/></p>
+                                    <p style={{ fontWeight: 'bold', fontSize: 'x-large'}}>{currentUser.credentials.username}</p>
+                                    {(currentUser.credentials.location)? (<p>From: {currentUser.credentials.location}</p>): (null)}
+                                    {(currentUser.credentials.bio)? (<p>About: {currentUser.credentials.bio}</p>): (null)}
+                                    {(currentUser.credentials.website)? (<p>{currentUser.credentials.website}</p>): (null)}
+                                    <p>Joined: <ReactTimeAgo date={currentUser.credentials.joinDate} locale="en-US"/></p>
                                     <Button variant="primary" onClick={this.handleShow3}>Update Profile</Button>
                                 </div>
                             </div>
@@ -557,6 +552,7 @@ const mapDispatchToProps = dispatch => {
         unlikePost: (like) => dispatch(unlikePost(like)),
         updateUser: (user) => dispatch(updateUser(user)),
         getAuthenticated: () => dispatch(getAuthenticated()),
+        NoteRead: (note) => dispatch(NoteRead(note))
     }
 }
 

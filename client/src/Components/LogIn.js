@@ -40,7 +40,7 @@ class LogIn extends Component {
  
 
         if(!loading){
-            if(currentUser && currentUser.data) {
+            if(currentUser && currentUser.credentials) {
                 this.props.history.push('/Dashboard')
             } else {
                 display = <React.Fragment>

@@ -32,7 +32,7 @@ class Post extends Component {
             console.log('not blank')
             let newComment = {
                 body: this.state.comment,
-                user: this.props.currentUser.data.credentials.username,
+                user: this.props.currentUser.credentials.username,
                 postId: this.props.postId
             }
 
@@ -98,7 +98,7 @@ class Post extends Component {
                 displayComments = post.data.comments.map(comment => {
 
 
-                    if(comment.user == currentUser.data.credentials.username) {
+                    if(comment.user == currentUser.credentials.username) {
                         deletedisplay = <button onClick={this.deleteComment.bind(this, comment)} >
                                     x
                                 </button>
@@ -146,25 +146,26 @@ class Post extends Component {
                         {displayComments}
                         <br></br>   
                         <br></br> 
-                        <form onSubmit={this.submitComment}> 
-                            <input type='text'
-                            name="comment"
-                            value={this.state.comment}
-                            style={{ background: 'rgb(230, 234, 247)', width: '70%'}}
-                            onChange={this.onChange} />
-                            
-                            <input 
-                            type="submit" 
-                            value="submit"
-                            style={{
-                                background: '#2196f3', 
-                                color: 'white', 
-                                border: 'none', 
-                                cursor: 'pointer', 
-                                padding: '3%', 
-                                float: 'right'
-                            }} />
-                        </form>
+                        <div className='input-container'>
+                            <form onSubmit={this.submitComment}> 
+                                <div className='text-cont'>
+                                    <input 
+                                    className='input-text'
+                                    type='text'
+                                    name="comment"
+                                    value={this.state.comment}
+                                    placeholder="write a comment"
+                                    onChange={this.onChange} />
+                                </div>
+                                <div className='submit-cont'>
+                                    <input 
+                                    className='input-submit'
+                                    type="submit" 
+                                    value="submit"
+                                    />
+                                </div>
+                            </form>
+                        </div>
                     </div>
             } else {
                 display = 

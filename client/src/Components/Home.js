@@ -35,7 +35,7 @@ class Home extends Component {
           </div>
         </div>
         <footer>
-          <p>&#169</p>
+          <p>smoha020@ucr.edu</p>
         </footer>
       </React.Fragment>
     );

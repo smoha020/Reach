@@ -48,12 +48,14 @@
   font-size: small;
   color: white;
   cursor: pointer;
-  margin: 18%;
+  position: absolute;
+  top: 30%;
+  left: 40%;
 }
 .notes-menu {
   position: absolute;
+  top: 90%;
   width: 40%;
-  background: red;
 }
 .notes-menu div {
   background: #e3f2fd;
@@ -80,6 +82,50 @@
   color: white;
   padding: 7%;
   font-size: large;
+}
+
+@media screen and (max-width: 960px) {
+  .move-right {
+    width: 50%;
+  }
+}
+@media screen and (max-width: 600px) {
+  .my-nav {
+    background: #2196f3;
+    height: 23vh;
+    position: static;
+  }
+  .move-right {
+    width: 100%;
+    height: 50%;
+    position: static;
+    display: flex;
+
+    /*display: -webkit-inline-flex;
+    position: absolute;
+    right: 0;
+    width: 25%;
+    height: 100%;
+    justify-content: center;*/
+  }
+  .brand-name {
+    display: block;
+    height: 50%;
+    text-align: center;
+  }
+
+  .notes-menu {
+    position: absolute;
+    top: 21%;
+    width: 20%;
+  }
+  .log-out {
+    cursor: pointer;
+    margin: auto;
+    color: white;
+    padding: 2%;
+    font-size: large;
+  }
 }
 
 /*----------HOME PAGE--------------*/
@@ -133,7 +179,36 @@
   margin: 9% auto;
   padding: 1%;
 }
-
+footer {
+  padding-top: 1%;
+  text-align: center;
+}
+@media screen and (max-width: 760px) {
+  .home-container {
+    display: block
+  }
+  .home-left, .home-right {
+    width: 100%;
+    height: 50%;
+  }
+  .home-right-top {
+    width: 70%;
+    padding: 3%;
+    font-size: xx-large;
+    font-weight: bold;
+  }
+  .home-right-mid-btn {
+    font-size: large;
+    font-weight: bold;
+    width: 70%;
+    height: 13%;
+    margin: 4% auto;
+  }
+  footer {
+    padding-top: 4%;
+    text-align: center;
+  }
+}
 /*---------REGISTER------*/
 .register-form {
   display: flex;
@@ -160,11 +235,19 @@
   width: 100%;
   height: 100%;
 }
-
+@media screen and (max-width: 740px) {
+  .register-form-child {
+    margin: auto;
+    text-align: center;
+    width: 70%;
+    height: 12%;
+  }
+}
 /*----------DASHBOARD--------*/
 .display-flex {
   margin: auto;
   width: 60%;
+  margin-bottom: 5%;
 }
 .post-container {
   display: inline-block;
@@ -177,16 +260,15 @@
 }
 .post-pic {
   vertical-align: top;
-  width: 12%;
-  height: 14vh;
+  max-height: 150px;
+  width: 15%;
   margin: 2% 1%;
+  overflow: hidden;
 }
 .post-pic img {
   border-radius: 50%;
   width: 100%;
-  height: 100%;
   display: inline-block;
-  background: red;
 }
 .post-pic, .post-right {
   display: inline-block;
@@ -199,6 +281,7 @@
 }
 .post-right {
   width: 75%;
+  margin: 2% 1%;
 }
 
 .post-right-top {
@@ -220,7 +303,7 @@
   padding: 3% 8%;
 }
 .post-body {
-  margin: 0% 3%;
+  margin: 2% 3%;
 }
 .post-bottom {
   display: flex;
@@ -257,11 +340,51 @@
   border-color: #2196f3;
 }
 
+@media screen and (max-width: 600px) {
+  .display-flex {
+    margin: auto;
+    width: 80%;
+  }
+}
 
+@media screen and (max-width: 386px) {
+  .display-flex {
+    margin: auto;
+    width: 90%;
+  }
+}
+/*----------MODALS---------*/
+.text-cont {
+  height: 50px;
+  text-align: center;
+}
+.text-cont input[type=text] {
+  background: rgb(230, 234, 247);
+  display: inline;
+  height: 70%;
+  width: 70%;
+  margin: 2%;
+}
+.submit-cont {
+  text-align: center;
+}
+
+.input-submit {
+  background: #2196f3;
+  color: white; 
+  border: none; 
+  cursor: pointer;
+  padding: 3%;
+  width: 70%;
+  margin: 2%;
+}
 /*----------POST WITH COMMENTS----------*/
+
 .comment {
   overflow: hidden;
   padding: 2px;
+  margin: 2px;
+  background: rgb(230, 234, 247);
 }
 .comment-pic {
   vertical-align: top;
@@ -381,14 +504,10 @@ body {
   background: rgb(0, 0, 255);
   color: #fff;
 }
-.logo {
-  text-align: center;
-  color: #fff;
-}
 
 body input[type=text] {
   /*we use float on both the input and the button to get them to stick to each other*/
-  float: left;
+
   margin-left: 1rem;
   height: 30px;  
   width: 80%;
@@ -461,7 +580,6 @@ body input[type=text] {
 
 @media screen and (max-width: 450px) {
   body input[type=text] {
-      float: none;
       display: block;
       margin: auto;
       margin-top: 5px;

@@ -5,7 +5,7 @@ export const loadingRequest = () => {
         type: 'LOADING_REQUEST'
     }
 }
-
+ 
 export const getcurrentUserSuccess = currentUser => {
     return {
         type: 'GET_CURRENTUSER_SUCCESS',
@@ -45,6 +45,13 @@ export const logOutFailure = error => {
         type: 'LOG_OUT_FAILURE',
         payload: error
     }
+}
+
+export const getNoteReadSuccess = (note) => {
+    return {
+        type: 'GET_NOTEREAD_SUCCESS',
+        payload: note
+    }   
 }
 
 //----
@@ -171,3 +178,15 @@ export const updateUser = (user) => {
     }
 }
 
+export const NoteRead = (note) => {
+    return (dispatch) => {
+
+    axios.put(`/social/notificationRead/${note._id}`)
+        .then(data => {
+            
+            dispatch(getNoteReadSuccess(note))
+        })
+        .catch(err => console.log(err))
+
+    }
+}
