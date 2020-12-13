@@ -340,6 +340,7 @@ footer {
   background: rgb(230, 234, 247);
 }
 .profile-pic img {
+  height: 150px;
   margin: 2%;
   border-radius: 50%;
   border: solid 1px;

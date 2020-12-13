@@ -28,7 +28,7 @@ function ModalPic(props) {
 
     console.log(props)
     return (
-        <Modal show4={show4} onHide={() => {OnHide(props)}}>
+        <Modal show={show4} onHide={() => {OnHide(props)}}>
             <form onSubmit={(e) => {OnSubmit(e, props)}}> 
                 <Modal.Header closeButton>
                     <Modal.Title>Update Pic</Modal.Title>

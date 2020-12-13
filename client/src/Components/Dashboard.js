@@ -6,6 +6,7 @@ import { signOut, updateUser, getAuthenticated, NoteRead } from '../Actions/Auth
 import { connect } from 'react-redux';
 import DisplayPosts from './DisplayPosts'
 import Nav from './Nav'
+import Profile from './Profile'
 import ModalNewPost from './ModalNewPost'
 import ModalPic from './ModalPic'
 import ModalSinglePost from './ModalSinglePost'
@@ -203,11 +204,12 @@ class Dashboard extends Component {
         fd.append('pic', this.state.pic, this.state.pic.name)
         axios.post('/users/uploadImage', fd)
         .then( data => {
-            console.log(data)
+            window.location.reload()
+            /*console.log(data)
             this.props.getAuthenticated()
             console.log('inside uploadImage submit')
             this.props.getPosts()
-            this.setState({ show4: false })
+            this.setState({ show4: false })*/
         })
         .catch(err => {
             console.log(err)
@@ -539,10 +541,15 @@ class Dashboard extends Component {
                         
 
                         <div className='display-flex'>
-                            <div className="profile">
+                            <Profile 
+                            currentUser={currentUser}
+                            handleShow4={this.handleShow4}
+                            handleShow3={this.handleShow3}
+                            />
+                            {/*<div className="profile">
                                 <div className='profile-pic'>
                                     {(currentUser.pic)? (
-                                        <img style={{width: '20%'}} src={`data:image/png;base64,${currentUser.pic}`} alt='jpg'/>
+                                        <img src={`data:image/png;base64,${currentUser.pic}`} alt='jpg'/>
                                     ): (null)}
                                     <div className='profile-pic-btn' style={{margin: '1%'}}><PhotoIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}} onClick={this.handleShow4}></PhotoIcon></div>
                                 </div>
@@ -554,7 +561,7 @@ class Dashboard extends Component {
                                     <p>Joined: <ReactTimeAgo date={currentUser.credentials.joinDate} locale="en-US"/></p>
                                     <Button variant="primary" onClick={this.handleShow3}>Update Profile</Button>
                                 </div>
-                            </div>
+                            </div>*/}
                             <div className='post-container'>
                                 {displayposts}
                             </div>
