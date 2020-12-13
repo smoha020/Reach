@@ -7,7 +7,7 @@ import axios from 'axios'
 import { getPost, addComment, deleteComment } from '../Actions/Posts'
 
 
-class Post extends Component {
+class SinglePost extends Component {
     constructor(props) {
         super(props) 
         this.state = {
@@ -15,7 +15,7 @@ class Post extends Component {
             posts: [],
             post: '',
             comment: '',
-            loading: ''
+            loading: '' 
         }
     }
 
@@ -214,4 +214,4 @@ const btnStyle = {
     cursor: 'pointer', 
     padding: '3%'
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Post)
+export default connect(mapStateToProps, mapDispatchToProps)(SinglePost)

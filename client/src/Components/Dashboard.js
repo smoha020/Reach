@@ -4,7 +4,12 @@ import axios from 'axios'
 import { getPosts, createPost, deletePost, likePost, unlikePost } from '../Actions/Posts'
 import { signOut, updateUser, getAuthenticated, NoteRead } from '../Actions/Authenticated'
 import { connect } from 'react-redux';
-import Post from './Post'
+import DisplayPosts from './DisplayPosts'
+import Nav from './Nav'
+import ModalNewPost from './ModalNewPost'
+import ModalPic from './ModalPic'
+import ModalSinglePost from './ModalSinglePost'
+import ModalUpdateProfile from './ModalUpdateProfile'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import NotificationsIcon from '@material-ui/icons/Notifications';
@@ -16,8 +21,6 @@ import PhotoIcon from '@material-ui/icons/Photo';
 import Badge from '@material-ui/core/Badge';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ReactTimeAgo from 'react-time-ago'
-import Modal2 from 'react-bootstrap/Modal';
-import CommentInput from './CommentInput'
 
 
 class Dashboard extends Component {
@@ -63,8 +66,7 @@ class Dashboard extends Component {
             postId: post._id
         })
 
-        
-        if(note.read === false) {
+        if(note && note.read === false) {
             this.props.NoteRead(note)
         }
         
@@ -119,14 +121,15 @@ class Dashboard extends Component {
         //this.setState({show: false});
         e.preventDefault()
         
+        if(this.state.post) {
+            let newpost = {
+                body: this.state.post,
+                user: this.props.currentUser.credentials.username,
+            }
 
-        let newpost = {
-            body: this.state.post,
-            user: this.props.currentUser.credentials.username,
+            this.props.createPost(newpost)
+            this.setState({ show: false })
         }
-
-        this.props.createPost(newpost)
-        this.setState({ show: false })
 
     }
 
@@ -170,20 +173,22 @@ class Dashboard extends Component {
     onSubmitProfile = (e) => {
         e.preventDefault()
 
-        let user = {
-            _id: this.props.currentUser.credentials._id,
-            bio: this.state.bio,
-            location: this.state.location,
-            website: this.state.website
+        if( this.state.bio || this.state.location || this.state.website ) {
+            let user = {
+                _id: this.props.currentUser.credentials._id,
+                bio: this.state.bio,
+                location: this.state.location,
+                website: this.state.website
+            }
+            axios.post(`/users/update/${user._id}`, user)
+            .then(res => {
+                this.props.getAuthenticated()
+                this.setState({ show3: false })
+            })
+            .catch((err) => {
+                const error = err;  
+            })
         }
-        axios.post(`/users/update/${user._id}`, user)
-        .then(res => {
-            this.props.getAuthenticated()
-            this.setState({ show3: false })
-        })
-        .catch((err) => {
-            const error = err;  
-        })
     }
 
     onChangePic = (e) => {
@@ -267,17 +272,26 @@ class Dashboard extends Component {
         } else {
             if(currentUser && currentUser.credentials != '') {
          
-                
-                displayposts  = posts.map((post, index) => {
+                displayposts = <DisplayPosts 
+                posts={posts}
+                currentUser={currentUser}
+                deletePost={this.deletePost}
+                likes={likes}
+                disabled={this.state.disabled}
+                clickLike={this.clickLike}
+                clickUnlike={this.clickUnlike}
+                handleShow2={this.handleShow2}
+                />
+                {/*displayposts  = posts.map((post, index) => {
                     if(post.user == currentUser.credentials.username) {
                         deletedisplay = <button onClick={this.deletePost.bind(this, post)}>
                                     Delete
                                 </button>
-                    } else { deletedisplay = '' }
+                    } else { deletedisplay = '' }*/}
                     /*WITHTOUT THIS, deletedisplay WILL CONTINUE TO HAVE THE 
                     VALUE ABOVE FOR EVERY ITERATION AFTER THE FIRST TRUE IF STATEMENT.*/
     
-                    thumbsLogo = []
+                 {/*    thumbsLogo = []
                     thumbsLogo = likes.map(like => {
                         if(like.postId === post._id) {
                             return post._id
@@ -290,7 +304,9 @@ class Dashboard extends Component {
                             <div className='post'>
                                 <div className='post-pic'>
                                     {(post.pic)? (
-                                        <img src={`data:image/png;base64,${post.pic}`} alt='jpg'/>
+                                        <Link style={{ textDecoration: 'none'}} to={`/User/${post.user}`}>
+                                            <img src={`data:image/png;base64,${post.pic}`} alt='jpg'/>
+                                        </Link>
                                     ): (<div className='post-pic-second'></div>)}
                                 </div>
                                 <div className='post-right'>
@@ -319,7 +335,7 @@ class Dashboard extends Component {
                             
                         </React.Fragment>
                     )   
-                })
+                })*/}
             
                 /*We use this to get the number in the red 
                 circle on the notifications*/
@@ -343,10 +359,20 @@ class Dashboard extends Component {
                 })
 
               
+                console.log('how many notes? ' + noteCount.length)
                 if(posts.length != 0) {
                     display = 
                     <React.Fragment>
-                        <div className='my-nav'>
+                        <Nav 
+                        notesColor={this.state.notesColor}
+                        noteCount={noteCount}
+                        visible={this.state.visible}
+                        notesDisplay={notesDisplay}
+                        handleShow={this.handleShow}
+                        logOut={this.logOut}
+                        changeNotes={this.changeNotes}
+                        />
+                        {/*<div className='my-nav'>
                             <div className='brand-name'>Reach</div>
                             <div className='move-right'>   
                                 <div className='notes-display'>
@@ -361,9 +387,17 @@ class Dashboard extends Component {
                                 <PostAddIcon className='post-icon' style={{ fontSize: 40 }} onClick={this.handleShow}></PostAddIcon>  
                                 <div onClick={this.logOut} className='log-out'>Log Out</div>    
                             </div>   
-                        </div>
+                        </div>*/}
     
-                        <Modal show={this.state.show} onHide={this.handleClose}>
+
+                        <ModalNewPost 
+                        show={this.state.show}
+                        handleClose={this.handleClose}
+                        onSubmit={this.onSubmit}
+                        post={this.state.post}
+                        onChange={this.onChange}
+                        />
+                        {/*<Modal show={this.state.show} onHide={this.handleClose}>
                             <form onSubmit={this.onSubmit}> 
                                 <Modal.Header closeButton>
                                     <Modal.Title>New Post</Modal.Title>
@@ -388,20 +422,36 @@ class Dashboard extends Component {
                                     value="post"/>
                                 </Modal.Footer>
                             </form>
-                        </Modal>
+                        </Modal>*/}
 
-                        <Modal show={this.state.show2} onHide={this.handleClose2}>
+                        <ModalSinglePost 
+                        show2={this.state.show2}
+                        handleClose2={this.handleClose2}
+                        postId={this.state.postId}
+                        />
+                        {/*<Modal show={this.state.show2} onHide={this.handleClose2}>
                             <Modal.Header closeButton>
                                 <Modal.Title>Post</Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
-                                <Post postId={this.state.postId}/>
+                                <SinglePost postId={this.state.postId}/>
                             </Modal.Body>
                             <Modal.Footer>
                             </Modal.Footer>
-                        </Modal>
+                        </Modal>*/}
 
-                        <Modal show={this.state.show3} onHide={this.handleClose3}>
+                        <ModalUpdateProfile 
+                        show3={this.state.show3}
+                        handleClose3={this.handleClose3}
+                        onSubmitProfile={this.onSubmitProfile}
+                        onChange={this.onChange}
+                        username={this.state.username} 
+                        bio={this.state.bio}
+                        location={this.state.location}
+                        website={this.state.website}
+                        />
+                        
+                        {/*<Modal show={this.state.show3} onHide={this.handleClose3}>
                             <form onSubmit={this.onSubmitProfile}> 
                                 <Modal.Header closeButton>
                                     <Modal.Title>Update My Profile</Modal.Title>
@@ -451,9 +501,15 @@ class Dashboard extends Component {
                                     type="submit" value="update"/>
                                 </Modal.Footer>
                             </form>
-                        </Modal>
+                        </Modal>*/}
 
-                        <Modal show={this.state.show4} onHide={this.handleClose4}>
+                        <ModalPic 
+                        show4={this.state.show4}
+                        handleClose4={this.handleClose4}
+                        onSubmitPic={this.onSubmitPic}
+                        onChangePic={this.onChangePic}
+                        />
+                        {/*<Modal show={this.state.show4} onHide={this.handleClose4}>
                             <form onSubmit={this.onSubmitPic}> 
                                 <Modal.Header closeButton>
                                     <Modal.Title>Update Pic</Modal.Title>
@@ -478,7 +534,7 @@ class Dashboard extends Component {
                                     value="update"/>
                                 </Modal.Footer>
                             </form>
-                        </Modal>
+                        </Modal>*/}
 
                         
 

@@ -230,6 +230,7 @@ export const likePost = (like) => {
     return (dispatch) => {
         axios.post(`/social/like/${like.postId}`, like)
         .then(() => {
+            console.log('likePost is called')
             //dispatch(getPosts())
             dispatch(likePostSuccess(like))
             
@@ -248,7 +249,8 @@ export const unlikePost = (like) => {
         //console.log('before the put ')
         axios.post(`/social/unlike/${like.postId}`, like)
         .then(() => {
-
+            console.log('unLikePost is called')
+            
             dispatch(unlikePostSuccess(like))
         })
         .catch(err => {

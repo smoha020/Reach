@@ -1,46 +1,222 @@
-import React, { Component } from 'react'; 
-import { connect } from 'react-redux';
-import { getOtherUser, likePost, unlikePost } from '../Actions/Posts'
+import React, { Component }from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios'
+import { getPosts, createPost, deletePost, likePost, unlikePost, getOtherUser } from '../Actions/Posts'
+import { signOut, updateUser, getAuthenticated, NoteRead } from '../Actions/Authenticated'
+import { connect } from 'react-redux';
+import SinglePost from './SinglePost'
 import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import PostAddIcon from '@material-ui/icons/PostAdd';
+import CommentIcon from '@material-ui/icons/Comment';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import PhotoIcon from '@material-ui/icons/Photo';
+import Badge from '@material-ui/core/Badge';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import ReactTimeAgo from 'react-time-ago'
 
 class User extends Component {
+    constructor(props) {
+        super(props) 
+        this.state = {
+            //currentUser: '',
+            posts: [],
+            post: '',
+            comment: '',
+            show: false,
+            show2: false,
+            show3: false,
+            show4: false,
+            postId: '',
+            disabled: false,
+            pic: '',
+            username: '',
+            bio: '',
+            location: '',
+            website: '',
+            notes: 'notes',
+            visible: false,
+            notesColor: 'white'
+        };
+    }
+    
 
-    clickLike = (id, e ) => {
+    /*handleShow = ()=> {
+        this.setState({show: true});
+    }
+
+    handleClose = () => {
+        this.setState({show: false});
+    }
+    handleShow2 = (post, note)=> {
+
+        this.setState({
+            show2: true, 
+            postId: post._id
+        })
+
+        
+        if(note.read === false) {
+            this.props.NoteRead(note)
+        }
+        
+    }
+
+    handleClose2 = () => {
+
+        if(this.state.visible == true) {
+            this.setState({show2: false});
+            console.log('refresh?')
+        } else {
+            this.setState({show2: false});
+            console.log('inside handleClose2')
+        }
+    }
+
+    handleShow3 = ()=> {
+        this.setState({show3: true});
+    }
+
+    handleClose3 = () => {
+        this.setState({show3: false});
+    }
+    handleShow4 = ()=> {
+        this.setState({show4: true});
+    }
+
+    handleClose4 = () => {
+        this.setState({show4: false});
+    }
+ 
+    onChange = (e) => {
+        this.setState({[e.target.name]: e.target.value})
+    }
+    onChangeFile = (e) => {
+        this.setState({ pic: e.target.files[0] })
+    }
+    
+    onSubmit = (e) => {
         e.preventDefault()
         
-        let button = e.target
-        button.disabled = true
 
-        setTimeout(function() {
-            button.disabled = false;
-        }, 2500)
+        let newpost = {
+            body: this.state.post,
+            user: this.props.currentUser.credentials.username,
+        }
 
+        this.props.createPost(newpost)
+        this.setState({ show: false })
+
+    }
+
+    submitComment = (e, post)=> {
+    
+        e.preventDefault();
+
+    }
+
+    clickLike = ( id ) => {
+        
+        this.setState({ disabled: true })
+        
+        setTimeout(() => { 
+            this.setState({ disabled: false })
+        }, 2500) 
+        
+        console.log(id)
         let like = {
             postId: id,
-            user: this.props.otherUser.data.credentials.username
+            user: this.props.currentUser.credentials.username
         }
         this.props.likePost(like)
     }
 
-    clickUnlike = (id, e) => {
+    clickUnlike = ( id ) => {
 
-        let button = e.target
-        button.disabled = true
-
-        setTimeout(function() {
-            button.disabled = false;
+        this.setState({ disabled: true })
+        
+        setTimeout(() => {
+            this.setState({ disabled: false })
         }, 2500) 
-
+        
         let like = {
             postId: id,
-            user: this.props.otherUser.data.credentials.username
+            user: this.props.currentUser.credentials.username
         }
         this.props.unlikePost(like)
     }
 
+    onSubmitProfile = (e) => {
+        e.preventDefault()
+
+        let user = {
+            _id: this.props.currentUser.credentials._id,
+            bio: this.state.bio,
+            location: this.state.location,
+            website: this.state.website
+        }
+        axios.post(`/users/update/${user._id}`, user)
+        .then(res => {
+            this.props.getAuthenticated()
+            this.setState({ show3: false })
+        })
+        .catch((err) => {
+            const error = err;  
+        })
+    }
+
+    onChangePic = (e) => {
+        this.setState({
+            pic: e.target.files[0]
+        })
+    }
+
+    onSubmitPic = (e) => {
+        e.preventDefault()
+        const fd = new FormData();
+        fd.append('pic', this.state.pic, this.state.pic.name)
+        axios.post('/users/uploadImage', fd)
+        .then( data => {
+            console.log(data)
+            this.props.getAuthenticated()
+            console.log('inside uploadImage submit')
+            this.props.getPosts()
+            this.setState({ show4: false })
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
+    deletePost = (post) => {
+        this.props.deletePost(post)
+    }
+    
+    logOut = () => { 
+        this.props.signOut()
+    }
+
+    changeNotes = () => {
+
+        
+        if(this.state.visible) {
+            this.setState({ 
+                visible: false, 
+                notesColor: 'white'
+            })
+        } else {
+            this.setState({ 
+                visible: true,
+                notesColor: '#0d47a1'
+            })
+        }
+        
+    }*/
+
     componentDidMount(){
-        this.props.getOtherUser(this.props.match.params.user)
+        //this.props.getOtherUser(this.props.match.params.user)
     }
 
     render() {
@@ -50,14 +226,32 @@ class User extends Component {
         let display 
         let displayposts
         let thumbsLogo
-        if( loadingPost === undefined || loadingPost == true) {
-            if(currentUser && currentUser.data != '') {
-                console.log('first round')
-                display = <div>...loading</div>
+
+        return <div>Coming SOoOn</div>
+        /*if( loadingPost === undefined || loadingPost == true) {
+            if(currentUser && currentUser.credentials != '') {
+                return (
+                    <div style={{ 
+                        height: '100vh',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'}}
+                    >
+                        <CircularProgress />
+                    </div>
+                )
             } else {
-                console.log('not logged in')
-                display = <div>...not logged in </div>
                 this.props.history.push('/LogIn')
+                return (
+                    <div style={{ 
+                        height: '100vh',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'}}
+                    >
+                        <CircularProgress />
+                    </div>
+                )
             }
         } else {
             displayposts = otherUser.data.posts.map(post => {
@@ -69,30 +263,79 @@ class User extends Component {
                 })
 
                 return (
-                    <div className='post' key={post._id}>
-                        <Link to={`/User/${post.user}`}>{post.user}</Link>
-                        <p>{post.body}</p>
-                        <p>{post.createdAt}</p>
-                        {( thumbsLogo.includes(post._id) )? (
-                        <Button disabled={this.disabled} onClick={this.clickUnlike.bind(this, post._id)}>thumbs down</Button>
-                        ) : (
-                        <Button disabled={this.disabled} onClick={this.clickLike.bind(this, post._id)}>thumbs up</Button>
-                        )} 
-                        <p>{post.likeCount} likes</p>
-                        <p>Comment count</p>
-                        <p>{post.commentCount} comments</p>
-                    </div>
+                    <React.Fragment key={index}>
+                        <div className='post'>
+                            <div className='post-pic'>
+                                {(post.pic)? (
+                                    <Link style={{ textDecoration: 'none'}} to={`/User/${post.user}`}>
+                                        <img src={`data:image/png;base64,${post.pic}`} alt='jpg'/>
+                                    </Link>
+                                ): (<div className='post-pic-second'></div>)}
+                            </div>
+                            <div className='post-right'>
+                                <div className='post-right-top'>
+                                    <div className='post-name'><Link style={{ textDecoration: 'none'}} to={`/User/${post.user}`} style={{ fontWeight: 'bold'}}>{post.user}</Link></div>
+                                    <div className='post-time'><ReactTimeAgo date={post.createdAt} locale="en-US"/></div>
+                                    <div className='post-delete'>{deletedisplay}</div>
+                                </div>
+                                <div className='post-body'>{post.body}</div>
+                                <div className='post-bottom'>
+                                    <div className='bottom-thumb'>
+                                        {( thumbsLogo.includes(post._id) )? (
+                                            <button disabled={this.state.disabled} onClick={this.clickUnlike.bind(this, post._id)}><ThumbDownIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}}></ThumbDownIcon></button>
+                                        ) : (
+                                            <button disabled={this.state.disabled} onClick={this.clickLike.bind(this, post._id)} ><ThumbUpIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}}></ThumbUpIcon></button>
+                                        )} 
+                                        <div>{post.likeCount}</div>
+                                    </div>
+                                    <div className='bottom-comment'>
+                                        <div><CommentIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}} onClick={this.handleShow2.bind(this, post)}></CommentIcon></div>
+                                        <div>{post.commentCount}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </React.Fragment>
                 )
+            })
+
+            let noteCount = []
+            notesDisplay = currentUser.notifications.map((note, index) => {
+                let myPost = posts.find( post => {
+                    return (post._id === note.postId) 
+                })
+                
+                
+                if(myPost) {
+                    noteCount = [...noteCount, myPost]
+                    console.log('myPost is not undefined: ' + noteCount)
+                    if(note.notType === 'like') { 
+
+                        return <div key={index} variant="primary" onClick={this.handleShow2.bind(this, myPost, note)}>{note.sender} liked your post </div>
+                    } else {
+                        return <div key={index} variant="primary" onClick={this.handleShow2.bind(this, myPost, note)}>{note.sender} commented on your post </div>
+                    }
+                } else return null
             })
 
             display = 
             <React.Fragment>
-                <ul>
-                    <li className="company"><a style={{color: 'white'}}>NewsQuest</a></li>
-                    <li><Link to='/Dashboard'><Button>Dashboard Logo</Button></Link></li>
-                    <li><Button onClick={this.logOut}>Log Out</Button></li>
-                    <Button variant="primary" onClick={this.handleShow}> Add Post </Button>              
-                </ul>
+                <div className='my-nav'>
+                    <div className='brand-name'>Reach</div>
+                    <div className='move-right'>   
+                        <div className='notes-display'>
+                            <Badge className='notes-icon' color="secondary" badgeContent={(noteCount.length != 0)?(noteCount.length):(0)}>
+                                <NotificationsIcon  style={{ fontSize: 40, color: `${this.state.notesColor}` }} onClick={this.changeNotes}></NotificationsIcon>
+                            </Badge>
+                            {(this.state.visible)? (
+                                <div className='notes-menu'>
+                                    {notesDisplay}
+                                </div>): (null)}
+                        </div>
+                        <PostAddIcon className='post-icon' style={{ fontSize: 40 }} onClick={this.handleShow}></PostAddIcon>  
+                        <div onClick={this.logOut} className='log-out'>Log Out</div>    
+                    </div>   
+                </div>
                 <div className='display-flex'>
                     <div className='post-container'>
                         {displayposts}
@@ -111,7 +354,7 @@ class User extends Component {
         }
         return(
             <React.Fragment>{display}</React.Fragment>
-        )
+        )*/
     }
 }
 

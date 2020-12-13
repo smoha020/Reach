@@ -97,7 +97,7 @@ class Register extends Component {
                             </div>
                         </form>
                     </div>
-                </ React.Fragment>
+                </React.Fragment>
             }
         }
 
