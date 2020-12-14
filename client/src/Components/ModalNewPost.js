@@ -3,32 +3,13 @@ import Modal from 'react-bootstrap/Modal';
 import btnStyle from './btnStyle'
 
 
-function OnHide(props) {
-    props.handleClose()
-}
-
-function OnSubmit(e, props) {
-    props.onSubmit(e)
-}
-
-function OnChange(e, props) {
-    props.onChange(e)
-}
-
-function OnClick(props) {
-    props.handleClose()
-}
-
-
-
 function ModalNewPost(props) {
 
     const { show, handleClose, onSubmit, post, onChange } = props
 
-    console.log(props)
     return (
-        <Modal show={show} onHide={() => {OnHide(props)}}>
-            <form onSubmit={(e) => {OnSubmit(e, props)}}> 
+        <Modal show={show} onHide={handleClose}>
+            <form onSubmit={onSubmit}> 
                 <Modal.Header closeButton>
                     <Modal.Title>New Post</Modal.Title>
                 </Modal.Header>
@@ -38,14 +19,14 @@ function ModalNewPost(props) {
                     name="post"
                     value={post}
                     style={{ background: 'rgb(230, 234, 247)', width: '90%'}}
-                    onChange={(e) => {OnChange(e, props)}} />
+                    onChange={(e) => {onChange(e)}} />
                 </Modal.Body>
                 <Modal.Footer>
-                    <button 
+                    <p
                     style={btnStyle()} 
-                    onClick={() => {OnClick(props)}}>
+                    onClick={handleClose}>
                         Close
-                    </button>
+                    </p>
                     <input 
                     style={btnStyle()} 
                     type="submit" 

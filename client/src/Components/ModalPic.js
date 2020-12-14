@@ -4,32 +4,13 @@ import Modal from 'react-bootstrap/Modal';
 import btnStyle from './btnStyle'
 
 
-function OnHide(props) {
-    props.handleClose4()
-}
-
-function OnSubmit(e, props) {
-    props.onSubmitPic(e)
-}
-
-function OnChange(e, props) {
-    props.onChangePic(e)
-}
-
-function OnClick(props) {
-    props.handleClose4()
-}
-
-
-
 function ModalPic(props) {
 
     const { show4, handleClose4, onSubmitPic, onChangePic } = props
 
-    console.log(props)
     return (
-        <Modal show={show4} onHide={() => {OnHide(props)}}>
-            <form onSubmit={(e) => {OnSubmit(e, props)}}> 
+        <Modal show={show4} onHide={handleClose4}>
+            <form onSubmit={(e) => {onSubmitPic(e)}}> 
                 <Modal.Header closeButton>
                     <Modal.Title>Update Pic</Modal.Title>
                 </Modal.Header>
@@ -37,15 +18,15 @@ function ModalPic(props) {
                     <label>
                         <input 
                         type='file'
-                        onChange={(e) => {OnChange(e, props)}} />
+                        onChange={(e) => {onChangePic(e)}} />
                     </label>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button 
+                    <p 
                     style={btnStyle()} 
-                    onClick={() => {OnClick(props)}}>
+                    onClick={handleClose4}>
                         Close
-                    </button>
+                    </p>
                     <input 
                     style={btnStyle()}
                     type="submit" 

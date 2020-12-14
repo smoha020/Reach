@@ -5,6 +5,7 @@ import { getPosts, createPost, deletePost, likePost, unlikePost, getOtherUser } 
 import { signOut, updateUser, getAuthenticated, NoteRead } from '../Actions/Authenticated'
 import { connect } from 'react-redux';
 import SinglePost from './SinglePost'
+import Nav from './Nav'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import NotificationsIcon from '@material-ui/icons/Notifications';
@@ -16,6 +17,7 @@ import PhotoIcon from '@material-ui/icons/Photo';
 import Badge from '@material-ui/core/Badge';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ReactTimeAgo from 'react-time-ago'
+import DisplayPosts from './DisplayPosts';
 
 class User extends Component {
     constructor(props) {
@@ -43,7 +45,7 @@ class User extends Component {
     }
     
 
-    /*handleShow = ()=> {
+    handleShow = ()=> {
         this.setState({show: true});
     }
 
@@ -213,10 +215,10 @@ class User extends Component {
             })
         }
         
-    }*/
+    }
 
     componentDidMount(){
-        //this.props.getOtherUser(this.props.match.params.user)
+        this.props.getOtherUser(this.props.match.params.user)
     }
 
     render() {
@@ -226,9 +228,8 @@ class User extends Component {
         let display 
         let displayposts
         let thumbsLogo
-
-        return <div>Coming SOoOn</div>
-        /*if( loadingPost === undefined || loadingPost == true) {
+        
+        if( loadingPost === undefined || loadingPost == true) {
             if(currentUser && currentUser.credentials != '') {
                 return (
                     <div style={{ 
@@ -254,7 +255,7 @@ class User extends Component {
                 )
             }
         } else {
-            displayposts = otherUser.data.posts.map(post => {
+            /*displayposts = otherUser.data.posts.map(post => {
                 thumbsLogo = []
                 thumbsLogo = likes.map(like => {
                     if(like.postId === post._id) {
@@ -264,6 +265,8 @@ class User extends Component {
 
                 return (
                     <React.Fragment key={index}>
+                        <DisplayPosts posts={otherUser.data.posts} />
+
                         <div className='post'>
                             <div className='post-pic'>
                                 {(post.pic)? (
@@ -297,48 +300,13 @@ class User extends Component {
                         </div>
                     </React.Fragment>
                 )
-            })
-
-            let noteCount = []
-            notesDisplay = currentUser.notifications.map((note, index) => {
-                let myPost = posts.find( post => {
-                    return (post._id === note.postId) 
-                })
-                
-                
-                if(myPost) {
-                    noteCount = [...noteCount, myPost]
-                    console.log('myPost is not undefined: ' + noteCount)
-                    if(note.notType === 'like') { 
-
-                        return <div key={index} variant="primary" onClick={this.handleShow2.bind(this, myPost, note)}>{note.sender} liked your post </div>
-                    } else {
-                        return <div key={index} variant="primary" onClick={this.handleShow2.bind(this, myPost, note)}>{note.sender} commented on your post </div>
-                    }
-                } else return null
-            })
+            })*/
 
             display = 
             <React.Fragment>
-                <div className='my-nav'>
-                    <div className='brand-name'>Reach</div>
-                    <div className='move-right'>   
-                        <div className='notes-display'>
-                            <Badge className='notes-icon' color="secondary" badgeContent={(noteCount.length != 0)?(noteCount.length):(0)}>
-                                <NotificationsIcon  style={{ fontSize: 40, color: `${this.state.notesColor}` }} onClick={this.changeNotes}></NotificationsIcon>
-                            </Badge>
-                            {(this.state.visible)? (
-                                <div className='notes-menu'>
-                                    {notesDisplay}
-                                </div>): (null)}
-                        </div>
-                        <PostAddIcon className='post-icon' style={{ fontSize: 40 }} onClick={this.handleShow}></PostAddIcon>  
-                        <div onClick={this.logOut} className='log-out'>Log Out</div>    
-                    </div>   
-                </div>
                 <div className='display-flex'>
                     <div className='post-container'>
-                        {displayposts}
+                        {/*displayposts*/}
                     </div>        
                     <div className="profile">
                         {(otherUser.data.credentials.pic)? (<p>{otherUser.data.credentials.pic}</p>): (null)}
@@ -354,7 +322,7 @@ class User extends Component {
         }
         return(
             <React.Fragment>{display}</React.Fragment>
-        )*/
+        )
     }
 }
 

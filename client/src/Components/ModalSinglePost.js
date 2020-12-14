@@ -2,9 +2,6 @@ import React from 'react'
 import Modal from 'react-bootstrap/Modal';
 import SinglePost from './SinglePost'
 
-function OnHide(props) {
-    props.handleClose2()
-}
 
 function ModalSinglePost(props) {
 
@@ -12,7 +9,7 @@ function ModalSinglePost(props) {
 
     console.log(props)
     return (
-        <Modal show={show2} onHide={() => {OnHide(props)}}>
+        <Modal show={show2} onHide={handleClose2}>
             <Modal.Header closeButton>
                 <Modal.Title>Post</Modal.Title>
             </Modal.Header>

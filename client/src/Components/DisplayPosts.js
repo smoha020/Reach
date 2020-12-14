@@ -22,7 +22,7 @@ function onUnlike(id, props) {
 function DisplayPosts(props) {
 
     const { posts, currentUser, deletePost, likes, 
-            disabled, clickLike, clickUnlike, handleShow2} = props
+            disabled, clickLike, clickUnlike, handleShow2 } = props
 
 
     let displayposts, deletedisplay, thumbsLogo
@@ -30,7 +30,7 @@ function DisplayPosts(props) {
 
     displayposts  = posts.map((post, index) => {
         if(post.user == currentUser.credentials.username) {
-            deletedisplay = <button onClick={() => {onDelete(post, props)}}>
+            deletedisplay = <button onClick={() => {deletePost(post)}}>
                         Delete
                     </button>
         } else { deletedisplay = '' }
@@ -65,14 +65,14 @@ function DisplayPosts(props) {
                         <div className='post-bottom'>
                             <div className='bottom-thumb'>
                                 {( thumbsLogo.includes(post._id) )? (
-                                    <button disabled={disabled} onClick={() => {onUnlike(post._id, props)}}><ThumbDownIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}}></ThumbDownIcon></button>
+                                    <button disabled={disabled} onClick={() => {clickUnlike(post._id)}}><ThumbDownIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}}></ThumbDownIcon></button>
                                 ) : (
-                                    <button disabled={disabled} onClick={() => {onLike(post._id, props)}} ><ThumbUpIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}}></ThumbUpIcon></button>
+                                    <button disabled={disabled} onClick={() => {clickLike(post._id)}}><ThumbUpIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}}></ThumbUpIcon></button>
                                 )} 
                                 <div>{post.likeCount}</div>
                             </div>
                             <div className='bottom-comment'>
-                                <div><CommentIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}} onClick={() => {onHandle(post, props)}}></CommentIcon></div>
+                                <div><CommentIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}} onClick={() => {handleShow2(post)}}></CommentIcon></div>
                                 <div>{post.commentCount}</div>
                             </div>
                         </div>

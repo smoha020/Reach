@@ -3,33 +3,15 @@ import Modal from 'react-bootstrap/Modal';
 import btnStyle from './btnStyle'
 
 
-function OnHide(props) {
-    props.handleClose3()
-}
-
-function OnSubmit(e, props) {
-    props.onSubmitProfile(e)
-}
-
-function OnChange(e, props) {
-    props.onChange(e)
-}
-
-function OnClick(props) {
-    props.handleClose3()
-}
-
-
 function ModalUpdateProfile(props) {
 
     const { show3, handleClose3, onSubmitProfile,
             onChange, username, bio, location, website,
      } = props
 
-    console.log(props)
     return (
-        <Modal show={show3} onHide={() => {OnHide(props)}}>
-            <form onSubmit={(e) => {OnSubmit(e, props)}}> 
+        <Modal show={show3} onHide={handleClose3}>
+            <form onSubmit={onSubmitProfile}> 
                 <Modal.Header closeButton>
                     <Modal.Title>Update My Profile</Modal.Title>
                 </Modal.Header>
@@ -40,7 +22,7 @@ function ModalUpdateProfile(props) {
                         value={username}
                         placeholder="username"
                         style={{ background: 'rgb(230, 234, 247)', width: '90%'}}
-                        onChange={(e) => {OnChange(e, props)}} />
+                        onChange={(e) => {onChange(e)}} />
                     </label>
                     <label>
                         <input type='text'
@@ -48,7 +30,7 @@ function ModalUpdateProfile(props) {
                         value={bio}
                         placeholder="bio"
                         style={{ background: 'rgb(230, 234, 247)', width: '90%'}}
-                        onChange={(e) => {OnChange(e, props)}} />
+                        onChange={(e) => {onChange(e)}} />
                     </label>
                     <label>
                         <input type='text'
@@ -56,7 +38,7 @@ function ModalUpdateProfile(props) {
                         value={location}
                         placeholder="location"
                         style={{ background: 'rgb(230, 234, 247)', width: '90%'}}
-                        onChange={(e) => {OnChange(e, props)}} />
+                        onChange={(e) => {onChange(e)}} />
                     </label>
                     <label>
                         <input type='text'
@@ -64,15 +46,15 @@ function ModalUpdateProfile(props) {
                         value={website}
                         placeholder="website"
                         style={{ background: 'rgb(230, 234, 247)', width: '90%'}}
-                        onChange={(e) => {OnChange(e, props)}} />
+                        onChange={(e) => {onChange(e)}} />
                     </label>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button
+                    <p
                     style={btnStyle()}
-                    onClick={() => {OnClick(props)}}>
+                    onClick={handleClose3}>
                         Close
-                    </button>
+                    </p>
                     <input 
                     style={btnStyle()}
                     type="submit" value="update"/>

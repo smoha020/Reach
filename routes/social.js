@@ -117,11 +117,11 @@ router.delete('/posts/:_id', (req, res) => {
     const filter = { _id: req.params._id };
     Posts.deleteOne(filter)
         .then(() => {
-            res.json('post deleted')
+            
             return Likes.deleteMany({ postId: req.params._id })
         })
         .then(() => {
-            res.send('likes deleted')
+            
             Notifications.deleteMany({ postId: req.params._id })
         })
         .then(() => res.send('notifications deleted'))

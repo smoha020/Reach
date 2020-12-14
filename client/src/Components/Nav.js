@@ -7,7 +7,31 @@ import PostAddIcon from '@material-ui/icons/PostAdd';
 
 function Nav(props) {
 
-    const { notesColor, noteCount, visible, notesDisplay, handleShow, logOut, changeNotes } = props
+    console.log(props)
+    const { currentUser, allPosts, notesColor, visible, 
+            handleShow, handleShow2, logOut, changeNotes } = props
+
+    /*We use this to get the number in the red 
+    circle on the notifications*/
+    let notesDisplay
+    let noteCount = []
+    notesDisplay = currentUser.notifications.map((note, index) => {
+        let myPost = allPosts.find( post => {
+            return (post._id === note.postId) 
+        })
+        
+        if(myPost) {
+            noteCount = [...noteCount, myPost]
+            console.log('myPost is not undefined: ' + noteCount)
+            if(note.notType === 'like') { 
+
+                return <div key={index} variant="primary" onClick={() => {handleShow2(myPost, note)}}>{note.sender} liked your post </div>
+            } else {
+                return <div key={index} variant="primary" onClick={() => {handleShow2(myPost, note)}}>{note.sender} commented on your post </div>
+            }
+        } else return null
+    })
+
     return (
         <div className='my-nav'>
             <div className='brand-name'>Reach</div>
