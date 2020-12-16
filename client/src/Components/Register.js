@@ -45,9 +45,9 @@ class Register extends Component {
 
         if(!loading){
 
-            if(currentUser && currentUser.data) {
-                display = <div>Loading...</div>
-                this.props.history.push('/Dashboard')
+            if(currentUser && currentUser.credentials) {
+                display = <div>Loading...</div> 
+                this.props.history.push('/Dashboard/CurrentUser')
             } else {
                 display = 
                 <React.Fragment>

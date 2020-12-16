@@ -127,6 +127,8 @@ router.post('/login',
  
 router.get('/logout', (req, res) => {
     req.logout();
+    console.log('logged out?')
+    console.log(req.user)
     res.send(req.user)
 })
 
@@ -267,7 +269,19 @@ router.get('/otheruser/:user', (req, res) => {
     .then(data => {
  
         otherUser.posts = [...data]
-        res.json(otherUser)
+        return userImage.findOne({ user: req.params.user })
+    })
+    .then(data => {
+
+        if(!data){
+            res.send(otherUser)
+        } else {
+            let baseData = Buffer.from(data.pic.data).toString('base64')
+            otherUser.pic = baseData
+            
+            res.json(otherUser)
+        }
+
     })
     .catch(err => console.log(err))   
 })

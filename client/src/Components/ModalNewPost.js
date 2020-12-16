@@ -5,7 +5,7 @@ import btnStyle from './btnStyle'
 
 function ModalNewPost(props) {
 
-    const { show, handleClose, onSubmit, post, onChange } = props
+    const { show, handleClose, onSubmit, body, onChange } = props
 
     return (
         <Modal show={show} onHide={handleClose}>
@@ -16,8 +16,8 @@ function ModalNewPost(props) {
                 <Modal.Body style={{width: '100%'}}>
                     <textarea
                     type='text'
-                    name="post"
-                    value={post}
+                    name="body"
+                    value={body}
                     style={{ background: 'rgb(230, 234, 247)', width: '90%'}}
                     onChange={(e) => {onChange(e)}} />
                 </Modal.Body>

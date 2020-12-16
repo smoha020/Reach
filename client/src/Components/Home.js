@@ -18,7 +18,7 @@ class Home extends Component {
           </div>
           <div className='home-right'>
             <div className='home-right-top'>
-              <p>Welcome to the network</p>
+              <p>Welcome to Reach</p>
             </div>
             <div className='home-right-mid'>
               <Link to='/Register' style={{ textDecoration: 'none'}}>

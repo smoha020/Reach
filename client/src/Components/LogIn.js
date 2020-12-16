@@ -41,7 +41,7 @@ class LogIn extends Component {
 
         if(!loading){
             if(currentUser && currentUser.credentials) {
-                this.props.history.push('/Dashboard')
+                this.props.history.push('/Dashboard/CurrentUser')
             } else {
                 display = <React.Fragment>
                     <div className='my-nav'>

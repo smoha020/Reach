@@ -346,6 +346,11 @@ footer {
   border: solid 1px;
   border-color: #2196f3;
 }
+.profile-pic .profile-pic-second {
+  height: 150px;
+  text-align: center;
+  background: rgb(230, 234, 247);
+}
 
 @media screen and (max-width: 600px) {
   .display-flex {

@@ -114,7 +114,7 @@ class SinglePost extends Component {
                             </div>
                             <div className='comment-right'>
                                 <div className='comment-right-top'>
-                                    <div className='comment-name'><Link style={{ textDecoration: 'none'}} to={`/User/${comment.user}`} style={{ fontWeight: 'bold'}}>{comment.user}</Link></div>
+                                    <div className='comment-name'><Link style={{ textDecoration: 'none'}} to={`/Dashboard/User/${comment.user}`} style={{ fontWeight: 'bold'}}>{comment.user}</Link></div>
                                     <div className='comment-time'><ReactTimeAgo date={comment.createdAt} locale="en-US"/></div>
                                     <div className='comment-delete'>{deletedisplay}</div>
                                 </div>
@@ -136,7 +136,7 @@ class SinglePost extends Component {
                             </div>
                             <div className='post-right'>
                                 <div className='post-right-top'>
-                                    <div className='post-name'><Link style={{ textDecoration: 'none'}} to={`/User/${post.data.user}`} style={{ fontWeight: 'bold'}}>{post.data.user}</Link></div>
+                                    <div className='post-name'><Link style={{ textDecoration: 'none'}} to={`/Dashboard/User/${post.data.user}`} style={{ fontWeight: 'bold'}}>{post.data.user}</Link></div>
                                     <div className='post-time'><ReactTimeAgo date={post.data.createdAt} locale="en-US"/></div>
                                 </div>
                                 <div className='post-body'>{post.data.body}</div>

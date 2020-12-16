@@ -1,9 +1,13 @@
 import React, { Component }from 'react';
 import { Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import axios from 'axios'
 import { getPosts, createPost, deletePost, likePost, unlikePost } from '../Actions/Posts'
 import { signOut, updateUser, getAuthenticated, NoteRead } from '../Actions/Authenticated'
 import { connect } from 'react-redux';
+import CurrentUser from './CurrentUser'
+import User from './User'
+import Test from './Test'
 import DisplayPosts from './DisplayPosts'
 import Nav from './Nav'
 import Profile from './Profile'
@@ -30,7 +34,7 @@ class Dashboard extends Component {
         super(props) 
         this.state = {
             posts: [],
-            post: '',
+            body: '',
             comment: '',
             show: false,
             show2: false,
@@ -100,13 +104,6 @@ class Dashboard extends Component {
     handleClose4 = () => {
         this.setState({show4: false});
     }
-
-    componentDidMount() {
-        if(this.props.posts.length === 0) {
-            console.log('componentDidMount: ' + this.props.posts.length)
-            this.props.getPosts()
-        }
-    }
  
     onChange = (e) => {
         this.setState({[e.target.name]: e.target.value})
@@ -116,9 +113,9 @@ class Dashboard extends Component {
         //this.setState({show: false});
         e.preventDefault()
         
-        if(this.state.post) {
+        if(this.state.body) {
             let newpost = {
-                body: this.state.post,
+                body: this.state.body,
                 user: this.props.currentUser.credentials.username,
             }
 
@@ -226,6 +223,12 @@ class Dashboard extends Component {
         }
         
     }
+    componentDidMount() {
+        if(this.props.posts.length === 0) {
+            console.log('componentDidMount: ' + this.props.posts.length)
+            this.props.getPosts()
+        }
+    }
 
     render() {
 
@@ -246,8 +249,48 @@ class Dashboard extends Component {
             )
         } else {
             if(currentUser && currentUser.credentials != '') {
-         
-                displayposts = 
+                if(posts.length != 0) {
+                    return (
+                        <Router>
+                            <Nav currentUser={currentUser} allPosts={posts} notesColor={this.state.notesColor} 
+                            visible={this.state.visible} handleShow={this.handleShow}
+                            handleShow2={this.handleShow2} logOut={this.logOut} changeNotes={this.changeNotes} />
+                            
+                            <Route path='/Dashboard/CurrentUser' render={props => ( <CurrentUser
+                                currentUser={currentUser} posts={posts} body={this.state.body} deletePost={this.deletePost}
+                                likes={likes} disabled={this.state.disabled} clickLike={this.clickLike} 
+                                clickUnlike={this.clickUnlike} handleShow2={this.handleShow2} 
+                                show={this.state.show} handleClose={this.handleClose}
+                                onSubmit={this.onSubmit} show2={this.state.show2} handleClose2={this.handleClose2}
+                                postId={this.state.postId} show3={this.state.show3} handleClose3={this.handleClose3}
+                                onSubmitProfile={this.onSubmitProfile} onChange={this.onChange}
+                                username={this.state.username} bio={this.state.bio} location={this.state.location}
+                                website={this.state.website} show4={this.state.show4} handleClose4={this.handleClose4}
+                                onSubmitPic={this.onSubmitPic} onChangePic={this.onChangePic} handleShow4={this.handleShow4}
+                                handleShow3={this.handleShow3} />) }/> 
+                            
+                            <Route path='/Dashboard/User/:user' render={props => ( <User
+                                {...props}
+                                currentUser={currentUser} posts={posts} body={this.state.body} deletePost={this.deletePost}
+                                likes={likes} disabled={this.state.disabled} clickLike={this.clickLike} 
+                                clickUnlike={this.clickUnlike} handleShow2={this.handleShow2} 
+                                show={this.state.show} handleClose={this.handleClose}
+                                onSubmit={this.onSubmit} show2={this.state.show2} handleClose2={this.handleClose2}
+                                postId={this.state.postId} show3={this.state.show3} handleClose3={this.handleClose3}
+                                onSubmitProfile={this.onSubmitProfile} onChange={this.onChange}
+                                username={this.state.username} bio={this.state.bio} location={this.state.location}
+                                website={this.state.website} show4={this.state.show4} handleClose4={this.handleClose4}
+                                onSubmitPic={this.onSubmitPic} onChangePic={this.onChangePic} handleShow4={this.handleShow4}
+                                handleShow3={this.handleShow3} />) }/>
+                            
+                            <Route path='/Dashboard/Test' component={Test}/>
+                        </Router>
+                    )
+                } else {
+                    display = 
+                    <LoadSpinner />
+                }
+                /*displayposts = 
                 <DisplayPosts posts={posts} currentUser={currentUser} deletePost={this.deletePost} 
                 likes={likes} disabled={this.state.disabled} clickLike={this.clickLike} 
                 clickUnlike={this.clickUnlike} handleShow2={this.handleShow2} />
@@ -260,7 +303,7 @@ class Dashboard extends Component {
                         handleShow2={this.handleShow2} logOut={this.logOut} changeNotes={this.changeNotes} />
                    
                         <ModalNewPost show={this.state.show} handleClose={this.handleClose}
-                        onSubmit={this.onSubmit} post={this.state.post} onChange={this.onChange} />
+                        onSubmit={this.onSubmit} body={this.state.body} onChange={this.onChange} />
 
                         <ModalSinglePost show2={this.state.show2} handleClose2={this.handleClose2}
                         postId={this.state.postId} />
@@ -284,7 +327,7 @@ class Dashboard extends Component {
                 } else {
                     display = 
                     <LoadSpinner />
-                }
+                }*/
             } else {
                 this.props.history.push('/LogIn')
             }
@@ -319,11 +362,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-const btnStyle = {
-    background: '#2196f3', 
-    color: 'white', 
-    border: 'none', 
-    cursor: 'pointer', 
-    padding: '3%'
-}
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)

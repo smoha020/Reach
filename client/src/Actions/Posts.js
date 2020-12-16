@@ -267,8 +267,8 @@ export const getOtherUser = (user) => {
         //console.log('before the put ')
         axios.get(`/users/otheruser/${user}`)
         .then((res) => {
-            console.log(res)
-            dispatch(getOtherUserSuccess(res))
+            
+            dispatch(getOtherUserSuccess(res.data))
         })
         .catch(err => {
             dispatch(getOtherUserFailure(err))

@@ -50,14 +50,14 @@ function DisplayPosts(props) {
                 <div className='post'>
                     <div className='post-pic'>
                         {(post.pic)? (
-                            <Link style={{ textDecoration: 'none'}} to={`/User/${post.user}`}>
+                            <Link style={{ textDecoration: 'none'}} to={`/Dashboard/User/${post.user}`}>
                                 <img src={`data:image/png;base64,${post.pic}`} alt='jpg'/>
                             </Link>
                         ): (<div className='post-pic-second'></div>)}
                     </div>
                     <div className='post-right'>
                         <div className='post-right-top'>
-                            <div className='post-name'><Link style={{ textDecoration: 'none'}} to={`/User/${post.user}`} style={{ fontWeight: 'bold'}}>{post.user}</Link></div>
+                            <div className='post-name'><Link style={{ textDecoration: 'none'}} to={`/Dashboard/User/${post.user}`} style={{ fontWeight: 'bold'}}>{post.user}</Link></div>
                             <div className='post-time'><ReactTimeAgo date={post.createdAt} locale="en-US"/></div>
                             <div className='post-delete'>{deletedisplay}</div>
                         </div>
