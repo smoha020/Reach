@@ -125,12 +125,10 @@ export const signOut = () => {
     
     return (dispatch) => {
         dispatch(loadingRequest())
-        console.log('before the get request')
-        axios.get('users/logout')
+        axios.get('/users/logout')
         .then((res) => {
-            console.log(res)
-            console.log('logging out?')
-            dispatch(logOutSuccess())
+            
+            dispatch(logOutSuccess()) 
         })
         .catch(err => {
             const error = err;

@@ -6,19 +6,6 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import CommentIcon from '@material-ui/icons/Comment';
 
 
-function onHandle(post, props) {
-    props.handleShow2(post)
-}
-function onDelete(post, props) {
-    props.deletePost(post)
-}
-function onLike(id, props) {
-    props.clickLike(id)
-}
-function onUnlike(id, props) {
-    props.clickUnlike(id)
-}
-
 function DisplayPosts(props) {
 
     const { posts, currentUser, deletePost, likes, 

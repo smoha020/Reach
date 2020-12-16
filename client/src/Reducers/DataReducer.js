@@ -52,6 +52,11 @@ const PostReducer = (state = initState, action) => {
             return {
                 ...state,
                 posts: state.posts.filter( post => post != action.payload),
+                //in case we delete from User component
+                otherUser: {
+                    ...state.otherUser,
+                    posts: state.otherUser.posts.filter( post => post != action.payload)
+                },
                 error: ''
             }
         case 'DELETE_POST_FAILURE': 

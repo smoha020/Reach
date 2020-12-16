@@ -7,7 +7,7 @@ import btnStyle from './btnStyle'
 
 function Profile(props) {
 
-    const { user, handleShow4, handleShow3 } = props
+    const { user, nameCheck, handleShow4, handleShow3 } = props
 
     
     return (
@@ -16,10 +16,12 @@ function Profile(props) {
                 {(user.pic)? (
                     <img src={`data:image/png;base64,${user.pic}`} alt='jpg'/>
                 ): (<div className='profile-pic-second'></div>)}
-                {/*<div className='profile-pic-btn' style={{margin: '1%'}}>
-                    <PhotoIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}} onClick={handleShow4}>
-                    </PhotoIcon>
-                </div>*/}
+                {(user.credentials.username === nameCheck )? (
+                    <div className='profile-pic-btn' style={{margin: '1%'}}>
+                        <PhotoIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}} onClick={handleShow4}>
+                        </PhotoIcon>
+                    </div>
+                ): (null)}
             </div>
             <div className='profile-details'>
                 <p style={{ fontWeight: 'bold', fontSize: 'x-large'}}>{user.credentials.username}</p>
@@ -27,7 +29,7 @@ function Profile(props) {
                 {(user.credentials.bio)? (<p>About: {user.credentials.bio}</p>): (null)}
                 {(user.credentials.website)? (<p>{user.credentials.website}</p>): (null)}
                 <p>Joined: <ReactTimeAgo date={user.credentials.joinDate} locale="en-US"/></p>
-                {/*(user.credentials.username === nameCheck )?(<Button variant="primary" onClick={handleShow3}>Update Profile</Button>):(null)*/}
+                {(user.credentials.username === nameCheck )?(<Button variant="primary" onClick={handleShow3}>Update Profile</Button>):(null)}
             </div>
         </div>
     )   

@@ -22,52 +22,65 @@ class User extends Component {
             clickUnlike, handleShow2, show, handleClose, onSubmit, show2, 
             handleClose2, postId, show3, handleClose3, onSubmitProfile, onChange, 
             username, bio, location, website, show4, handleClose4, onSubmitPic, 
-            onChangePic, handleShow4, handleShow3 } = this.props
+            onChangePic, handleShow4, handleShow3, match } = this.props
 
         let userPosts
         let displayposts
 
+
+        //for initial rendering while call in componentDidMount is firing
         if(otherUser) {
-            userPosts = otherUser.posts
-            console.log(this.props)
-            displayposts = 
-                <DisplayPosts posts={userPosts} currentUser={currentUser} deletePost={deletePost} 
-                likes={likes} disabled={disabled} clickLike={clickLike} 
-                clickUnlike={clickUnlike} handleShow2={handleShow2} />
 
-            return (
-                <React.Fragment>
-                    <ModalNewPost show={show} handleClose={handleClose}
-                    onSubmit={onSubmit} body={body} onChange={onChange} />
+            /*Previous user will be displayed before the 
+            finel rendering, this prevents that*/
+            if(match.params.user === otherUser.credentials.username) {
+                let nameCheck = currentUser.credentials.username
+                console.log(nameCheck)
+                userPosts = otherUser.posts
+                console.log(this.props)
+                displayposts = 
+                    <DisplayPosts posts={userPosts} currentUser={currentUser} deletePost={deletePost} 
+                    likes={likes} disabled={disabled} clickLike={clickLike} 
+                    clickUnlike={clickUnlike} handleShow2={handleShow2} />
 
-                    <ModalSinglePost show2={show2} handleClose2={handleClose2}
-                    postId={postId} />
+                return (
+                    <React.Fragment>
+                        <ModalNewPost show={show} handleClose={handleClose}
+                        onSubmit={onSubmit} body={body} onChange={onChange} />
 
-                    {/* 
-                    
-                    -----WE CAN'T UPDATE THE CREDENTIALS 
-                    AND USER PIC OF OTHER USERS SO DO WE EVEN NEED
-                    THESE 2 MODALS IN THIS COMPONENT???-----------
+                        <ModalSinglePost show2={show2} handleClose2={handleClose2}
+                        postId={postId} />
 
-                    <ModalUpdateProfile show3={show3} handleClose3={handleClose3}
-                    onSubmitProfile={onSubmitProfile} onChange={onChange}
-                    username={username} bio={bio} location={location}
-                    website={website} />
-                    
-                    <ModalPic show4={show4} handleClose4={handleClose4}
-                    onSubmitPic={onSubmitPic} onChangePic={onChangePic} />
-                    
-                    */}
+                        {/* ----WE CAN ONLY UPDATE PROFILE AND 
+                                PIC IF THE USER IS CURRENTUSER ------ */ }
 
-                    <div className='display-flex'>
-                        <Profile user={otherUser} handleShow4={handleShow4}
-                        handleShow3={handleShow3} />
-                        <div className='post-container'>
-                            {displayposts}
+                        {(nameCheck === otherUser.credentials.username)? (
+                            <React.Fragment>
+                                <ModalUpdateProfile show3={show3} handleClose3={handleClose3}
+                                onSubmitProfile={onSubmitProfile} onChange={onChange}
+                                username={username} bio={bio} location={location}
+                                website={website} />
+                                
+                                <ModalPic show4={show4} handleClose4={handleClose4}
+                                onSubmitPic={onSubmitPic} onChangePic={onChangePic} />
+                            </React.Fragment>
+                        ): (null)}
+                        
+
+                        <div className='display-flex'>
+                            <Profile user={otherUser} nameCheck={nameCheck} handleShow4={handleShow4}
+                            handleShow3={handleShow3} />
+                            <div className='post-container'>
+                                {displayposts}
+                            </div>
                         </div>
-                    </div>
-                </ React.Fragment>
-            )
+                    </ React.Fragment>
+                )
+            } else {
+                return (
+                    <loadingPost />
+                )
+            }
         } else {
             return <LoadSpinner />
         }

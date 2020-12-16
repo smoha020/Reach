@@ -23,6 +23,8 @@ function CurrentUser(props){
         likes={likes} disabled={disabled} clickLike={clickLike} 
         clickUnlike={clickUnlike} handleShow2={handleShow2} />
 
+    let nameCheck = currentUser.credentials.username
+
     return (
         <React.Fragment>
             <ModalNewPost show={show} handleClose={handleClose}
@@ -40,7 +42,7 @@ function CurrentUser(props){
             onSubmitPic={onSubmitPic} onChangePic={onChangePic} />
 
             <div className='display-flex'>
-                <Profile user={currentUser} handleShow4={handleShow4}
+                <Profile user={currentUser} nameCheck={nameCheck} handleShow4={handleShow4}
                 handleShow3={handleShow3} />
                 <div className='post-container'>
                     {displayposts}
