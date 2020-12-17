@@ -2,6 +2,9 @@
   padding: 0;
   margin: 0;
 }
+body {
+  background: white;
+}
 /*--------NAVBAR-------*/
 .my-nav {
   background: #2196f3;
