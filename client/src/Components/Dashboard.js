@@ -246,18 +246,17 @@ class Dashboard extends Component {
             console.log('dash loading')
             return (
                 <LoadSpinner />
-            )
+            ) 
         } else {
             if(currentUser && currentUser.credentials != '') {
                 if(posts.length != 0) {
                     return (
                         <Router>
-                            <Nav currentUser={currentUser} allPosts={posts} notesColor={this.state.notesColor} 
-                            visible={this.state.visible} handleShow={this.handleShow}
-                            handleShow2={this.handleShow2} logOut={this.logOut} changeNotes={this.changeNotes} />
-                            
                             <Route path='/Dashboard/CurrentUser' render={props => ( <CurrentUser
-                                currentUser={currentUser} posts={posts} body={this.state.body} deletePost={this.deletePost}
+                                {...props}
+                                currentUser={currentUser} posts={posts} notesColor={this.state.notesColor} 
+                                visible={this.state.visible} handleShow={this.handleShow} body={this.state.body} 
+                                deletePost={this.deletePost} logOut={this.logOut} changeNotes={this.changeNotes}
                                 likes={likes} disabled={this.state.disabled} clickLike={this.clickLike} 
                                 clickUnlike={this.clickUnlike} handleShow2={this.handleShow2} 
                                 show={this.state.show} handleClose={this.handleClose}
@@ -271,10 +270,12 @@ class Dashboard extends Component {
                             
                             <Route path='/Dashboard/User/:user' render={props => ( <User
                                 {...props}
-                                currentUser={currentUser} posts={posts} body={this.state.body} deletePost={this.deletePost}
-                                likes={likes} disabled={this.state.disabled} clickLike={this.clickLike} 
-                                clickUnlike={this.clickUnlike} handleShow2={this.handleShow2} 
-                                show={this.state.show} handleClose={this.handleClose}
+                                currentUser={currentUser} posts={posts} body={this.state.body} notesColor={this.state.notesColor} 
+                                visible={this.state.visible} handleShow={this.handleShow} 
+                                deletePost={this.deletePost} logOut={this.logOut} changeNotes={this.changeNotes} 
+                                likes={likes} disabled={this.state.disabled} 
+                                clickLike={this.clickLike} clickUnlike={this.clickUnlike} 
+                                handleShow2={this.handleShow2} show={this.state.show} handleClose={this.handleClose}
                                 onSubmit={this.onSubmit} show2={this.state.show2} handleClose2={this.handleClose2}
                                 postId={this.state.postId} show3={this.state.show3} handleClose3={this.handleClose3}
                                 onSubmitProfile={this.onSubmitProfile} onChange={this.onChange}

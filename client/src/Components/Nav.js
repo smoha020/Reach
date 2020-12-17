@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import Badge from '@material-ui/core/Badge';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import PostAddIcon from '@material-ui/icons/PostAdd';
+import { Link } from 'react-router-dom';
+import HomeIcon from '@material-ui/icons/Home';
 
 
 
@@ -9,8 +11,9 @@ function Nav(props) {
 
     console.log(props)
     const { currentUser, allPosts, notesColor, visible, 
-            handleShow, handleShow2, logOut, changeNotes } = props
+            handleShow, handleShow2, logOut, param, changeNotes } = props
 
+    console.log(props)
     /*We use this to get the number in the red 
     circle on the notifications*/
     let notesDisplay
@@ -45,7 +48,14 @@ function Nav(props) {
                             {notesDisplay}
                         </div>): (null)}
                 </div>
-                <PostAddIcon className='post-icon' style={{ fontSize: 40 }} onClick={handleShow}></PostAddIcon>  
+                {(param === currentUser.credentials.username || param === 'CurrentUser' )? (
+                        <PostAddIcon className='post-icon' style={{ fontSize: 40 }} onClick={handleShow}>
+                        </PostAddIcon>
+                    ): (
+                        <Link style={{ textDecoration: 'none'}} to={'/Dashboard/CurrentUser'}>
+                            <HomeIcon className='post-icon' style={{ fontSize: 40 }}></HomeIcon>
+                        </Link>
+                    )}
                 <div onClick={logOut} className='log-out'>Log Out</div>    
             </div>   
         </div>

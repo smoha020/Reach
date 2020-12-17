@@ -1,4 +1,5 @@
 import React, { Component }from 'react';
+import Nav from './Nav'
 import Profile from './Profile'
 import ModalNewPost from './ModalNewPost'
 import ModalPic from './ModalPic'
@@ -18,14 +19,15 @@ class User extends Component {
 
     render() {
 
-        const { otherUser, currentUser, posts, body, deletePost, likes, disabled, clickLike, 
-            clickUnlike, handleShow2, show, handleClose, onSubmit, show2, 
+        const { otherUser, currentUser, posts, body, notesColor, visible, deletePost, likes, disabled, clickLike, 
+            clickUnlike, handleShow, handleShow2, show, handleClose, onSubmit, show2, 
             handleClose2, postId, show3, handleClose3, onSubmitProfile, onChange, 
             username, bio, location, website, show4, handleClose4, onSubmitPic, 
-            onChangePic, handleShow4, handleShow3, match } = this.props
+            onChangePic, handleShow4, handleShow3, match, changeNotes, logOut} = this.props
 
         let userPosts
         let displayposts
+        let param = match.params.user
 
 
         //for initial rendering while call in componentDidMount is firing
@@ -33,7 +35,7 @@ class User extends Component {
 
             /*Previous user will be displayed before the 
             finel rendering, this prevents that*/
-            if(match.params.user === otherUser.credentials.username) {
+            if(param === otherUser.credentials.username) {
                 let nameCheck = currentUser.credentials.username
                 console.log(nameCheck)
                 userPosts = otherUser.posts
@@ -66,6 +68,9 @@ class User extends Component {
                             </React.Fragment>
                         ): (null)}
                         
+                        <Nav currentUser={currentUser} allPosts={posts} notesColor={notesColor} 
+                        visible={visible} handleShow={handleShow} param={param}
+                        handleShow2={handleShow2} logOut={logOut} changeNotes={changeNotes} />
 
                         <div className='display-flex'>
                             <Profile user={otherUser} nameCheck={nameCheck} handleShow4={handleShow4}
