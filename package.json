@@ -1,12 +1,13 @@
 {
-  "name": "NewsQuest",
+  "name": "Reach",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "server": "nodemon app.js",
-    "dev": "concurrently \" npm run server \" \"cd client && npm start\""
+    "dev": "concurrently \" npm run server \" \"cd client && npm start\"",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "keywords": [],
   "author": "",

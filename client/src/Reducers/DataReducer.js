@@ -7,7 +7,7 @@ const initState = {
     loadingPost: true
 }
 
-const PostReducer = (state = initState, action) => {
+const DataReducer = (state = initState, action) => {
     switch(action.type) {
         case 'LOADING_POST':
             return {
@@ -117,4 +117,4 @@ const PostReducer = (state = initState, action) => {
     }
 }
 
-export default PostReducer
+export default DataReducer

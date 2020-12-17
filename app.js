@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const path = require('path');
 //var bodyParser = require('body-parser');
 const session = require('express-session');
 const flash = require('connect-flash');
@@ -9,7 +10,7 @@ const keys = require('./config/keys');
 const app = express();
 const cors = require('cors');
 //template engine 
-app.set('view engine', 'ejs');
+//app.set('view engine', 'ejs');
 
 
 //database setup
@@ -38,9 +39,17 @@ app.use(express.json());
 app.use('/', require('./routes/index'));
 app.use('/users/', require('./routes/users'));
 app.use('/social/', require('./routes/social'));
-//****ERASE THIS */
-app.use((req, res) => {console.log(req.isAuthenticated())})
 
+
+if(process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, 'client', 'build')));
+  
+  
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'))
+    });
+}
+/*
 
 //flash
 app.get('/flash-pass', (req, res) => {
@@ -63,6 +72,7 @@ app.get('/flash-exist', (req, res) => {
     res.redirect('/users/register');
 });
 
+*/
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT); 

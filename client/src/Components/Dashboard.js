@@ -189,11 +189,6 @@ class Dashboard extends Component {
         axios.post('/users/uploadImage', fd)
         .then( data => {
             window.location.reload()
-            /*console.log(data)
-            this.props.getAuthenticated()
-            console.log('inside uploadImage submit')
-            this.props.getPosts()
-            this.setState({ show4: false })*/
         })
         .catch(err => {
             console.log(err)
@@ -291,44 +286,6 @@ class Dashboard extends Component {
                     display = 
                     <LoadSpinner />
                 }
-                /*displayposts = 
-                <DisplayPosts posts={posts} currentUser={currentUser} deletePost={this.deletePost} 
-                likes={likes} disabled={this.state.disabled} clickLike={this.clickLike} 
-                clickUnlike={this.clickUnlike} handleShow2={this.handleShow2} />
-
-                if(posts.length != 0) {
-                    display = 
-                    <React.Fragment>
-                        <Nav currentUser={currentUser} allPosts={posts} notesColor={this.state.notesColor} 
-                        visible={this.state.visible} handleShow={this.handleShow}
-                        handleShow2={this.handleShow2} logOut={this.logOut} changeNotes={this.changeNotes} />
-                   
-                        <ModalNewPost show={this.state.show} handleClose={this.handleClose}
-                        onSubmit={this.onSubmit} body={this.state.body} onChange={this.onChange} />
-
-                        <ModalSinglePost show2={this.state.show2} handleClose2={this.handleClose2}
-                        postId={this.state.postId} />
-
-                        <ModalUpdateProfile show3={this.state.show3} handleClose3={this.handleClose3}
-                        onSubmitProfile={this.onSubmitProfile} onChange={this.onChange}
-                        username={this.state.username} bio={this.state.bio} location={this.state.location}
-                        website={this.state.website} />
-                        
-                        <ModalPic show4={this.state.show4} handleClose4={this.handleClose4}
-                        onSubmitPic={this.onSubmitPic} onChangePic={this.onChangePic} />
-
-                        <div className='display-flex'>
-                            <Profile currentUser={currentUser} handleShow4={this.handleShow4}
-                            handleShow3={this.handleShow3} />
-                            <div className='post-container'>
-                                {displayposts}
-                            </div>
-                        </div>
-                    </ React.Fragment>
-                } else {
-                    display = 
-                    <LoadSpinner />
-                }*/
             } else {
                 this.props.history.push('/LogIn')
             }
