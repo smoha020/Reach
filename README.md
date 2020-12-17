@@ -1,3 +1,3 @@
-# NewsQuest
-An app built with Passport js local strategy that displays the latest news 
+# Reach Network
+A social media platform built using the MERN stack and Redux along with matrial UI, and Bootstrap. User verification and authorization are implemented using the Passport js local strategy. Users are able to enjoy all the functions of a social media platform such as making posts, likes, unlikes, comments as well as deleting personal posts and comments. Notifications are also recieved when other users like or comment on the current user's post. The profile secion allows the user to update information about himself and upload a profile picture that will also be displayed on his posts ad comments. 
 
