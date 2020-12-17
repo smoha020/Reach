@@ -272,7 +272,7 @@ footer {
 }
 .post-pic {
   vertical-align: top;
-  max-height: 150px;
+  max-height: 140px;
   width: 15%;
   margin: 2% 1%;
   overflow: hidden;
@@ -476,7 +476,6 @@ footer {
 }
 body {
   font-family: Arial, Helvetica, sans-serif;
-  background: rgb(238, 237, 237);
   padding: 0;
   margin: 0;
 }
