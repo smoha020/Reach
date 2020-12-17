@@ -120,6 +120,9 @@
     top: 21%;
     width: 20%;
   }
+  .notes-icon {
+    top: 22%;
+  }
   .log-out {
     cursor: pointer;
     margin: auto;
@@ -280,7 +283,7 @@ footer {
   display: inline-block;
 }
 .post-pic .post-pic-second {
-  height: 100%;
+  height: 140px;
   width: 100%;
   text-align: center;
   background: rgb(230, 234, 247);
@@ -352,13 +355,33 @@ footer {
   background: rgb(230, 234, 247);
 }
 
+@media screen and (max-width: 680px) {
+  .post-pic .post-pic-second {
+    height: 90px;
+  }
+}
 @media screen and (max-width: 600px) {
   .display-flex {
     margin: auto;
     width: 80%;
   }
 }
-
+@media screen and (max-width: 450px) {
+  .post-time {
+    font-size: 13px;
+  }
+  .post-delete {
+    font-size: 13px;
+  }
+}
+@media screen and (max-width: 335px) {
+  .post-time {
+    font-size: 12px;
+  }
+  .post-delete {
+    font-size: 12px;
+  }
+}
 @media screen and (max-width: 386px) {
   .display-flex {
     margin: auto;
@@ -401,7 +424,6 @@ footer {
 .comment-pic {
   vertical-align: top;
   width: 12%;
-  height: 5vh;
   margin: 2% 1%;
 }
 .comment-pic img {
