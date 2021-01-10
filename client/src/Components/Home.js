@@ -7,7 +7,7 @@ class Home extends Component {
 
   render () {
     return (
-      <React.Fragment>
+      <div>
         <div className='home-container'>
           <div className='home-left'>
             <div className='home-left-mid'>
@@ -37,7 +37,7 @@ class Home extends Component {
         <footer>
           <p>smoha020@ucr.edu</p>
         </footer>
-      </React.Fragment>
+      </div>
     );
   }
   
