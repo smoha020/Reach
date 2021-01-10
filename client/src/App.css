@@ -164,6 +164,7 @@ body {
 .home-right {
   vertical-align: top;
   flex-direction: column;
+  text-align: center;
 }
 .home-right-top {
   height: 20%;
@@ -212,12 +213,22 @@ footer {
     font-size: large;
     font-weight: bold;
     width: 70%;
-    height: 13%;
+    height: 40px;
     margin: 4% auto;
   }
   footer {
     padding-top: 4%;
     text-align: center;
+  }
+}
+@media screen and (max-width: 440px) {
+  .home-right-top {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 300px) {
+  .home-right-mid {
+    margin: 20px;
   }
 }
 
