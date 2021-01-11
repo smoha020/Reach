@@ -41,7 +41,7 @@ function Nav(props) {
             <div className='move-right'>   
                 <div className='notes-display'>
                     <Badge className='notes-icon' color="secondary" badgeContent={(noteCount.length != 0)?(noteCount.length):(0)}>
-                        <NotificationsIcon  style={{ fontSize: 40, color: `${notesColor}` }} onClick={changeNotes}></NotificationsIcon>
+                        <NotificationsIcon  style={{ fontSize: 30, color: `${notesColor}` }} onClick={changeNotes}></NotificationsIcon>
                     </Badge>
                     {(visible)? (
                         <div className='notes-menu'>
@@ -49,11 +49,11 @@ function Nav(props) {
                         </div>): (null)}
                 </div>
                 {(param === currentUser.credentials.username || param === 'CurrentUser' )? (
-                        <PostAddIcon className='post-icon' style={{ fontSize: 40 }} onClick={handleShow}>
+                        <PostAddIcon className='post-icon' style={{ fontSize: 30 }} onClick={handleShow}>
                         </PostAddIcon>
                     ): (
                         <Link style={{ textDecoration: 'none'}} to={'/Dashboard/CurrentUser'}>
-                            <HomeIcon className='post-icon' style={{ fontSize: 40 }}></HomeIcon>
+                            <HomeIcon className='post-icon' style={{ fontSize: 30 }}></HomeIcon>
                         </Link>
                     )}
                 <div onClick={logOut} className='log-out'>Log Out</div>    

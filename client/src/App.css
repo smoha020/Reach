@@ -1,15 +1,15 @@
 * {
   padding: 0;
   margin: 0;
+  box-sizing: border-box;
 }
 body {
-  background: white;
+  font-family: Arial, Helvetica, sans-serif;
 }
 /*--------NAVBAR-------*/
 .my-nav {
   background: #2196f3;
-  height: 12vh;
-  min-height: 120px;
+  height: 90px;
   position: relative;
 }
 .my-nav .link-div {
@@ -18,7 +18,7 @@ body {
   height: 100%;
   padding: 30px 30px;
   color: white;
-  font-size: x-large;
+  font-size: large;
 }
 
 .my-nav .link-div:hover {
@@ -104,13 +104,6 @@ body {
     height: 50%;
     position: static;
     display: flex;
-
-    /*display: -webkit-inline-flex;
-    position: absolute;
-    right: 0;
-    width: 25%;
-    height: 100%;
-    justify-content: center;*/
   }
   .brand-name {
     display: block;
@@ -124,7 +117,7 @@ body {
     width: 20%;
   }
   .notes-icon {
-    top: 22%;
+    top: 40%;
   }
   .log-out {
     cursor: pointer;
@@ -140,8 +133,8 @@ body {
 .home-container {
   display: flex;
   height: 93vh;
-  min-height: 750px;
-  width: 100vw;
+  min-height: 550px;
+  width: 100%;
 }
 .home-left, .home-right {
   width: 50%;
@@ -158,7 +151,7 @@ body {
 }
 .home-left-mid div {
   margin: 10% 2%;
-  font-size: xx-large;
+  font-size: x-large;
   font-weight: bold;
 }
 .home-right {
@@ -171,23 +164,23 @@ body {
   margin: 0 1%;
   display: block;
   color: black;
-  font-size: xxx-large;
+  font-size: xx-large;
   font-weight: bold;
 }
 .home-right-mid {
-  width: 90%;
-  height: 40%;
+  width: 380px;
+  height: 240px;
 }
 .home-right-mid-btn {
   background: #2196f3;
   color: white;
-  font-size: x-large;
+  font-size: medium;
   font-weight: bold;
   width: 95%;
-  height: 18%;
+  height: 40px;
   border-radius: 25px;
   text-align: center;
-  margin: 9% auto;
+  margin: 5% auto;
   padding: 1%;
 }
 footer {
@@ -196,7 +189,8 @@ footer {
 }
 @media screen and (max-width: 760px) {
   .home-container {
-    display: block
+    display: block;
+    height: 550px;
   }
   .home-left, .home-right {
     width: 100%;
@@ -237,17 +231,18 @@ footer {
 .register-form {
   display: flex;
   flex-direction: column;
-  height: 60vh;
-  min-height: 500px;
+  height: 350px;
+  min-height: 300px;
   width: 60vw;
   margin: 20px auto;
+  font-size: medium;
   box-shadow: 0 10px 20px gray;
 }
 .register-form-child {
   margin: auto;
   text-align: center;
   width: 38%;
-  height: 12%;
+  height: 45px;
 }
 .register-text-input {
   width: 100%;
@@ -256,7 +251,6 @@ footer {
   background: #2196f3;
   color: white;
   border: none;
-  font-size: large;
   width: 100%;
   height: 100%;
 }
@@ -271,7 +265,7 @@ footer {
 /*----------DASHBOARD--------*/
 .display-flex {
   margin: auto;
-  width: 60%;
+  width: 600px;
   margin-bottom: 5%;
 }
 .post-container {
@@ -280,13 +274,15 @@ footer {
 }
 .post {
   overflow: hidden;
-  padding: 10px;
-  box-shadow: 0 10px 20px gray;
+  max-height: 150px;
+  padding: 3px;
+  box-sizing: border-box;
+  border: 1px solid lightgray;
 }
 .post-pic {
   vertical-align: top;
-  max-height: 167px;
-  width: 15%;
+  max-height: 100px;
+  width: 10%;
   margin: 2% 1%;
   overflow: hidden;
 }
@@ -299,18 +295,17 @@ footer {
   display: inline-block;
 }
 .post-pic .post-pic-second {
-  height: 140px;
+  height: 100px;
   width: 100%;
   text-align: center;
   background: rgb(230, 234, 247);
 }
 .post-right {
   width: 75%;
-  margin: 2% 1%;
 }
 
 .post-right-top {
-  margin: 2% 3%;
+  margin: 2px 3%;
 }
 .post-right-top div {
   display: inline-block;
@@ -325,16 +320,17 @@ footer {
   background: #2196f3;
   color: white;
   border: none;
-  padding: 3% 8%;
+  /*padding: 3% 8%;*/
 }
 .post-body {
-  margin: 2% 3%;
+  margin: 3px 3%;
 }
 .post-bottom {
   display: flex;
 }
 .post-bottom div {
-  margin: 2% 5%;
+  /*margin: 2% 5%;*/
+  margin: 0 5%;
 }
 .bottom-thumb, .bottom-comment {
   display: flex;
@@ -349,7 +345,7 @@ footer {
 }
 
 .profile {
-  padding: 20px;
+  padding: 10px;
   margin-bottom: 3%;
   width: 100%;
   box-shadow: 0 10px 20px gray;
@@ -359,7 +355,7 @@ footer {
   background: rgb(230, 234, 247);
 }
 .profile-pic img {
-  height: 150px;
+  height: 100px;
   margin: 2%;
   border-radius: 50%;
   border: solid 1px;
@@ -376,7 +372,7 @@ footer {
     height: 90px;
   }
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 690px) {
   .display-flex {
     margin: auto;
     width: 80%;
@@ -483,169 +479,3 @@ footer {
   margin: 0% 3%;
 }
 
-/*--------------------------OLD DESIGN ------------------------*/
-*{
-  box-sizing: border-box;
-}
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  padding: 0;
-  margin: 0;
-}
-
-
-
-
-.company {
-  float: left;
-}
-.company a:hover {
-  background: rgb(0, 0, 255);
-}
-
-.alertRed {
-  background: #ffe6e6;
-  color: #800000;
-  padding: 20px;
-  margin: auto;
-  margin-bottom: 10px;
-  border-radius: 4px;
-} 
-
-.alertGreen {
-  background: #d9ffcc;
-  color: #1a6600;
-  padding: 20px;
-  margin: auto;
-  margin-bottom: 10px;
-  border-radius: 4px;
-} 
-
-.grid-container {
-  margin: auto;
-  width: 70%;
-  display: grid;
-  grid-template-columns: auto auto auto auto auto;
-  grid-gap: 10px;
-  background-color: #C8C8C8;
-  padding: 10px;
-}
-
-.grid-container > input {
-  background-color: #fff;
-  padding: 10px 0;
-  font-size: 15px;
-  border: none;
-  border-radius: 2px;
-}
-
-.item2, .item4, .item6, .item8, .iteml2, .iteml4 {
-  grid-column: 2 / span 4;
-}
-
-.grid-container .item9, .grid-container .iteml5 {
-  grid-column: 1 / span 5;
-  background: rgb(0, 0, 255);
-  color: #fff;
-}
-
-body input[type=text] {
-  /*we use float on both the input and the button to get them to stick to each other*/
-
-  margin-left: 1rem;
-  height: 30px;  
-  width: 80%;
-  padding: 5px 3px;
-  box-shadow: none;
-  border: none;
-  border-radius: 4px 0px 0px 4px;
-}
-.searchbutton {
-  float: left;
-  background: rgb(0, 0, 255);    
-  color: white;
-  text-align: center;
-  text-decoration: none;
-  height: 30px;  
-  width: 15%;
-  padding: 5px 0px;
-  border: none;
-  border-radius: 0px 4px 4px 0px;
-  border-left: none;
-}
-.Newsposts {
-  clear: both;
-  margin-top: 60px;
-}
-
-.pic {
-  width: 100%;
-}
-.mar {
-  margin: 10px;
-}
-.read{
-  text-decoration: none;
-  background: blue;
-  border-radius: 4px;
-  color: white;
-  padding: 5px;
-  display: inline-block;
-}
-
-/* media queries */ 
-
-/*for register and login*/
-@media screen and (max-width: 550px) {
-  .grid-container {
-      display: grid;
-      grid-template-columns: auto;
-  }
-  .grid-container label, .grid-container input {
-      grid-column: none;
-  }
-  .grid-container input {
-      width: 100%;
-  }
-  .grid-container label {
-      text-align: center;
-  }
-}
-
-/*for dashboard*/
-@media screen and (max-width: 600px) {
-  .post{ 
-      display: block;
-      width: 90%;   
-      margin: auto;
-      margin-bottom: 15px;
-  }
-}
-
-@media screen and (max-width: 450px) {
-  body input[type=text] {
-      display: block;
-      margin: auto;
-      margin-top: 5px;
-      width: 80%;
-      border-radius: 4px 4px 4px 4px;
-  }
-  .searchbutton {
-      float: none;
-      display: block;
-      margin: auto;
-      margin-top: 5px;
-      width: 80%;
-      border-radius: 4px 4px 4px 4px;
-  }
-  .Newsposts {
-      margin-top: 20px;
-  }
-}
-
-@media screen and (max-width: 375px) {
-  li, .company {
-      float: none;
-      text-align: center;
-  }
-}

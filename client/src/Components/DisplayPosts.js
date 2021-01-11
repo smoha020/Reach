@@ -52,14 +52,14 @@ function DisplayPosts(props) {
                         <div className='post-bottom'>
                             <div className='bottom-thumb'>
                                 {( thumbsLogo.includes(post._id) )? (
-                                    <button disabled={disabled} onClick={() => {clickUnlike(post._id)}}><ThumbDownIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}}></ThumbDownIcon></button>
+                                    <button disabled={disabled} onClick={() => {clickUnlike(post._id)}}><ThumbDownIcon style={{ fontSize: 20, color: '#2196f3', cursor: 'pointer'}}></ThumbDownIcon></button>
                                 ) : (
-                                    <button disabled={disabled} onClick={() => {clickLike(post._id)}}><ThumbUpIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}}></ThumbUpIcon></button>
+                                    <button disabled={disabled} onClick={() => {clickLike(post._id)}}><ThumbUpIcon style={{ fontSize: 20, color: '#2196f3', cursor: 'pointer'}}></ThumbUpIcon></button>
                                 )} 
                                 <div>{post.likeCount}</div>
                             </div>
                             <div className='bottom-comment'>
-                                <div><CommentIcon style={{ fontSize: 30, color: '#2196f3', cursor: 'pointer'}} onClick={() => {handleShow2(post)}}></CommentIcon></div>
+                                <div><CommentIcon style={{ fontSize: 20, color: '#2196f3', cursor: 'pointer'}} onClick={() => {handleShow2(post)}}></CommentIcon></div>
                                 <div>{post.commentCount}</div>
                             </div>
                         </div>
