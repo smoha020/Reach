@@ -36,9 +36,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 //routes
-app.use('/', require('./routes/index'));
-app.use('/users/', require('./routes/users'));
-app.use('/social/', require('./routes/social'));
+app.use('/api/', require('./routes/index'));
+app.use('/api/users/', require('./routes/users'));
+app.use('/api/social/', require('./routes/social'));
 
 
 if(process.env.NODE_ENV === 'production') {

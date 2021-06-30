@@ -81,7 +81,7 @@ export const getAuthenticated = () => {
     return (dispatch) => {
         dispatch(loadingRequest())
         console.log('loading being set for getAuth')
-        axios.get('/test')
+        axios.get('/api/test')
         .then(res => {
             const currentUser = res;
             dispatch(getcurrentUserSuccess(currentUser))
@@ -97,7 +97,7 @@ export const getAuthenticated = () => {
 export const signIn = (user) => {
     return (dispatch) => {
         dispatch(loadingRequest())
-        axios.post('/users/login', user)
+        axios.post('/api/users/login', user)
         .then(res => {
             console.log(res)
             const currentUser = res;
@@ -106,7 +106,7 @@ export const signIn = (user) => {
         .catch((err) => {
             const error = err;
             dispatch(getcurrentUserFailure(error))
-            /*axios.get('/test')
+            /*axios.get('/api/test')
             .then(res => {
                 console.log(res)
                 const isAuthenticated = res;
@@ -125,7 +125,7 @@ export const signOut = () => {
     
     return (dispatch) => {
         dispatch(loadingRequest())
-        axios.get('/users/logout')
+        axios.get('/api/users/logout')
         .then((res) => {
             
             dispatch(logOutSuccess()) 
@@ -140,7 +140,7 @@ export const signOut = () => {
 export const registerUser = (user) => {
     return (dispatch) => {
         dispatch(loadingRequest())
-        axios.post('/users/register', user)
+        axios.post('/api/users/register', user)
         .then(res => {
             console.log(res)
             
@@ -164,7 +164,7 @@ export const updateUser = (user) => {
     return (dispatch) => {
 
         dispatch(loadingRequest())
-        axios.post(`/users/update/${user._id}`, user)
+        axios.post(`/api/users/update/${user._id}`, user)
         .then(res => {
             console.log(res)
             
@@ -181,7 +181,7 @@ export const updateUser = (user) => {
 export const NoteRead = (note) => {
     return (dispatch) => {
 
-    axios.put(`/social/notificationRead/${note._id}`)
+    axios.put(`/api/social/notificationRead/${note._id}`)
         .then(data => {
             
             dispatch(getNoteReadSuccess(note))

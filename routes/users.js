@@ -172,7 +172,8 @@ router.post('/uploadImage', upload.single('pic'), (req, res) => {
             })
             newImage.save()
             .then(() => {
-                
+                /*We have to get the pic first so we can 
+                  update the post*/
                 userImage.findOne(filter)
                 .then(data => {
 
@@ -214,7 +215,7 @@ router.post('/uploadImage', upload.single('pic'), (req, res) => {
                 }}
             )
             .then(() => {
-                console.log('are we in the else')
+                
                 userImage.findOne(filter)
                 .then(data => {
 
@@ -229,9 +230,10 @@ router.post('/uploadImage', upload.single('pic'), (req, res) => {
                         } else {
                             Posts.updateMany(filter, { pic: baseData})
                             .then(() => {
+                                
+                                console.log('post pics updated');
                                 /*must send otherwise getPosts will
                                 not show the changed pics unless page is refreshed*/
-                                console.log('post pics updated')
                                 res.send(baseData)
                             })
                             .catch(err => console.log(err))

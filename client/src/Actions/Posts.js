@@ -125,7 +125,7 @@ const getOtherUserFailure = (error) => {
 //GET POSTS
 export const getPosts = () => {
     return (dispatch) => {
-        axios.get('/social/posts')
+        axios.get('/api/social/posts')
         .then(res => {
 
             let listPosts = res.data.map(post => {
@@ -147,7 +147,7 @@ export const getPosts = () => {
 //CREATE POST
 export const createPost = (newpost) => {
     return (dispatch) => {
-        axios.post('/social/posts/create', newpost)
+        axios.post('/api/social/posts/create', newpost)
         .then(res => {
 
             dispatch(createPostSuccess(res))
@@ -161,7 +161,7 @@ export const createPost = (newpost) => {
 //DELETE POST 
 export const deletePost = (post) => {
     return (dispatch) => {
-        axios.delete(`/social/posts/${post._id}`)
+        axios.delete(`/api/social/posts/${post._id}`)
         .then(res => {
             dispatch(deletePostSuccess(post))
             
@@ -176,7 +176,7 @@ export const deletePost = (post) => {
 export const getPost = (postId) => {
     return (dispatch) => {
         //dispatch(loadingPost())
-        axios.get(`/social/posts/single/${postId}`)
+        axios.get(`/api/social/posts/single/${postId}`)
         .then(res => {
 
             const post = res;
@@ -193,7 +193,7 @@ export const getPost = (postId) => {
 export const addComment = (newComment) => {
     return (dispatch) => {
         //dispatch(loadingPost())
-        axios.post(`/social/posts/createcomment/${newComment.postId}`, newComment)
+        axios.post(`/api/social/posts/createcomment/${newComment.postId}`, newComment)
         .then(res => {
 
             console.log(res.data)
@@ -212,7 +212,7 @@ export const deleteComment = (comment) => {
     return (dispatch) => {
         dispatch(loadingPost())
         console.log('before the put ')
-        axios.put(`/social/posts/deletecomment/${comment.postId}`, comment)
+        axios.put(`/api/social/posts/deletecomment/${comment.postId}`, comment)
         .then(() => {
 
             dispatch(getPost(comment.postId))
@@ -228,7 +228,7 @@ export const deleteComment = (comment) => {
 
 export const likePost = (like) => {
     return (dispatch) => {
-        axios.post(`/social/like/${like.postId}`, like)
+        axios.post(`/api/social/like/${like.postId}`, like)
         .then(() => {
             console.log('likePost is called')
             //dispatch(getPosts())
@@ -247,7 +247,7 @@ export const unlikePost = (like) => {
     return (dispatch) => {
         //dispatch(loadingPost())
         //console.log('before the put ')
-        axios.post(`/social/unlike/${like.postId}`, like)
+        axios.post(`/api/social/unlike/${like.postId}`, like)
         .then(() => {
             console.log('unLikePost is called')
             
@@ -265,7 +265,7 @@ export const getOtherUser = (user) => {
     return (dispatch) => {
         //dispatch(loadingPost())
         //console.log('before the put ')
-        axios.get(`/users/otheruser/${user}`)
+        axios.get(`/api/users/otheruser/${user}`)
         .then((res) => {
             
             dispatch(getOtherUserSuccess(res.data))
