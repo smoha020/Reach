@@ -70,16 +70,17 @@ router.get('/test', (req, res) => {
     }
 });
 
-router.get('/dashboard', authenticate.authenticated,
+/*router.get('/dashboard', authenticate.authenticated,
     (req, res) => {
         //res.send('hey there success')
         console.log(authenticate.authenticated);
         res.render('dashboard', {articles: [], message: req.flash('log')})
-    });
+    }
+);*/
  
 /*have to use post if I want req.body to return 
 other than an empty object. If you want to use get then use req.url...*/
-router.post('/news', (req, res) => {
+/*router.post('/news', (req, res) => {
 
     if(req.body.search != ''){
         fetch(`https://newsapi.org/v2/everything?q=${req.body.search}&apiKey=03011dee36fd47f4a63c3a187dcd6618`,
@@ -95,6 +96,6 @@ router.post('/news', (req, res) => {
     } else {
         res.render('dashboard', {articles: [], message: ''})
     }
-});
+});*/
 
 module.exports = router;

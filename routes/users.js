@@ -29,16 +29,18 @@ const upload = multer({ storage: storage });
 
 
 //LOG IN AND REGISTRATION
-router.get('/register', authenticate.notAuthenticated, (req, res) => {
+/*router.get('/register', authenticate.notAuthenticated, (req, res) => {
     /*I added the name, email, etc here because if 
     I didn't, I would have to put an if statement inside the IIFE
     checking if the name, email,..etc are undefined and that would cause 
     an error*/
-    res.render('register', {name: '', email: '', password: '', message: req.flash('reg')})});
+    /*res.render('register', {name: '', email: '', password: '', message: req.flash('reg')})
+});*/
 
  
-router.get('/login', authenticate.notAuthenticated, (req, res) => {
-    res.render('log_in', {email: '', password: '', message: req.flash('log')})});
+/*router.get('/login', authenticate.notAuthenticated, (req, res) => {
+    res.render('log_in', {email: '', password: '', message: req.flash('log')})
+});*/
 
 router.post('/register', (req, res) => {
 
